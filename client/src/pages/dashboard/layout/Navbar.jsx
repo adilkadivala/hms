@@ -1,8 +1,7 @@
-// src/components/Navbar.jsx
 import React from "react";
 import { useTheme } from "../../../storage/Theme";
 
-const Navbar = ({ toggleSidebar }) => {
+const Navbar = ({ toggleSidebar, isOpen }) => {
   const { darkMode, toggleTheme } = useTheme();
 
   return (
@@ -13,13 +12,19 @@ const Navbar = ({ toggleSidebar }) => {
           : "bg-gray-100 text-black border-b-[0.2px] border-indigo-500"
       }`}
     >
-      <button className="lg:hidden mr-4" onClick={toggleSidebar}>
-        &#9776;
-      </button>
-      <div className="text-lg font-bold">My Dashboard</div>
+      <div className="flex gap-24">
+        <div className="text-lg font-bold">My Dashboard</div>
+        <button className="mr-4 " onClick={toggleSidebar}>
+          <i
+            className={`fa-solid ${isOpen ? "fa-bars" : "fa-chevron-right"}`}
+          ></i>
+        </button>
+      </div>
       <button
         onClick={toggleTheme}
-        className="bg-primary text-white p-2 rounded border-none"
+        className={`${
+          darkMode ? "text-white" : "text-indigo-400"
+        }  p-2 rounded border-none`}
       >
         <i className={`fa-solid ${darkMode ? "fa-sun" : "fa-moon"}`} />
       </button>

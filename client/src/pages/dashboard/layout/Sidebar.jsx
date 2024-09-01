@@ -1,116 +1,99 @@
 import React, { useState } from "react";
 import { useTheme } from "../../../storage/Theme";
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isOpen }) => {
   const { darkMode } = useTheme();
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
   const handleDropdownToggle = (index) => {
-    if (openDropdownIndex === index) {
-      setOpenDropdownIndex(null);
-    } else {
-      setOpenDropdownIndex(index);
-    }
+    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
   };
 
   return (
     <section
-      className={`h-full w-64 p-4 fixed lg:relative transition-transform duration-150 ease-in-out transform ${
-        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      className={`h-full fixed lg:relative transition-transform duration-150 ease-in-out transform flex flex-col align-middle text-left lg:p-4 ${
+        isOpen
+          ? "translate-x-0 w-64"
+          : "-translate-x-full lg:translate-x-0 lg:w-16"
       } ${
         darkMode
-          ? "bg-secondry text-white border-r-[0.2px] border-b-white "
-          : "bg-gray-100 text-black border-r-[0.2px] border-indigo-500 "
+          ? "bg-secondry text-white border-r-[0.2px] border-b-white"
+          : "bg-gray-100 text-black border-r-[0.2px] border-indigo-500"
       }`}
     >
-      <button className="lg:hidden mb-4" onClick={toggleSidebar}>
-        Close
-      </button>
+      <div className="pt-4 h-[60vh] space-y-4">
+        <ul>
+          <li className="mb-4">
+            <a href="#" className="flex items-center space-x-4">
+              <i className="fa-solid fa-tag text-primary text-2xl"></i>
+              <span className="text-lg">Dashboard</span>
+            </a>
+          </li>
 
-      <ul>
-        <li className="mb-4">
-          <a href="#" className="block">
-            <i className="fa-solid fa-tag text-primary"></i> Dashboard
-          </a>
-        </li>
-
-        <li className="mb-4 relative">
-          <a href="#" className="block" onClick={() => handleDropdownToggle(0)}>
-            <i className="fa-solid fa-tag text-primary"></i> Profile
-            <span className="ml-2 ">
-              {openDropdownIndex === 0 ? (
-                <i className="fa-solid fa-chevron-up"></i>
-              ) : (
-                <i className="fa-solid fa-chevron-right"></i>
-              )}
-            </span>
-          </a>
-          <ul
-            className={`absolute top-full left-0 border border-slate-500 p-2 ${
-              openDropdownIndex === 0 ? "block" : "hidden"
-            } ${
-              darkMode ? "bg-secondry text-white" : "bg-gray-100 text-black"
-            }`}
-          >
-            <li className="mb-2">
-              <a href="#" className="block">
-                <i className="fa-solid fa-tag text-primary"></i> Profile
-                Settings
-              </a>
-            </li>
-            <li className="mb-2">
-              <a href="#" className="block">
-                <i className="fa-solid fa-tag text-primary"></i> Change Password
-              </a>
-            </li>
-            <li>
-              <a href="#" className="block">
-                <i className="fa-solid fa-tag text-primary"></i> Logout
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li
-          className={`mb-4 relative ${
-            openDropdownIndex === 0 ? "mt-28" : "mt-0"
-          } transition-all duration-150`}
-        >
-          <a href="#" className="block" onClick={() => handleDropdownToggle(1)}>
-            <i className="fa-solid fa-tag text-primary"></i> Profile
-            <span className="ml-2 ">
-              {openDropdownIndex === 1 ? (
-                <i className="fa-solid fa-chevron-up"></i>
-              ) : (
-                <i className="fa-solid fa-chevron-right"></i>
-              )}
-            </span>
-          </a>
-          <ul
-            className={`absolute top-full left-0  border border-slate-500 p-2 ${
-              openDropdownIndex === 1 ? "block" : "hidden"
-            } ${
-              darkMode ? "bg-secondry text-white" : "bg-gray-100 text-black"
-            }`}
-          >
-            <li className="mb-2">
-              <a href="#" className="block">
-                <i className="fa-solid fa-tag text-primary"></i> Profile
-                Settings
-              </a>
-            </li>
-            <li className="mb-2">
-              <a href="#" className="block">
-                <i className="fa-solid fa-tag text-primary"></i> Change Password
-              </a>
-            </li>
-            <li>
-              <a href="#" className="block">
-                <i className="fa-solid fa-tag text-primary"></i> Logout
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+          <li className="mb-4">
+            <a
+              href="#"
+              className="flex items-center space-x-4"
+              onClick={() => handleDropdownToggle(0)}
+            >
+              <i className="fa-solid fa-tag text-primary text-2xl"></i>
+              <span className="text-lg">Profile</span>
+              <span className="ml-auto">
+                {openDropdownIndex === 0 ? (
+                  <i className="fa-solid fa-chevron-up"></i>
+                ) : (
+                  <i className="fa-solid fa-chevron-right"></i>
+                )}
+              </span>
+            </a>
+            <ul
+              className={`pl-8 space-y-2 transition-all duration-150 ${
+                openDropdownIndex === 0
+                  ? "max-h-screen"
+                  : "max-h-0 overflow-hidden"
+              } ${
+                darkMode ? "bg-secondry text-white" : "bg-gray-100 text-black"
+              }`}
+            >
+              <li>
+                <a href="#" className="flex items-center space-x-4">
+                  <i className="fa-solid fa-tag text-primary text-lg"></i>
+                  <span>Profile Settings</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="flex items-center space-x-4">
+                  <i className="fa-solid fa-tag text-primary text-lg"></i>
+                  <span>Change Password</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="flex items-center space-x-4">
+                  <i className="fa-solid fa-tag text-primary text-lg"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <hr className="border border-slate-400" />
+      <div className="h-[10vh] mt-4">
+        <ul>
+          <li className="mb-4">
+            <a href="#" className="flex items-center space-x-4">
+              <i className="fa-solid fa-tag text-primary text-2xl"></i>
+              <span className="text-lg">Account</span>
+            </a>
+          </li>
+          <li className="mb-4">
+            <a href="#" className="flex items-center space-x-4">
+              <i className="fa-solid fa-tag text-primary text-2xl"></i>
+              <span className="text-lg">Log out</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </section>
   );
 };
