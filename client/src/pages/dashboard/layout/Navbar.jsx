@@ -9,7 +9,7 @@ const Navbar = ({ toggleSidebar }) => {
     <nav
       className={`p-4 flex justify-between items-center ${
         darkMode
-          ? "bg-gray-900 text-white border-b-[0.2px] border-b-white "
+          ? "bg-secondry text-white border-b-[0.2px] border-b-white "
           : "bg-gray-100 text-black border-b-[0.2px] border-indigo-500"
       }`}
     >
@@ -19,9 +19,9 @@ const Navbar = ({ toggleSidebar }) => {
       <div className="text-lg font-bold">My Dashboard</div>
       <button
         onClick={toggleTheme}
-        className="bg-primary text-white p-2 rounded"
+        className="bg-primary text-white p-2 rounded border-none"
       >
-        Toggle Theme
+        <i className={`fa-solid ${darkMode ? "fa-sun" : "fa-moon"}`} />
       </button>
     </nav>
   );

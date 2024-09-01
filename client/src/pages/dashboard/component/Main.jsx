@@ -11,15 +11,16 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="flex-1 flex flex-col">
-        <Navbar toggleSidebar={toggleSidebar} />
-        <main className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-4 flex-1 overflow-y-auto">
+    <section className="h-screen flex flex-col">
+      <Navbar toggleSidebar={toggleSidebar} />
+
+      <div className="flex flex-1">
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <main className="flex-1 bg-gray-100 dark:bg-secondry text-black dark:text-white p-4 overflow-y-auto">
           {children}
         </main>
       </div>
-    </div>
+    </section>
   );
 };
 
