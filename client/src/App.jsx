@@ -1,9 +1,11 @@
+import { BrowserRouter } from "react-router-dom";
+import Pathes from "./routes/Pathes";
+
 function App() {
   return (
-    <>
-      <h1>Hello </h1>
-      <h2>SANGRA</h2>
-    </>
+    <BrowserRouter>
+      <Pathes />
+    </BrowserRouter>
   );
 }
 
