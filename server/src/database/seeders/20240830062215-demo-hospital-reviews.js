@@ -6,7 +6,7 @@ module.exports = {
       "Hospital_reviews",
       [
         {
-          Hospital_id: 13,
+          Hospital_id: 1,
           author: "John Doe",
           rating: 4.5,
           review_description: "Great hospital with excellent staff.",

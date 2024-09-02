@@ -6,7 +6,7 @@ module.exports = {
       "Hospital_departments",
       [
         {
-          Hospital_id: 13,
+          Hospital_id: 1,
           Department_type: "opd",
           status: "active",
           Created_by: "admin",

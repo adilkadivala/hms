@@ -4,10 +4,10 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert("doctor_by_Hospital", [
       {
-        Doctor_id: 4,
-        Hospital_id: 13,
+        Doctor_id: 1,
+        Hospital_id: 1,
         Old_case_rate: 150.0,
-        Department_id: 20,
+        Department_id: 1,
         New_case_rate: 175.0,
         Mon: "12:00 AM to 12:00 PM, 04:00 PM to 07:00 PM",
         Tues: "12:00 PM to 05:00 PM",
