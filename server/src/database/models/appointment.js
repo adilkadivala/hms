@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "patients",
+          model: "patient",
           key: "id",
         },
       },
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "hospitals", 
+          model: "hospital",
           key: "id",
         },
       },
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "doctor_by_hospital", 
+          model: "doctor_by_hospital",
           key: "id",
         },
       },
@@ -61,13 +61,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       Approved_date: {
-        type: DataTypes.TIMESTAMP,
+        type: DataTypes.DATE,
         allowNull: true,
       },
     },
     {
       timestamps: true,
-      tableName: "Appointments",
+      tableName: "Appointment",
     }
   );
 
