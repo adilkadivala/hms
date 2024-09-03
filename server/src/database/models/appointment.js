@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "patient",
+          model: "Patient",
           key: "id",
         },
       },
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "hospital",
+          model: "Hospital",
           key: "id",
         },
       },
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "doctor_by_hospital",
+          model: "Doctor_by_Hospital",
           key: "id",
         },
       },
@@ -80,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "hospital_id",
       as: "hospital",
     });
-    Appointment.belongsTo(models.Doctor_by_hospital, {
+    Appointment.belongsTo(models.Doctor_by_Hospital, {
       foreignKey: "doctor_by_hospital_id",
       as: "doctorByHospital",
     });
