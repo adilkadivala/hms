@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useTheme } from "../../../storage/Theme";
 
 const Sidebar = ({ isOpen }) => {
@@ -24,15 +25,15 @@ const Sidebar = ({ isOpen }) => {
       <div className="pt-4 h-[60vh] space-y-4">
         <ul>
           <li className="mb-4">
-            <a href="#" className="flex items-center space-x-4">
+            <NavLink to="/datatable" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
               <span className="text-lg">Dashboard</span>
-            </a>
+            </NavLink>
           </li>
 
           <li className="mb-4">
-            <a
-              href="#"
+            <NavLink
+              to="#"
               className="flex items-center space-x-4"
               onClick={() => handleDropdownToggle(0)}
             >
@@ -45,7 +46,7 @@ const Sidebar = ({ isOpen }) => {
                   <i className="fa-solid fa-chevron-right"></i>
                 )}
               </span>
-            </a>
+            </NavLink>
             <ul
               className={`pl-8 space-y-2 transition-all duration-150 ${
                 openDropdownIndex === 0
@@ -56,22 +57,22 @@ const Sidebar = ({ isOpen }) => {
               }`}
             >
               <li>
-                <a href="#" className="flex items-center space-x-4">
+                <NavLink to="/" className="flex items-center space-x-4">
                   <i className="fa-solid fa-tag text-primary text-lg"></i>
-                  <span>Profile Settings</span>
-                </a>
+                  <span>Table</span>
+                </NavLink>
               </li>
               <li>
-                <a href="#" className="flex items-center space-x-4">
+                <NavLink to="/" className="flex items-center space-x-4">
                   <i className="fa-solid fa-tag text-primary text-lg"></i>
                   <span>Change Password</span>
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a href="#" className="flex items-center space-x-4">
+                <NavLink to="/" className="flex items-center space-x-4">
                   <i className="fa-solid fa-tag text-primary text-lg"></i>
                   <span>Logout</span>
-                </a>
+                </NavLink>
               </li>
             </ul>
           </li>
@@ -81,16 +82,16 @@ const Sidebar = ({ isOpen }) => {
       <div className="h-[10vh] mt-4">
         <ul>
           <li className="mb-4">
-            <a href="#" className="flex items-center space-x-4">
+            <NavLink to="/" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
               <span className="text-lg">Account</span>
-            </a>
+            </NavLink>
           </li>
           <li className="mb-4">
-            <a href="#" className="flex items-center space-x-4">
+            <NavLink to="/" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
               <span className="text-lg">Log out</span>
-            </a>
+            </NavLink>
           </li>
         </ul>
       </div>
