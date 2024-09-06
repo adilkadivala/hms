@@ -44,15 +44,15 @@ const Data = () => {
         </div>
       ),
       actions: (
-        <div className="flex items-center gap-0.5">
-          <button className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-indigo-600 flex item-center">
+        <div className="flex items-center gap-1">
+          <button className="p-2 rounded-full bg-white group transition-all  hover:text-white duration-500 hover:bg-indigo-600 dark:bg-black hover:dark:bg-indigo-600 flex item-center">
+            <i className="fa-solid fa-pen"></i>
+          </button>
+          <button className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-red-600  hover:text-white dark:bg-black hover:dark:bg-red-600 flex item-center">
             <i className="fa-solid fa-trash"></i>
           </button>
-          <button className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-red-600 flex item-center">
-            <i className="fa-solid fa-trash"></i>
-          </button>
-          <button className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-black flex item-center">
-            <i className="fa-solid fa-trash"></i>
+          <button className="p-2 rounded-full bg-white group transition-all duration-500  flex item-center dark:text-white dark:bg-black hover:bg-indigo-400 hover:text-white hover:dark:bg-indigo-400">
+            <i className="fa-solid fa-grip-vertical "></i>
           </button>
         </div>
       ),

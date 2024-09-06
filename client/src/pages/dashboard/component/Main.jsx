@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/Sidebar";
+import { useTheme } from "../../../storage/Theme";
 
 const Layout = ({ children }) => {
+  const { darkMode } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -10,7 +12,7 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <section className="h-screen flex flex-col">
+    <section className={` flex flex-col h-screen ${darkMode ? "dark" : ""}`}>
       <Navbar toggleSidebar={toggleSidebar} isOpen={isSidebarOpen} />
 
       <div className="flex flex-1">

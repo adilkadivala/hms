@@ -1,12 +1,10 @@
-// src/App.jsx
-import React from "react";
 import Layout from "./component/Main";
+import Form from "../ui/Form";
 
 function App() {
   return (
     <Layout>
-      <h1 className="text-3xl font-bold">Welcome to My Dashboard</h1>
-      <p className="mt-4">This is your main content area.</p>
+      <Form formLable="Sign Up" discription="Don't have an account? " />
     </Layout>
   );
 }

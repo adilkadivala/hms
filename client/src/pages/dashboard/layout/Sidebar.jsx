@@ -25,9 +25,9 @@ const Sidebar = ({ isOpen }) => {
       <div className="pt-4 h-[60vh] space-y-4">
         <ul>
           <li className="mb-4">
-            <NavLink to="/datatable" className="flex items-center space-x-4">
+            <NavLink to="/dashboard" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
-              <span className="text-lg">Dashboard</span>
+              {isOpen && <span className="text-lg">Dashboard</span>}
             </NavLink>
           </li>
 
@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen }) => {
               onClick={() => handleDropdownToggle(0)}
             >
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
-              <span className="text-lg">Profile</span>
+              {isOpen && <span className="text-lg">UI</span>}
               <span className="ml-auto">
                 {openDropdownIndex === 0 ? (
                   <i className="fa-solid fa-chevron-up"></i>
@@ -57,21 +57,24 @@ const Sidebar = ({ isOpen }) => {
               }`}
             >
               <li>
-                <NavLink to="/" className="flex items-center space-x-4">
-                  <i className="fa-solid fa-tag text-primary text-lg"></i>
-                  <span>Table</span>
+                <NavLink
+                  to="/datatable"
+                  className="flex items-center space-x-4"
+                >
+                  <i className="fa-solid fa-table text-primary text-lg"></i>
+                  {isOpen && <span>Table</span>}
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/" className="flex items-center space-x-4">
                   <i className="fa-solid fa-tag text-primary text-lg"></i>
-                  <span>Change Password</span>
+                  {isOpen && <span>Change Password</span>}
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/" className="flex items-center space-x-4">
                   <i className="fa-solid fa-tag text-primary text-lg"></i>
-                  <span>Logout</span>
+                  {isOpen && <span>Logout</span>}
                 </NavLink>
               </li>
             </ul>
@@ -84,13 +87,13 @@ const Sidebar = ({ isOpen }) => {
           <li className="mb-4">
             <NavLink to="/" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
-              <span className="text-lg">Account</span>
+              {isOpen && <span className="text-lg">Account</span>}
             </NavLink>
           </li>
           <li className="mb-4">
             <NavLink to="/" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
-              <span className="text-lg">Log out</span>
+              {isOpen && <span className="text-lg">Log out</span>}
             </NavLink>
           </li>
         </ul>
