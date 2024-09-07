@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
       <div className="flex flex-1">
         <Sidebar isOpen={isSidebarOpen} />
         <main
-          className={`transition-all duration-150 ease-in-out flex-1 bg-gray-100 dark:bg-secondry text-black dark:text-white p-4 overflow-y-auto`}
+          className={`transition-all duration-150 ease-in-out flex-1 bg-gray-100 dark:bg-secondry text-black dark:text-white p-4 overflow-y-scroll overscroll-y-auto  rounded h-[40.7rem]`}
         >
           {children}
         </main>

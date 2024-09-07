@@ -12,21 +12,21 @@ const Sidebar = ({ isOpen }) => {
 
   return (
     <section
-      className={`h-full fixed lg:relative transition-transform duration-150 ease-in-out transform flex flex-col align-middle text-left lg:p-4 ${
+      className={`h-full fixed lg:relative transition-transform duration-150 ease-in-out transform flex flex-col align-middle text-left lg:p-4 rounded-r ${
         isOpen
           ? "translate-x-0 w-64"
           : "-translate-x-full lg:translate-x-0 lg:w-16"
       } ${
         darkMode
-          ? "bg-secondry text-white border-r-[0.2px] border-b-white"
-          : "bg-gray-100 text-black border-r-[0.2px] border-indigo-500"
+          ? "bg-secondry text-white border-r-[0.2px]"
+          : "bg-gray-100 text-black border-r-[0.2px] "
       }`}
     >
       <div className="pt-4 h-[60vh] space-y-4">
         <ul>
           <li className="mb-4">
             <NavLink to="/dashboard" className="flex items-center space-x-4">
-              <i className="fa-solid fa-tag text-primary text-2xl"></i>
+              <i className="fa-solid fa-seedling text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Dashboard</span>}
             </NavLink>
           </li>
@@ -34,7 +34,11 @@ const Sidebar = ({ isOpen }) => {
           <li className="mb-4">
             <NavLink
               to="#"
-              className="flex items-center space-x-4"
+              className={`${
+                isOpen
+                  ? "flex items-center space-x-4"
+                  : "flex items-center space-x-1"
+              }`}
               onClick={() => handleDropdownToggle(0)}
             >
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
@@ -48,7 +52,9 @@ const Sidebar = ({ isOpen }) => {
               </span>
             </NavLink>
             <ul
-              className={`pl-8 space-y-2 transition-all duration-150 ${
+              className={`${
+                isOpen ? "pl-8 " : "pl-6"
+              }space-y-2 transition-all duration-150 ${
                 openDropdownIndex === 0
                   ? "max-h-screen"
                   : "max-h-0 overflow-hidden"
@@ -66,15 +72,9 @@ const Sidebar = ({ isOpen }) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/" className="flex items-center space-x-4">
+                <NavLink to="/form" className="flex items-center space-x-4">
                   <i className="fa-solid fa-tag text-primary text-lg"></i>
-                  {isOpen && <span>Change Password</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/" className="flex items-center space-x-4">
-                  <i className="fa-solid fa-tag text-primary text-lg"></i>
-                  {isOpen && <span>Logout</span>}
+                  {isOpen && <span>Form</span>}
                 </NavLink>
               </li>
             </ul>
@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen }) => {
       <div className="h-[10vh] mt-4">
         <ul>
           <li className="mb-4">
-            <NavLink to="/" className="flex items-center space-x-4">
+            <NavLink to="/account" className="flex items-center space-x-4">
               <i className="fa-solid fa-tag text-primary text-2xl"></i>
               {isOpen && <span className="text-lg">Account</span>}
             </NavLink>

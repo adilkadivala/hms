@@ -8,8 +8,8 @@ const Navbar = ({ toggleSidebar, isOpen }) => {
     <nav
       className={`p-4 flex justify-between items-center ${
         darkMode
-          ? "bg-secondry text-white border-b-[0.2px] border-b-white "
-          : "bg-gray-100 text-black border-b-[0.2px] border-indigo-500"
+          ? "bg-secondry text-white border-b-[0.2px] "
+          : "bg-gray-100 text-black border-b-[0.2px] "
       }`}
     >
       <div className="flex gap-24">
