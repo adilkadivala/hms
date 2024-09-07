@@ -4,8 +4,10 @@ import { Fetch } from "../../../constant/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
+import Form from "../../ui/Form";
 import Modal from "../../ui/Modal";
 import axios from "axios";
+import { editFields } from "../../../constant/fields";
 
 const API = "http://localhost:5665/getdoctors";
 
@@ -164,7 +166,7 @@ const Doctor = () => {
         <div className="flex justify-between align-middle text-center my-2">
           <h1 className="text-2xl font-bold mb-4">Doctor Table</h1>
           <Button
-            className="py-1 px-3 bg-gray-50 text-primary"
+            className="py-1 px-3 bg-gray-50 text-primary border border-primary rounded font-bold"
             onClick={toggleModal}
           >
             Add +
@@ -194,7 +196,9 @@ const Doctor = () => {
               </>
             }
           >
-            <p>This is a reusable modal component!</p>
+            <div className="text-black dark:text-white">
+              <Form fields={editFields} />
+            </div>
           </Modal>
         )}
       </div>

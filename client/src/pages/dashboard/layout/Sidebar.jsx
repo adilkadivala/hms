@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import "../../../assets/css/global.css";
 import { useTheme } from "../../../storage/Theme";
 
 const Sidebar = ({ isOpen }) => {
@@ -22,7 +23,7 @@ const Sidebar = ({ isOpen }) => {
           : "bg-gray-100 text-black border-r-[0.2px] "
       }`}
     >
-      <div className="pt-4 h-[60vh] space-y-4 overflow-y-auto">
+      <div className="pt-4 h-[60vh] space-y-4 overflow-y-auto hide-scrollbar">
         <ul>
           <li className="mb-4">
             <NavLink to="/dashboard" className="flex items-center space-x-4">

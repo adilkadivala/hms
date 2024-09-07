@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../layout/Navbar";
+import "../../../assets/css/global.css";
 import Sidebar from "../layout/Sidebar";
 import { useTheme } from "../../../storage/Theme";
 
@@ -18,7 +19,7 @@ const Layout = ({ children }) => {
       <div className="flex flex-1">
         <Sidebar isOpen={isSidebarOpen} />
         <main
-          className={`transition-all duration-150 ease-in-out flex-1 bg-gray-100 dark:bg-secondry text-black dark:text-white p-4 overflow-y-scroll overscroll-y-auto  rounded h-[40.7rem]`}
+          className={`transition-all duration-150 ease-in-out flex-1 bg-gray-100 dark:bg-secondry text-black dark:text-white p-4 overflow-y-scroll overscroll-y-auto hide-scrollbar rounded h-[41rem]`}
         >
           {children}
         </main>
