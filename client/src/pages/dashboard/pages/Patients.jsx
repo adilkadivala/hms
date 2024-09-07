@@ -25,14 +25,14 @@ const Patient = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: patient, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((patient) => ({
+  const tableData = patient
+    ? patient.map((patient) => ({
         First_name: patient.First_name,
         Middle_name: patient.Middle_name,
         Last_name: patient.Last_name,
@@ -73,7 +73,7 @@ const Patient = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {patient && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

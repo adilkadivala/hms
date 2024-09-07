@@ -1,7 +1,14 @@
 const express = require("express");
 const doctorRouter = express.Router();
+const uploads = require("../middlewares/uploads");
 const doctorController = require("../controllers/doctors");
 
 doctorRouter.get("/getdoctors", doctorController.getDoctors);
+
+doctorRouter.post(
+  "/insertdoctors",
+  uploads.single("Profile_image"),
+  doctorController.insertDoctor
+);
 
 module.exports = doctorRouter;

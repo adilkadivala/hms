@@ -24,14 +24,14 @@ const Faculty = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: faculty, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((faculty) => ({
+  const tableData = faculty
+    ? faculty.map((faculty) => ({
         User_first_name: faculty.User_first_name,
         User_last_name: faculty.User_last_name,
         User_role: faculty.User_role,
@@ -71,7 +71,7 @@ const Faculty = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {faculty && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

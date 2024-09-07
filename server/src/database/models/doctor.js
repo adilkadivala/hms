@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       Doctor_speciality: {
-        type: DataTypes.JSON, 
+        type: DataTypes.JSON,
         allowNull: true,
       },
       Profile_image: {

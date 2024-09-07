@@ -23,14 +23,14 @@ const Doctor_by_Hospital = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: doctorbyhospital, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((Doctor_by_Hospital) => ({
+  const tableData = doctorbyhospital
+    ? doctorbyhospital.map((Doctor_by_Hospital) => ({
         Doctor_id: Doctor_by_Hospital.Doctor_id,
         Hospital_id: Doctor_by_Hospital.Hospital_id,
         Old_case_rate: Doctor_by_Hospital.Old_case_rate,
@@ -69,7 +69,7 @@ const Doctor_by_Hospital = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {doctorbyhospital && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

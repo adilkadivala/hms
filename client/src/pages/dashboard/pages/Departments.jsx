@@ -20,14 +20,14 @@ const Deprtment = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: department, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((deprtment) => ({
+  const tableData = department
+    ? department.map((deprtment) => ({
         Department_type: deprtment.Department_type,
         Hospital_id: deprtment.Hospital_id,
         status: deprtment.status,
@@ -63,7 +63,7 @@ const Deprtment = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {department && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

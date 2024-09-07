@@ -23,14 +23,14 @@ const Hospital = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: hospital, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((hospital) => ({
+  const tableData = hospital
+    ? hospital.map((hospital) => ({
         H_image: hospital.H_image,
         H_name: hospital.H_name,
         H_category: hospital.H_category,
@@ -69,7 +69,7 @@ const Hospital = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {hospital && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

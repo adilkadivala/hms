@@ -23,14 +23,14 @@ const Payment = () => {
     { Header: "Transaction Id", accessor: "Transaction_id" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: payment, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((payment) => ({
+  const tableData = payment
+    ? payment.map((payment) => ({
         Patient_id: payment.Patient_id,
         Doctor_by_hospital_id: payment.Doctor_by_hospital_id,
         Doctor_by_hospital_id: payment.Doctor_by_hospital_id,
@@ -70,7 +70,7 @@ const Payment = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {payment && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

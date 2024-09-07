@@ -8,7 +8,7 @@ export const Fetch = () => {
 
   const getData = async (url) => {
     setIsLoading(true);
-    setError(null); // Clear previous error
+    setError(null);
     try {
       const response = await axios.get(url);
       if (response.status === 200) {

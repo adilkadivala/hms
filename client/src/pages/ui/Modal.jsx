@@ -3,9 +3,9 @@ import Button from "./Button";
 const Modal = ({ onClose, title, children, footer }) => {
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center  bg-opacity-50"
+      className=" fixed inset-0 z-[1000] flex items-center justify-center  bg-opacity-50"
       role="dialog"
-      aria-labelledby="modal-title"
+      ariaLabelledby="modal-title"
       tabIndex="-1"
     >
       <div className="bg-white dark:bg-secondry border dark:border-white text-white rounded-lg shadow-lg w-full sm:max-w-lg">
@@ -18,7 +18,7 @@ const Modal = ({ onClose, title, children, footer }) => {
           </h3>
           <Button
             className="p-2 rounded-full bg-gray-100 text-gray-800"
-            aria-label="Close"
+            ariaLabel="Close"
             onClick={onClose}
           >
             <i className="fa-solid fa-xmark"></i>

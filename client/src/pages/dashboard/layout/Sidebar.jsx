@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen }) => {
           </li>
           <li className="mb-4">
             <NavLink to="/payments" className="flex items-center space-x-4">
-              <i class="fa-solid fa-money-check-dollar text-primary text-2xl dark:text-white"></i>
+              <i className="fa-solid fa-money-check-dollar text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Payment</span>}
             </NavLink>
           </li>

@@ -23,14 +23,14 @@ const Appointment = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { getData, data: appointment, isLoading, error } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = data
-    ? data.map((appointment) => ({
+  const tableData = appointment
+    ? appointment.map((appointment) => ({
         patient_id: appointment.patient_id,
         hospital_id: appointment.hospital_id,
         Appointment_type: appointment.Appointment_type,
@@ -69,7 +69,7 @@ const Appointment = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {appointment && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal
