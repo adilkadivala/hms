@@ -1,7 +1,7 @@
 import Layout from "../component/Main";
 import Form from "../../ui/Form";
 
-function App() {
+function Dashboard() {
   return (
     <Layout>
       <h1>Hello </h1>
@@ -9,4 +9,4 @@ function App() {
   );
 }
 
-export default App;
+export default Dashboard;

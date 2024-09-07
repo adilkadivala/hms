@@ -1,7 +1,7 @@
 import Layout from "../component/Main";
 import Form from "../../ui/Form";
 
-function App() {
+function FormPage() {
   return (
     <Layout>
       <Form
@@ -18,4 +18,4 @@ function App() {
   );
 }
 
-export default App;
+export default FormPage;

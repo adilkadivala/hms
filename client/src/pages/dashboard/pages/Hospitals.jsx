@@ -8,7 +8,7 @@ import Modal from "../../ui/Modal";
 
 const API = "http://localhost:5665/gethospitals";
 
-const Data = () => {
+const Hospital = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((prev) => !prev);
@@ -98,4 +98,4 @@ const Data = () => {
   );
 };
 
-export default Data;
+export default Hospital;
