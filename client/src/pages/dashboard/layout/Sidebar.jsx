@@ -30,6 +30,18 @@ const Sidebar = ({ isOpen }) => {
               {isOpen && <span className="text-lg">Dashboard</span>}
             </NavLink>
           </li>
+          <li className="mb-4">
+            <NavLink to="/doctors" className="flex items-center space-x-4">
+              <i className="fa-solid fa-ribbon text-primary text-2xl dark:text-white"></i>
+              {isOpen && <span className="text-lg">Doctors</span>}
+            </NavLink>
+          </li>
+          <li className="mb-4">
+            <NavLink to="/hospitals" className="flex items-center space-x-4">
+              <i className="fa-solid fa-hospital text-primary text-2xl dark:text-white"></i>
+              {isOpen && <span className="text-lg">Hospitals</span>}
+            </NavLink>
+          </li>
 
           <li className="mb-4">
             <NavLink

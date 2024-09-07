@@ -1,12 +1,18 @@
 import { useEffect } from "react";
+import { useState } from "react";
 import { Fetch } from "../../../constant/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
 
 const API = "http://localhost:5665/gethospitals";
 
 const Data = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const toggleModal = () => setModalOpen((prev) => !prev);
+
   const columns = [
     { Header: "Hospital Image", accessor: "H_image" },
     { Header: "Hospital Name", accessor: "H_name" },
@@ -33,14 +39,23 @@ const Data = () => {
         status: hospital.status,
         actions: (
           <div className="flex items-center gap-1">
-            <Button className="py-2 px-3 rounded-full bg-primary text-white">
+            <Button
+              className="py-2 px-3 rounded-full bg-primary text-white"
+              onClick={toggleModal}
+            >
               <i className="fa-solid fa-pen"></i>
             </Button>
-            <Button className="py-2 px-3  rounded-full bg-red-600 text-white">
+            <Button
+              className="py-2 px-3  rounded-full bg-red-600 text-white"
+              onClick={toggleModal}
+            >
               <i className="fa-solid fa-trash"></i>
             </Button>
-            <Button className="py-2 px-3  rounded-full bg-slate-400 text-white">
-              <i className="fa-solid fa-ellipsis-vertical"></i>
+            <Button
+              className="py-2 px-3  rounded-full bg-slate-400 text-white"
+              onClick={toggleModal}
+            >
+              <i className="fa-solid fa-eye"></i>
             </Button>
           </div>
         ),
@@ -55,6 +70,29 @@ const Data = () => {
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
         {data && <Table columns={columns} data={tableData} />}
+
+        {isModalOpen && (
+          <Modal
+            isOpen={isModalOpen}
+            onClose={toggleModal}
+            title="Vertically Centered Modal"
+            footer={
+              <>
+                <Button
+                  className="py-2 px-3 bg-gray-50 text-primary"
+                  onClick={toggleModal}
+                >
+                  Close
+                </Button>
+                <Button className="py-2 px-3 bg-blue-600 text-white">
+                  Save changes
+                </Button>
+              </>
+            }
+          >
+            <p>This is a reusable modal component!</p>
+          </Modal>
+        )}
       </div>
     </Layout>
   );
