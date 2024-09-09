@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fetch } from "../../../constant/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-
-const API = "http://localhost:5665/getdoctorbyhospital";
+import { useFetchApi } from "../../../storage/Fetch";
+const PORT = import.meta.env.VITE_SERVER_API;
+const API = `${PORT}/getdoctorbyhospital`;
 
 const Doctor_by_Hospital = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -23,14 +23,14 @@ const Doctor_by_Hospital = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data: doctorbyhospital, isLoading, error } = Fetch();
+  const { data, isLoading, error, getData } = useFetchApi();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = doctorbyhospital
-    ? doctorbyhospital.map((Doctor_by_Hospital) => ({
+  const tableData = data
+    ? data.map((Doctor_by_Hospital) => ({
         Doctor_id: Doctor_by_Hospital.Doctor_id,
         Hospital_id: Doctor_by_Hospital.Hospital_id,
         Old_case_rate: Doctor_by_Hospital.Old_case_rate,
@@ -69,7 +69,7 @@ const Doctor_by_Hospital = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {doctorbyhospital && <Table columns={columns} data={tableData} />}
+        {data && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

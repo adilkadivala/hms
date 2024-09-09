@@ -1,44 +1,25 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fetch } from "../../../constant/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Modal from "../../ui/Modal";
 import axios from "axios";
-import { editFields } from "../../../constant/fields";
-
-const API = "http://localhost:5665/getdoctors";
+import { DoctorFields, doctorFormData } from "../../../constant/Fields";
+import { useFetchApi } from "../../../storage/Fetch";
+const PORT = import.meta.env.VITE_SERVER_API;
+const API = `${PORT}/getdoctors`;
 
 const Doctor = () => {
+  const { data, isLoading, error, getData } = useFetchApi();
+  console.log(data);
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
 
-  const [formData, setFormData] = useState({
-    Doctor_name: "",
-    Doctor_degree: "",
-    Doctor_experience: "",
-    Doctor_speciality: "",
-    Profile_image: null,
-    Contact_no: "",
-    Alternate_contact: "",
-    Whatsapp_no: "",
-    Email_id: "",
-    Address: "",
-    Country: "",
-    Region: "",
-    Password: "",
-    status: "",
-    Approval_status: "",
-    Created_by: "",
-    Updated_by: "",
-    Approved_by: "",
-    approved_date: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  const [formData, setFormData] = useState({  });
 
   // toggleing for modal
   const toggleModal = () => setModalOpen((prev) => !prev);
@@ -50,32 +31,45 @@ const Doctor = () => {
     setLoading(true);
 
     const formdata = new FormData();
-    formdata.append("Doctor_name", formData.Doctor_name);
-    formdata.append("Doctor_degree", formData.Doctor_degree);
-    formdata.append("Doctor_experience", formData.Doctor_experience);
-    formdata.append("Doctor_speciality", formData.Doctor_speciality);
-    formdata.append("Profile_image", formData.Profile_image);
-    formdata.append("Contact_no", formData.Contact_no);
-    formdata.append("Alternate_contact", formData.Alternate_contact);
-    formdata.append("Whatsapp_no", formData.Whatsapp_no);
-    formdata.append("Email_id", formData.Email_id);
-    formdata.append("Address", formData.Address);
-    formdata.append("Country", formData.Country);
-    formdata.append("Region", formData.Region);
-    formdata.append("Password", formData.Password);
-    formdata.append("status", formData.status);
-    formdata.append("Approval_status", formData.Approval_status);
-    formdata.append("Created_by", formData.Created_by);
-    formdata.append("Updated_by", formData.Updated_by);
-    formdata.append("Approved_by", formData.Approved_by);
-    formdata.append("approved_date", formData.approved_date);
+    formdata.append("Doctor_name", formData.doctorFormData.Doctor_name);
+    formdata.append("Doctor_degree", formData.doctorFormData.Doctor_degree);
+    formdata.append(
+      "Doctor_experience",
+      formData.doctorFormData.Doctor_experience
+    );
+    formdata.append(
+      "Doctor_speciality",
+      formData.doctorFormData.Doctor_speciality
+    );
+    formdata.append("Profile_image", formData.doctorFormData.Profile_image);
+    formdata.append("Contact_no", formData.doctorFormData.Contact_no);
+    formdata.append(
+      "Alternate_contact",
+      formData.doctorFormData.Alternate_contact
+    );
+    formdata.append("Whatsapp_no", formData.doctorFormData.Whatsapp_no);
+    formdata.append("Email_id", formData.doctorFormData.Email_id);
+    formdata.append("Address", formData.doctorFormData.Address);
+    formdata.append("Country", formData.doctorFormData.Country);
+    formdata.append("Region", formData.doctorFormData.Region);
+    formdata.append("Password", formData.doctorFormData.Password);
+    formdata.append("status", formData.doctorFormData.status);
+    formdata.append("Approval_status", formData.doctorFormData.Approval_status);
+    formdata.append("Created_by", formData.doctorFormData.Created_by);
+    formdata.append("Updated_by", formData.doctorFormData.Updated_by);
+    formdata.append("Approved_by", formData.doctorFormData.Approved_by);
+    formdata.append("approved_date", formData.doctorFormData.approved_date);
+
+    console.log("clicked");
 
     try {
-      const url = isUpdateMode
-        ? `http://localhost:5665/updatedoctors/${formData.id}`
-        : `http://localhost:5665/insertdoctors`;
+      // const url = isUpdateMode
+      //   ? `http://localhost:5665/updatedoctors/${formData.id}`
+      //   : `http://localhost:5665/insertdoctors`;
+      const url = `http://localhost:5665/insertdoctors`;
 
-      const method = isUpdateMode ? "put" : "post";
+      // const method = isUpdateMode ? "put" : "post";
+      const method = "post";
       const response = await axios[method](url, formdata);
 
       if (response.status === 200) {
@@ -120,14 +114,12 @@ const Doctor = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data: doctor, isLoading, error } = Fetch();
-
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = doctor
-    ? doctor.map((doctor) => ({
+  const tableData = data
+    ? data.map((doctor) => ({
         Profile_image: doctor.Profile_image,
         Doctor_name: doctor.Doctor_name,
         Doctor_degree: doctor.Doctor_degree,
@@ -175,13 +167,15 @@ const Doctor = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {doctor && <Table columns={columns} data={tableData} />}
+        {data && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal
             isOpen={isModalOpen}
             onClose={toggleModal}
-            title="Vertically Centered Modal"
+            width="w-[70vw]"
+            height="h-[95vh]"
+            title="Create a Doctor profile"
             footer={
               <>
                 <Button
@@ -190,14 +184,15 @@ const Doctor = () => {
                 >
                   Close
                 </Button>
-                <Button className="py-2 px-3 bg-blue-600 text-white">
-                  Save changes
-                </Button>
               </>
             }
           >
             <div className="text-black dark:text-white">
-              <Form fields={editFields} />
+              <Form
+                fields={DoctorFields}
+                className="flex flex-wrap gap-1"
+                onSubmit={handleSubmit}
+              />
             </div>
           </Modal>
         )}

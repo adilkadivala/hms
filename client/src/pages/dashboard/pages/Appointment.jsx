@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fetch } from "../../../constant/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-
-const API = "http://localhost:5665/getappointments";
+import { useFetchApi } from "../../../storage/Fetch";
+const PORT = import.meta.env.VITE_SERVER_API;
+const API = `${PORT}/getappointments`;
 
 const Appointment = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const { data, isLoading, error, getData } = useFetchApi();
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
@@ -23,14 +25,12 @@ const Appointment = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data: appointment, isLoading, error } = Fetch();
-
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = appointment
-    ? appointment.map((appointment) => ({
+  const tableData = data
+    ? data.map((appointment) => ({
         patient_id: appointment.patient_id,
         hospital_id: appointment.hospital_id,
         Appointment_type: appointment.Appointment_type,
@@ -69,7 +69,7 @@ const Appointment = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {appointment && <Table columns={columns} data={tableData} />}
+        {data && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

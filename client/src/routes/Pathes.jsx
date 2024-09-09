@@ -10,7 +10,6 @@ import Faculty from "../pages/dashboard/pages/Faculty";
 import Doctor_by_Hospital from "../pages/dashboard/pages/Doctor_by_hospital";
 import Payment from "../pages/dashboard/pages/Payment";
 import Patients from "../pages/dashboard/pages/Patients";
-import Form from "../pages/dashboard/pages/Form";
 
 const Pathes = () => {
   return (
@@ -25,7 +24,6 @@ const Pathes = () => {
       <Route path="/faculties" element={<Faculty />} />
       <Route path="/do_by_hos" element={<Doctor_by_Hospital />} />
       <Route path="/payments" element={<Payment />} />
-      <Route path="/form" element={<Form />} />
       <Route path="/" element={<Home />} />
     </Routes>
   );

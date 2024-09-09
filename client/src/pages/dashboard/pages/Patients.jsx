@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fetch } from "../../../constant/Fetch";
+import { useFetchApi } from "../../../storage/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-
-const API = "http://localhost:5665/getpatients";
+const PORT = import.meta.env.VITE_SERVER_API;
+const API = `${PORT}/getpatients`;
 
 const Patient = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -25,14 +25,14 @@ const Patient = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data: patient, isLoading, error } = Fetch();
+  const { data, isLoading, error, getData } = useFetchApi();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = patient
-    ? patient.map((patient) => ({
+  const tableData = data
+    ? data.map((patient) => ({
         First_name: patient.First_name,
         Middle_name: patient.Middle_name,
         Last_name: patient.Last_name,
@@ -73,7 +73,7 @@ const Patient = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {patient && <Table columns={columns} data={tableData} />}
+        {data && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

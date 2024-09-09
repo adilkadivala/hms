@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fetch } from "../../../constant/Fetch";
 import Table from "../../ui/Table";
 import Layout from "../component/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
+import { useFetchApi } from "../../../storage/Fetch";
 
-const API = "http://localhost:5665/getpayments";
+const PORT = import.meta.env.VITE_SERVER_API;
+const API = `${PORT}/getpayments`;
 
 const Payment = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -23,17 +24,17 @@ const Payment = () => {
     { Header: "Transaction Id", accessor: "Transaction_id" },
   ];
 
-  const { getData, data: payment, isLoading, error } = Fetch();
+  const { getData, data, isLoading, error } = useFetchApi();
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const tableData = payment
-    ? payment.map((payment) => ({
+  const tableData = data
+    ? data.map((payment) => ({
         Patient_id: payment.Patient_id,
         Doctor_by_hospital_id: payment.Doctor_by_hospital_id,
-        Doctor_by_hospital_id: payment.Doctor_by_hospital_id,
+        // Doctor_by_hospital_id: payment.Doctor_by_hospital_id,
         Appointment_id: payment.Appointment_id,
         Payment_amount: payment.Payment_amount,
         Payment_status: payment.Payment_status,
@@ -70,7 +71,7 @@ const Payment = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {payment && <Table columns={columns} data={tableData} />}
+        {data && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal
