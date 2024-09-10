@@ -1,6 +1,9 @@
+// AllRoutes.js
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "../pages/dashboard/pages/Dashboard";
 import Home from "../pages/Home";
+
+// Admin panel pages
+import Dashboard from "../pages/dashboard/pages/Dashboard";
 import Table from "../pages/dashboard/pages/Table";
 import Hospitals from "../pages/dashboard/pages/Hospitals";
 import Doctors from "../pages/dashboard/pages/Doctors";
@@ -11,9 +14,19 @@ import Doctor_by_Hospital from "../pages/dashboard/pages/Doctor_by_hospital";
 import Payment from "../pages/dashboard/pages/Payment";
 import Patients from "../pages/dashboard/pages/Patients";
 
-const Pathes = () => {
+// // Doctor panel pages
+import DoctorDashboard from "../pages/dashboard/doctors/Dashboard";
+
+// // Hospital panel pages
+import HospitalDashboard from "../pages/dashboard/hospitals/Dashboard";
+
+const AllRoutes = () => {
   return (
     <Routes>
+      {/* Home */}
+      <Route path="/" element={<Home />} />
+
+      {/* Admin Routes */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/table" element={<Table />} />
       <Route path="/hospitals" element={<Hospitals />} />
@@ -24,9 +37,14 @@ const Pathes = () => {
       <Route path="/faculties" element={<Faculty />} />
       <Route path="/do_by_hos" element={<Doctor_by_Hospital />} />
       <Route path="/payments" element={<Payment />} />
-      <Route path="/" element={<Home />} />
+
+      {/* Doctor Routes */}
+      <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+
+      {/* Hospital Routes */}
+      <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
     </Routes>
   );
 };
 
-export default Pathes;
+export default AllRoutes;
