@@ -1,26 +1,25 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import Table from "../../ui/Table";
-import Layout from "../component/Main";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import { useFetchApi } from "../../../storage/Fetch";
+import Table from "../../../ui/Table";
+import Layout from "../../component/Main";
+import Button from "../../../ui/Button";
+import Modal from "../../../ui/Modal";
+import { useFetchApi } from "../../../../storage/Fetch";
 const PORT = import.meta.env.VITE_SERVER_API;
-const API = `${PORT}/getfacultybyhospital`;
+const API = `${PORT}/getdoctorbyhospital`;
 
-const Faculty = () => {
+const Doctor_by_Hospital = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
   const columns = [
-    { Header: "First Name", accessor: "User_first_name" },
-    { Header: "Last Name", accessor: "User_last_name" },
-    { Header: "Role", accessor: "User_role" },
-    { Header: "Assistent Of", accessor: "Assistant_doctor" },
-    { Header: "Gender", accessor: "Gender" },
+    { Header: "Doctor Name", accessor: "Doctor_id" },
     { Header: "Hospital Name", accessor: "Hospital_id" },
-    { Header: "Status", accessor: "Status" },
+    { Header: "Old case rate", accessor: "Old_case_rate" },
+    { Header: "New case rate", accessor: "New_case_rate" },
+    { Header: "Department", accessor: "Department_id" },
+    { Header: "status", accessor: "status" },
     { Header: "Actions", accessor: "actions" },
   ];
 
@@ -31,14 +30,13 @@ const Faculty = () => {
   }, []);
 
   const tableData = data
-    ? data.map((faculty) => ({
-        User_first_name: faculty.User_first_name,
-        User_last_name: faculty.User_last_name,
-        User_role: faculty.User_role,
-        Assistant_doctor: faculty.Assistant_doctor,
-        Gender: faculty.Gender,
-        Hospital_id: faculty.Hospital_id,
-        Status: faculty.Status,
+    ? data.map((Doctor_by_Hospital) => ({
+        Doctor_id: Doctor_by_Hospital.Doctor_id,
+        Hospital_id: Doctor_by_Hospital.Hospital_id,
+        Old_case_rate: Doctor_by_Hospital.Old_case_rate,
+        New_case_rate: Doctor_by_Hospital.New_case_rate,
+        Department_id: Doctor_by_Hospital.Department_id,
+        status: Doctor_by_Hospital.status,
         actions: (
           <div className="flex items-center gap-1">
             <Button
@@ -67,7 +65,7 @@ const Faculty = () => {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Faculty Table</h1>
+        <h1 className="text-2xl font-bold mb-4">Hospital wise Doctors</h1>
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
@@ -100,4 +98,4 @@ const Faculty = () => {
   );
 };
 
-export default Faculty;
+export default Doctor_by_Hospital;

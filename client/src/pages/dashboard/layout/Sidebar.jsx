@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "../../../assets/css/global.css";
 import { useTheme } from "../../../storage/Theme";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, role }) => {
   const { darkMode } = useTheme();
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
@@ -115,12 +115,6 @@ const Sidebar = ({ isOpen }) => {
                 <NavLink to="/table" className="flex items-center space-x-4">
                   <i className="fa-solid fa-table text-primary text-lg dark:text-white"></i>
                   {isOpen && <span>Table</span>}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/form" className="flex items-center space-x-4">
-                  <i className="fa-solid fa-tag text-primary text-lg dark:text-white"></i>
-                  {isOpen && <span>Form</span>}
                 </NavLink>
               </li>
             </ul>

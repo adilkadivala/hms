@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react";
 import { NavLink } from "react-router-dom";
 
 const Home = () => {
@@ -10,10 +9,10 @@ const Home = () => {
         <NavLink to="/dashboard">Go to Admin Dashboard</NavLink>
 
         {/* Link to the Doctor Panel */}
-        <NavLink to="/doctor/dashboard">Doctor Panel</NavLink>
+        <NavLink to="/doctors/dashboard">Doctor Panel</NavLink>
 
         {/* Link to the Hospital Panel */}
-        <NavLink to="/hospital/dashboard">Hospital Panel</NavLink>
+        <NavLink to="/hospitals/dashboard">Hospital Panel</NavLink>
       </div>
     </>
   );

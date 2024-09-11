@@ -1,42 +1,44 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Fetch } from "../../../constant/Fetch";
-import Table from "../../ui/Table";
-import Layout from "../component/Main";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
+import Table from "../../../ui/Table";
+import Layout from "../../component/Main";
+import Button from "../../../ui/Button";
+import Modal from "../../../ui/Modal";
+import { useFetchApi } from "../../../../storage/Fetch";
+const PORT = import.meta.env.VITE_SERVER_API;
+const API = `${PORT}/getfacultybyhospital`;
 
-const API = "http://localhost:5665/gethospitals";
-
-const TablePage = () => {
+const Faculty = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
   const columns = [
-    { Header: "Hospital Image", accessor: "H_image" },
-    { Header: "Hospital Name", accessor: "H_name" },
-    { Header: "Hospital Category", accessor: "H_category" },
-    { Header: "Email", accessor: "H_email_id" },
-    { Header: "Contact Number", accessor: "H_contact_no" },
-    { Header: "Status", accessor: "status" },
+    { Header: "First Name", accessor: "User_first_name" },
+    { Header: "Last Name", accessor: "User_last_name" },
+    { Header: "Role", accessor: "User_role" },
+    { Header: "Assistent Of", accessor: "Assistant_doctor" },
+    { Header: "Gender", accessor: "Gender" },
+    { Header: "Hospital Name", accessor: "Hospital_id" },
+    { Header: "Status", accessor: "Status" },
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { getData, data, isLoading, error } = Fetch();
+  const { data, isLoading, error, getData } = useFetchApi();
 
   useEffect(() => {
     getData(API);
   }, []);
 
   const tableData = data
-    ? data.map((hospital) => ({
-        H_image: hospital.H_image,
-        H_name: hospital.H_name,
-        H_category: hospital.H_category,
-        H_email_id: hospital.H_email_id,
-        H_contact_no: hospital.H_contact_no,
-        status: hospital.status,
+    ? data.map((faculty) => ({
+        User_first_name: faculty.User_first_name,
+        User_last_name: faculty.User_last_name,
+        User_role: faculty.User_role,
+        Assistant_doctor: faculty.Assistant_doctor,
+        Gender: faculty.Gender,
+        Hospital_id: faculty.Hospital_id,
+        Status: faculty.Status,
         actions: (
           <div className="flex items-center gap-1">
             <Button
@@ -65,7 +67,7 @@ const TablePage = () => {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Hospital Table</h1>
+        <h1 className="text-2xl font-bold mb-4">Faculty Table</h1>
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
@@ -98,4 +100,4 @@ const TablePage = () => {
   );
 };
 
-export default TablePage;
+export default Faculty;

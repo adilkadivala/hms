@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import Table from "../../ui/Table";
-import Layout from "../component/Main";
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
-import Modal from "../../ui/Modal";
+import Table from "../../../ui/Table";
+import Layout from "../../component/Main";
+import Button from "../../../ui/Button";
+import Form from "../../../ui/Form";
+import Modal from "../../../ui/Modal";
 import axios from "axios";
-import { DoctorFields, doctorFormData } from "../../../constant/Fields";
-import { useFetchApi } from "../../../storage/Fetch";
+import { DoctorFields } from "../../../../constant/Fields";
+import { useFetchApi } from "../../../../storage/Fetch";
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/getdoctors`;
 
@@ -19,7 +19,7 @@ const Doctor = () => {
   const [loading, setLoading] = useState(false);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
 
-  const [formData, setFormData] = useState({  });
+  const [formData, setFormData] = useState({});
 
   // toggleing for modal
   const toggleModal = () => setModalOpen((prev) => !prev);

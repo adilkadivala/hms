@@ -1,25 +1,25 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import Table from "../../ui/Table";
-import Layout from "../component/Main";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import { useFetchApi } from "../../../storage/Fetch";
+import Table from "../../../ui/Table";
+import Layout from "../../component/Main";
+import Button from "../../../ui/Button";
+import Modal from "../../../ui/Modal";
+import { useFetchApi } from "../../../../storage/Fetch";
 const PORT = import.meta.env.VITE_SERVER_API;
-const API = `${PORT}/getdoctorbyhospital`;
+const API = `${PORT}/gethospitals`;
 
-const Doctor_by_Hospital = () => {
+const Hospital = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
   const columns = [
-    { Header: "Doctor Name", accessor: "Doctor_id" },
-    { Header: "Hospital Name", accessor: "Hospital_id" },
-    { Header: "Old case rate", accessor: "Old_case_rate" },
-    { Header: "New case rate", accessor: "New_case_rate" },
-    { Header: "Department", accessor: "Department_id" },
-    { Header: "status", accessor: "status" },
+    { Header: "Hospital Image", accessor: "H_image" },
+    { Header: "Hospital Name", accessor: "H_name" },
+    { Header: "Hospital Category", accessor: "H_category" },
+    { Header: "Email", accessor: "H_email_id" },
+    { Header: "Contact Number", accessor: "H_contact_no" },
+    { Header: "Status", accessor: "status" },
     { Header: "Actions", accessor: "actions" },
   ];
 
@@ -30,13 +30,13 @@ const Doctor_by_Hospital = () => {
   }, []);
 
   const tableData = data
-    ? data.map((Doctor_by_Hospital) => ({
-        Doctor_id: Doctor_by_Hospital.Doctor_id,
-        Hospital_id: Doctor_by_Hospital.Hospital_id,
-        Old_case_rate: Doctor_by_Hospital.Old_case_rate,
-        New_case_rate: Doctor_by_Hospital.New_case_rate,
-        Department_id: Doctor_by_Hospital.Department_id,
-        status: Doctor_by_Hospital.status,
+    ? data.map((hospital) => ({
+        H_image: hospital.H_image,
+        H_name: hospital.H_name,
+        H_category: hospital.H_category,
+        H_email_id: hospital.H_email_id,
+        H_contact_no: hospital.H_contact_no,
+        status: hospital.status,
         actions: (
           <div className="flex items-center gap-1">
             <Button
@@ -65,7 +65,7 @@ const Doctor_by_Hospital = () => {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Hospital wise Doctors</h1>
+        <h1 className="text-2xl font-bold mb-4">Hospital Table</h1>
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
@@ -98,4 +98,4 @@ const Doctor_by_Hospital = () => {
   );
 };
 
-export default Doctor_by_Hospital;
+export default Hospital;

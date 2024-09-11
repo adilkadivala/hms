@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import Table from "../../ui/Table";
-import Layout from "../component/Main";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import { useFetchApi } from "../../../storage/Fetch";
+import Table from "../../../ui/Table";
+import Layout from "../../component/Main";
+import Button from "../../../ui/Button";
+import Modal from "../../../ui/Modal";
+import { useFetchApi } from "../../../../storage/Fetch";
 const PORT = import.meta.env.VITE_SERVER_API;
 
 const API = `${PORT}/getdepartments`;
