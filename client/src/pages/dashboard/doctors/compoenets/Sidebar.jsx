@@ -26,13 +26,19 @@ const Sidebar = ({ isOpen }) => {
       <div className="pt-4 h-[60vh] space-y-4 overflow-y-auto hide-scrollbar">
         <ul>
           <li className="mb-4">
-            <NavLink to="/dashboard" className="flex items-center space-x-4">
+            <NavLink
+              to="/doctor/dashboard"
+              className="flex items-center space-x-4"
+            >
               <i className="fa-solid fa-seedling text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Dashboard</span>}
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/account" className="flex items-center space-x-4">
+            <NavLink
+              to="/doctor/account"
+              className="flex items-center space-x-4"
+            >
               <i className="fa-regular fa-circle-user text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Profile</span>}
             </NavLink>

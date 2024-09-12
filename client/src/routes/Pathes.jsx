@@ -19,6 +19,8 @@ import DoctorPanel from "../pages/dashboard/doctors/pages/Dashboard";
 
 // // Hospital panel pages
 import HospitalPanel from "../pages/dashboard/hospitals/pages/Dashboard";
+import Hospital from "../pages/dashboard/hospitals/pages/Hospitals";
+import Doctor from "../pages/dashboard/hospitals/pages/Doctors";
 
 const Pathes = () => {
   return (
@@ -39,10 +41,12 @@ const Pathes = () => {
       <Route path="/payments" element={<Payment />} />
 
       {/* Doctor Routes */}
-      <Route path="/doctors/dashboard" element={<DoctorPanel />} />
+      <Route path="/doctor/dashboard" element={<DoctorPanel />} />
 
       {/* Hospital Routes */}
       <Route path="/hospitals/dashboard" element={<HospitalPanel />} />
+      <Route path="/hospitals/hospital" element={<Hospital />} />
+      <Route path="/hospitals/doctors" element={<Doctor />} />
     </Routes>
   );
 };

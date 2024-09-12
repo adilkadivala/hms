@@ -9,7 +9,7 @@ const Home = () => {
         <NavLink to="/dashboard"> Admin Dashboard</NavLink>
 
         {/* Link to the Doctor Panel */}
-        <NavLink to="/doctors/dashboard">Doctor Dashboard</NavLink>
+        <NavLink to="/doctor/dashboard">Doctor Dashboard</NavLink>
 
         {/* Link to the Hospital Panel */}
         <NavLink to="/hospitals/dashboard">Hospital Dashboard</NavLink>

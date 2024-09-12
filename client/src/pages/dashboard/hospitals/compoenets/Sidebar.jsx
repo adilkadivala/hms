@@ -26,34 +26,39 @@ const Sidebar = ({ isOpen }) => {
       <div className="pt-4 h-[60vh] space-y-4 overflow-y-auto hide-scrollbar">
         <ul>
           <li className="mb-4">
-            <NavLink to="/dashboard" className="flex items-center space-x-4">
+            <NavLink
+              to="/hospitals/dashboard"
+              className="flex items-center space-x-4"
+            >
               <i className="fa-solid fa-seedling text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Dashboard</span>}
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/hospitals" className="flex items-center space-x-4">
+            <NavLink
+              to="/hospitals/hospital"
+              className="flex items-center space-x-4"
+            >
               <i className="fa-solid fa-hospital text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Hospitals</span>}
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/doctors" className="flex items-center space-x-4">
+            <NavLink
+              to="/hospitals/doctors"
+              className="flex items-center space-x-4"
+            >
               <i className="fa-solid fa-user-doctor text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Doctors</span>}
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/account" className="flex items-center space-x-4">
+            <NavLink
+              to="/hospital/account"
+              className="flex items-center space-x-4"
+            >
               <i className="fa-regular fa-circle-user text-primary text-2xl dark:text-white"></i>
               {isOpen && <span className="text-lg">Account</span>}
-            </NavLink>
-          </li>
-
-          <li className="mb-4">
-            <NavLink to="/faculties" className="flex items-center space-x-4">
-              <i className="fa-solid fa-hospital-user text-primary text-2xl dark:text-white"></i>
-              {isOpen && <span className="text-lg">faculties</span>}
             </NavLink>
           </li>
         </ul>
