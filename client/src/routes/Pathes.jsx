@@ -19,7 +19,6 @@ import DoctorPanel from "../pages/dashboard/doctors/pages/Dashboard";
 
 // // Hospital panel pages
 import HospitalPanel from "../pages/dashboard/hospitals/pages/Dashboard";
-import Sidebar from "../pages/dashboard/layout/Sidebar";
 
 const Pathes = () => {
   return (

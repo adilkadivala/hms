@@ -1,4 +1,4 @@
-import Layout from "../../component/Main";
+import Layout from "../compoenets/Main";
 
 function DoctorPanel() {
   return (

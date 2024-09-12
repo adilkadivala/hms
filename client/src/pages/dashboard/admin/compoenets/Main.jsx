@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Navbar from "../layout/Navbar";
-import "../../../assets/css/global.css";
-import Sidebar from "../layout/Sidebar";
-import { useTheme } from "../../../storage/Theme";
+import Navbar from "../../layout/Navbar";
+import "../../../../assets/css/global.css";
+import Sidebar from "./Sidebar";
+import { useTheme } from "../../../../storage/Theme";
 
 const Layout = ({ children }) => {
   const { darkMode } = useTheme();

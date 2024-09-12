@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "../../../assets/css/global.css";
-import { useTheme } from "../../../storage/Theme";
+import { useTheme } from "../../../../storage/Theme";
 
-const Sidebar = ({ isOpen, role }) => {
+const Sidebar = ({ isOpen }) => {
   const { darkMode } = useTheme();
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 

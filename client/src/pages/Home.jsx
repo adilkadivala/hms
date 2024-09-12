@@ -6,13 +6,13 @@ const Home = () => {
       <div className="flex flex-col">
         <p>Welcome</p>
         {/* Link to the Admin Dashboard */}
-        <NavLink to="/dashboard">Go to Admin Dashboard</NavLink>
+        <NavLink to="/dashboard"> Admin Dashboard</NavLink>
 
         {/* Link to the Doctor Panel */}
-        <NavLink to="/doctors/dashboard">Doctor Panel</NavLink>
+        <NavLink to="/doctors/dashboard">Doctor Dashboard</NavLink>
 
         {/* Link to the Hospital Panel */}
-        <NavLink to="/hospitals/dashboard">Hospital Panel</NavLink>
+        <NavLink to="/hospitals/dashboard">Hospital Dashboard</NavLink>
       </div>
     </>
   );

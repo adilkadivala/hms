@@ -1,5 +1,4 @@
-import Layout from "../../component/Main";
-import Form from "../../../ui/Form";
+import Layout from "../compoenets/Main";
 
 function HospitalPanel() {
   return (

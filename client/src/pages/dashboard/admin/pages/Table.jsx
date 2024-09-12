@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Fetch } from "../../../../constant/Fetch";
 import Table from "../../../ui/Table";
-import Layout from "../../component/Main";
+import Layout from "../compoenets/Main";
 import Button from "../../../ui/Button";
 import Modal from "../../../ui/Modal";
 
