@@ -1,5 +1,6 @@
 import React from "react";
 import { useTheme } from "../../../storage/Theme";
+import { DashboardLogo } from "../../../assets/images";
 
 const Navbar = ({ toggleSidebar, isOpen }) => {
   const { darkMode, toggleTheme } = useTheme();
@@ -13,7 +14,14 @@ const Navbar = ({ toggleSidebar, isOpen }) => {
       }`}
     >
       <div className="flex gap-24">
-        <div className="text-lg font-bold">My Dashboard</div>
+        <div className="text-lg font-bold">
+          <img
+            src={DashboardLogo}
+            alt="icon"
+            className="mix-blend-darken w-36 h-fit"
+          />
+        </div>
+
         <button className="mr-4 " onClick={toggleSidebar}>
           <i
             className={`fa-solid ${isOpen ? "fa-bars" : "fa-chevron-right"}`}

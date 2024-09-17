@@ -49,15 +49,15 @@ module.exports = (sequelize) => {
       },
       City: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       Country: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       Region: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       Password: {
         type: DataTypes.STRING(255),

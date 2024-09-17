@@ -1,42 +1,46 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import Table from "../../../ui/Table";
-import Layout from "../compoenets/Main";
-import Button from "../../../ui/Button";
-import Modal from "../../../ui/Modal";
-import { useFetchApi } from "../../../../storage/Fetch";
+import Table from "../../ui/Table";
+import Layout from "../layout/Main";
+import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
+import { Fetch } from "../../../constant/Fetch";
 const PORT = import.meta.env.VITE_SERVER_API;
-const API = `${PORT}/gethospitals`;
+const API = `${PORT}/getpatients`;
 
-const Hospital = () => {
+const Patient = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
   const columns = [
-    { Header: "Hospital Image", accessor: "H_image" },
-    { Header: "Hospital Name", accessor: "H_name" },
-    { Header: "Hospital Category", accessor: "H_category" },
-    { Header: "Email", accessor: "H_email_id" },
-    { Header: "Contact Number", accessor: "H_contact_no" },
+    { Header: "First Name", accessor: "First_name" },
+    { Header: "Middle Name", accessor: "Middle_name" },
+    { Header: "Last Name", accessor: "Last_name" },
+    { Header: "Gender", accessor: "Gender" },
+    { Header: "DOB", accessor: "DOB" },
+    { Header: "Contact Number", accessor: "Contact" },
+    { Header: "Address", accessor: "Address" },
     { Header: "Status", accessor: "status" },
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { data, isLoading, error, getData } = useFetchApi();
+  const { data, isLoading, error, getData } = Fetch();
 
   useEffect(() => {
     getData(API);
   }, []);
 
   const tableData = data
-    ? data.map((hospital) => ({
-        H_image: hospital.H_image,
-        H_name: hospital.H_name,
-        H_category: hospital.H_category,
-        H_email_id: hospital.H_email_id,
-        H_contact_no: hospital.H_contact_no,
-        status: hospital.status,
+    ? data.map((patient) => ({
+        First_name: patient.First_name,
+        Middle_name: patient.Middle_name,
+        Last_name: patient.Last_name,
+        Gender: patient.Gender,
+        DOB: patient.DOB,
+        Contact: patient.Contact,
+        Address: patient.Address,
+        status: patient.status,
         actions: (
           <div className="flex items-center gap-1">
             <Button
@@ -65,7 +69,7 @@ const Hospital = () => {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Hospital Table</h1>
+        <h1 className="text-2xl font-bold mb-4">Patient Table</h1>
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
@@ -98,4 +102,4 @@ const Hospital = () => {
   );
 };
 
-export default Hospital;
+export default Patient;

@@ -1,9 +1,10 @@
-import Layout from "../compoenets/Main";
+import Form from "../../ui/Form";
+import Layout from "../layout/Main";
 
 function Dashboard() {
   return (
     <Layout>
-      <h1>Hello </h1>
+      <Form />
     </Layout>
   );
 }

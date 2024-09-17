@@ -7,12 +7,6 @@ const Home = () => {
         <p>Welcome</p>
         {/* Link to the Admin Dashboard */}
         <NavLink to="/dashboard"> Admin Dashboard</NavLink>
-
-        {/* Link to the Doctor Panel */}
-        <NavLink to="/doctor/dashboard">Doctor Dashboard</NavLink>
-
-        {/* Link to the Hospital Panel */}
-        <NavLink to="/hospitals/dashboard">Hospital Dashboard</NavLink>
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 const { Doctor } = require("../database/models");
 
-// getting Appointment
+// getting Doctors
 
 const getDoctors = async (req, res) => {
   try {
@@ -12,15 +12,15 @@ const getDoctors = async (req, res) => {
   }
 };
 
-// add Appointment
+// add Doctor
 
 const insertDoctor = async (req, res) => {
-  const data = {
+  const fields = {
     Doctor_name: req.body.Doctor_name,
     Doctor_degree: req.body.Doctor_degree,
     Doctor_experience: req.body.Doctor_experience,
     Doctor_speciality: req.body.Doctor_speciality,
-    Profile_image: req.body.Profile_image,
+    Profile_image: req.file ? req.file.path : null,
     Contact_no: req.body.Contact_no,
     Alternate_contact: req.body.Alternate_contact,
     Whatsapp_no: req.body.Whatsapp_no,
@@ -38,16 +38,34 @@ const insertDoctor = async (req, res) => {
     createdAt: new Date(),
     updatedAt: new Date(),
   };
+
   try {
-    const doctor = await Doctor.create(data);
-    res.status(200).json(doctor);
+    const data = await Doctor.create(fields);
+    res.status(200).json(data);
   } catch (error) {
     console.error(error);
-    res.sendStatus(500).json("internal server error");
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
+// delete Doctors
+
+const deleteDoctor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Doctor.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 module.exports = {
   getDoctors,
   insertDoctor,
+  deleteDoctor,
 };

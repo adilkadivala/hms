@@ -11,4 +11,6 @@ doctorRouter.post(
   doctorController.insertDoctor
 );
 
+doctorRouter.delete("/deletedoctor/:id", doctorController.deleteDoctor);
+
 module.exports = doctorRouter;
