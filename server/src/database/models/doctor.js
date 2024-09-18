@@ -13,11 +13,11 @@ module.exports = (sequelize) => {
       },
       Doctor_degree: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       Doctor_experience: {
         type: DataTypes.DECIMAL(2, 1),
-        allowNull: false,
+        allowNull: true,
       },
       Doctor_speciality: {
         type: DataTypes.JSON,

@@ -18,8 +18,17 @@ const Pathes = () => {
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/appointments" element={<Appointment />} />
       <Route path="/patients" element={<Patients />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
 
 export default Pathes;
+
+function NotFound() {
+  return (
+    <div className="flex justify-center items-center text-4xl text-primary h-[100vh] w-[100vw]">
+      Not Found 😒
+    </div>
+  );
+}

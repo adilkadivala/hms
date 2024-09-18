@@ -24,5 +24,5 @@ export const Delete = () => {
       setIsLoading(false);
     }
   };
-  return { deleteData, data, isLoading, error };
+  return { deleteData };
 };

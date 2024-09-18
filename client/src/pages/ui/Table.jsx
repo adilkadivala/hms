@@ -24,14 +24,34 @@ const Table = ({ columns, data }) => {
                     key={rowIndex}
                     className="bg-white dark:bg-gray-900 transition-all duration-500 hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
-                    {columns.map((column) => (
-                      <td
-                        key={column.accessor}
-                        className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
-                      >
-                        {row[column.accessor]}
-                      </td>
-                    ))}
+                    {columns.map((column) => {
+                      if (column.Header === "image") {
+                        return (
+                          <td
+                            key={column.accessor}
+                            className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
+                          >
+                            <img
+                              src={
+                                row[column.accessor] ||
+                                "https://preline.co/assets/img/160x160/img1.jpg"
+                              }
+                              alt="avtar"
+                              className="inline-block size-16 rounded-full ring-2 ring-white dark:ring-neutral-900"
+                            />
+                          </td>
+                        );
+                      } else {
+                        return (
+                          <td
+                            key={column.accessor}
+                            className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
+                          >
+                            {row[column.accessor]}
+                          </td>
+                        );
+                      }
+                    })}
                   </tr>
                 ))}
               </tbody>
