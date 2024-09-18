@@ -27,7 +27,7 @@ export default Pathes;
 
 function NotFound() {
   return (
-    <div className="flex justify-center items-center text-4xl text-primary h-[100vh] w-[100vw]">
+    <div className="flex justify-center items-center text-4xl text-red-600 h-[100vh] w-[100vw]">
       Not Found 😒
     </div>
   );
