@@ -13,7 +13,7 @@ const Sidebar = ({ isOpen }) => {
 
   const activeStyle = ({ isActive }) => {
     if (isActive) {
-      return { borderBottom: "1px solid #4f46e5" };
+      return { borderBottom: "1px solid #0086c4" };
     } else {
       return {};
     }

@@ -1,19 +1,43 @@
-import { useEffect } from "react";
 import Input from "./Input";
+import axios from "axios";
+import { doctorFormData } from "../../constant/Fields";
 import Label from "./Label";
-import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Form = ({ onSubmit, setDate, formData }) => {
-  const location = useLocation();
-  const { doctor } = location.state || {};
+const PORT = import.meta.env.VITE_SERVER_API;
+const INSERTAPI = `${PORT}/insertdoctors`;
 
-  console.log(doctor);
+const Form = () => {
+  const [formData, setFormData] = useState(doctorFormData);
+  const navigate = useNavigate();
 
-  // input handler
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    try {
+      const response = await axios.post(INSERTAPI, formData);
+      console.log("Doctor created:", response.data);
+      if (response.status === 200) {
+        setFormData({
+          formData: "",
+        });
+        toast.success("Doctor created successfully!");
+        navigate("/doctors");
+      }
+    } catch (error) {
+      console.error("Error creating doctor:", error);
+    }
+  };
+
   const handleInput = (e) => {
     const { name, value, files } = e.target;
-    setDate((prevData) => ({
-      ...prevData,
+    console.log(name, files ? files[0] : value);
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: files ? files[0] : value,
     }));
   };
@@ -30,7 +54,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
           </p>
         </div>
 
-        <form onSubmit={onSubmit} method="post">
+        <form onSubmit={handleSubmit} method="post">
           <div className="grid sm:grid-cols-12 gap-2 sm:gap-6">
             {/* Profile photo upload */}
             <div className="sm:col-span-3">
@@ -79,7 +103,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 name="Doctor_name"
                 placeholder="Dr. John Doe"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -100,7 +124,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 placeholder="john.doe@example.com"
                 className="bg-transparent"
                 value={formData?.Email_id || ""}
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -121,7 +145,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 placeholder="Enter your password"
                 className="bg-transparent"
                 value={formData?.Password || ""}
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -142,7 +166,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.Doctor_degree || ""}
                 placeholder="MD"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -163,7 +187,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.Doctor_experience || ""}
                 placeholder="9.9"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -184,7 +208,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.Doctor_speciality || ""}
                 placeholder='["Cardiology", "Internal Medicine"]'
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -205,7 +229,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 name="Alternate_contact"
                 placeholder="0987654321"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -226,7 +250,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 placeholder="1234567890"
                 value={formData?.Whatsapp_no || ""}
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -247,7 +271,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.Address || ""}
                 placeholder="123 Main St"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -268,7 +292,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.City || ""}
                 placeholder="New York"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -289,7 +313,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.Country || ""}
                 placeholder="USA"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 
@@ -310,7 +334,7 @@ const Form = ({ onSubmit, setDate, formData }) => {
                 value={formData?.Region || ""}
                 placeholder="North-East"
                 className="bg-transparent"
-                onInput={handleInput}
+                onChange={handleInput}
               />
             </div>
 

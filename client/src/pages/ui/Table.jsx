@@ -22,14 +22,14 @@ const Table = ({ columns, data }) => {
                 {data.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className="bg-white dark:bg-gray-900 transition-all duration-500 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="bg-white dark:bg-gray-900 transition-all duration-500 hover:bg-gray-50 dark:hover:bg-gray-800 "
                   >
                     {columns.map((column) => {
                       if (column.Header === "image") {
                         return (
                           <td
                             key={column.accessor}
-                            className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
+                            className="p-1 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
                           >
                             <img
                               src={
@@ -37,7 +37,7 @@ const Table = ({ columns, data }) => {
                                 "https://preline.co/assets/img/160x160/img1.jpg"
                               }
                               alt="avtar"
-                              className="inline-block size-16 rounded-full ring-2 ring-white dark:ring-neutral-900"
+                              className="inline-block size-12 rounded-full ring-2 ring-white dark:ring-neutral-900"
                             />
                           </td>
                         );

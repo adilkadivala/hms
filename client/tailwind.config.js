@@ -4,8 +4,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#4F46E5",
+        primary: "#0086C4",
         secondry: "#1F2123",
+      },
+      fontSize: {
+        normal: "14px",
+      },
+      fontWeight: {
+        normal: "400",
       },
     },
   },

@@ -1,15 +1,11 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
-import Form from "../../ui/Form";
 import { Fetch } from "../../../constant/Fetch";
-import { Delete } from "../../../constant/Delete";
-import toast from "react-hot-toast";
+
 import { NavLink, useNavigate } from "react-router-dom";
-import { doctorFormData } from "../../../constant/Fields";
-import axios from "axios";
+
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/getdoctors`;
@@ -17,45 +13,14 @@ const API = `${PORT}/getdoctors`;
 const Doctor = () => {
   const { data, isLoading, error, getData } = Fetch();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState(doctorFormData);
-
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const formDataToSubmit = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSubmit.append(key, value);
-      });
-
-      const response = await axios.put(`${PORT}/updatedoctors/${formData.id}`);
-
-      if (response.ok) {
-        toast.success("Doctor data saved successfully");
-        toggleModal();
-        getData(API);
-        navigate("/doctors");
-      } else {
-        console.error("Failed to save doctor data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
 
   useEffect(() => {
     getData(API);
   }, []);
 
-  const toggleModal = (doctor) => {
-    console.log("Selected Doctor:", doctor); // Log to check if doctor data is correct
-    navigate("/dashboard", { state: { doctor } });
-    setSelectedDoctor(doctor);
-    setFormData(doctor);
-    setUpdateModalOpen(!isUpdateModalOpen); // Open the modal
+  const toggleModal = () => {
+    setUpdateModalOpen(!isUpdateModalOpen);
   };
 
   const columns = [
@@ -67,7 +32,6 @@ const Doctor = () => {
     { Header: "Status", accessor: "status" },
     { Header: "Actions", accessor: "actions" },
   ];
-
   const tableData = data
     ? data.map((doctor) => ({
         Profile_image: doctor.Profile_image,
@@ -84,10 +48,10 @@ const Doctor = () => {
             >
               <i className="fa-solid fa-pen"></i>
             </Button>
-            <Button className="py-2 px-3  rounded-full bg-red-600 text-white">
+            <Button className="py-2 px-3 rounded-full bg-red-600 text-white">
               <i className="fa-solid fa-trash"></i>
             </Button>
-            <Button className="py-2 px-3  rounded-full bg-slate-400 text-white">
+            <Button className="py-2 px-3 rounded-full bg-slate-400 text-white">
               <i className="fa-solid fa-eye"></i>
             </Button>
           </div>
@@ -109,15 +73,6 @@ const Doctor = () => {
         {error && <p>Error: {error}</p>}
 
         {data && <Table columns={columns} data={tableData} />}
-
-        {isUpdateModalOpen && (
-          <Form
-            className="flex flex-wrap gap-1"
-            onSubmit={handleSubmit}
-            setDate={setFormData}
-            formData={formData}
-          />
-        )}
       </div>
     </Layout>
   );
