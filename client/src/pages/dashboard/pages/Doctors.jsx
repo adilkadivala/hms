@@ -3,16 +3,16 @@ import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import { Fetch } from "../../../constant/Fetch";
-
-import { NavLink, useNavigate } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
+import { Delete } from "../../../constant/Delete";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/getdoctors`;
 
 const Doctor = () => {
   const { data, isLoading, error, getData } = Fetch();
-  const navigate = useNavigate();
+  const { deleteData, setError, setIsLoading } = Delete();
+
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
 
   useEffect(() => {
@@ -21,6 +21,18 @@ const Doctor = () => {
 
   const toggleModal = () => {
     setUpdateModalOpen(!isUpdateModalOpen);
+  };
+
+  //  deleting data
+  const handleDelete = async (doctorID) => {
+    console.log(doctorID);
+    try {
+      const apiUrl = `${PORT}/deletedoctor/${doctorID}`;
+      await deleteData(apiUrl);
+      getData(API);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   const columns = [
@@ -32,9 +44,10 @@ const Doctor = () => {
     { Header: "Status", accessor: "status" },
     { Header: "Actions", accessor: "actions" },
   ];
+
   const tableData = data
     ? data.map((doctor) => ({
-        Profile_image: doctor.Profile_image,
+        Profile_image: `/upload/${doctor.Profile_image}`,
         Doctor_name: doctor.Doctor_name,
         Doctor_degree: doctor.Doctor_degree,
         Doctor_speciality: doctor.Doctor_speciality,
@@ -48,7 +61,10 @@ const Doctor = () => {
             >
               <i className="fa-solid fa-pen"></i>
             </Button>
-            <Button className="py-2 px-3 rounded-full bg-red-600 text-white">
+            <Button
+              className="py-2 px-3 rounded-full bg-red-600 text-white"
+              onClick={() => handleDelete(doctor.id)}
+            >
               <i className="fa-solid fa-trash"></i>
             </Button>
             <Button className="py-2 px-3 rounded-full bg-slate-400 text-white">

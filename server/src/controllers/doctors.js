@@ -14,7 +14,7 @@ const getDoctors = async (req, res) => {
 };
 
 // add Doctor
-const insertBasicDoctor = async (req, res) => {
+const insertDoctor = async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.Password, 10);
 
   const fields = {
@@ -22,6 +22,17 @@ const insertBasicDoctor = async (req, res) => {
     Contact_no: req.body.Contact_no,
     Email_id: req.body.Email_id,
     Password: hashedPassword,
+    Doctor_degree: req.body.Doctor_degree,
+    Doctor_experience: req.body.Doctor_experience,
+    Doctor_speciality: req.body.Doctor_speciality,
+    Profile_image: req.file ? req.file.filename : null,
+    Alternate_contact: req.body.Alternate_contact,
+    Whatsapp_no: req.body.Whatsapp_no,
+    Address: req.body.Address,
+    City: req.body.City,
+    Country: req.body.Country,
+    Region: req.body.Region,
+    Updated_by: req.body.Updated_by || "Admin",
     status: "active",
     Approval_status: "Pending",
     createdAt: new Date(),
@@ -42,6 +53,10 @@ const updateDoctorProfile = async (req, res) => {
   const doctorId = req.params.id;
 
   const fields = {
+    Doctor_name: req.body.Doctor_name,
+    Contact_no: req.body.Contact_no,
+    Email_id: req.body.Email_id,
+    Password: hashedPassword,
     Doctor_degree: req.body.Doctor_degree,
     Doctor_experience: req.body.Doctor_experience,
     Doctor_speciality: req.body.Doctor_speciality,
@@ -91,7 +106,7 @@ const deleteDoctor = async (req, res) => {
 
 module.exports = {
   getDoctors,
-  insertBasicDoctor,
+  insertDoctor,
   updateDoctorProfile,
   deleteDoctor,
 };

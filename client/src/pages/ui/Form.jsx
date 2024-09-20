@@ -1,41 +1,29 @@
 import Input from "./Input";
-import axios from "axios";
 import { doctorFormData } from "../../constant/Fields";
 import Label from "./Label";
-import toast from "react-hot-toast";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Insert } from "../../constant/Insert";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/insertdoctors`;
 
 const Form = () => {
   const [formData, setFormData] = useState(doctorFormData);
-  const navigate = useNavigate();
+  const { handleSubmit } = Insert();
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleInsert = async (e) => {
     e.preventDefault();
-    console.log(formData);
-
     try {
-      const response = await axios.post(INSERTAPI, formData);
-      console.log("Doctor created:", response.data);
-      if (response.status === 200) {
-        setFormData({
-          formData: "",
-        });
-        toast.success("Doctor created successfully!");
-        navigate("/doctors");
-      }
+      await handleSubmit(INSERTAPI, formData);
     } catch (error) {
-      console.error("Error creating doctor:", error);
+      console.error(error);
     }
   };
 
   const handleInput = (e) => {
     const { name, value, files } = e.target;
-    console.log(name, files ? files[0] : value);
+    console.log(name, value, files);
+
     setFormData((prevState) => ({
       ...prevState,
       [name]: files ? files[0] : value,
@@ -54,7 +42,7 @@ const Form = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} method="post">
+        <form onSubmit={handleInsert} method="post">
           <div className="grid sm:grid-cols-12 gap-2 sm:gap-6">
             {/* Profile photo upload */}
             <div className="sm:col-span-3">
@@ -66,6 +54,10 @@ const Form = () => {
               <div className="flex items-center gap-5">
                 <img
                   className="inline-block size-16 rounded-full ring-2 ring-white dark:ring-neutral-900"
+                  // src={
+                  //   formData?.Profile_image ||
+                  //   "https://preline.co/assets/img/160x160/img1.jpg"
+                  // }
                   src={
                     formData?.Profile_image ||
                     "https://preline.co/assets/img/160x160/img1.jpg"
@@ -78,7 +70,7 @@ const Form = () => {
                       type="file"
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-transparent text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                       name="Profile_image"
-                      accept="image/*"
+                      // accept="image/*"
                       onChange={handleInput}
                     />
                   </div>

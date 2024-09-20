@@ -8,7 +8,7 @@ doctorRouter.get("/getdoctors", doctorController.getDoctors);
 doctorRouter.post(
   "/insertdoctors",
   uploads.single("Profile_image"),
-  doctorController.insertBasicDoctor
+  doctorController.insertDoctor
 );
 doctorRouter.put(
   "/updatedoctors/:id",
