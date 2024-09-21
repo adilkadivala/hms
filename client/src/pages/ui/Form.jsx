@@ -2,7 +2,8 @@ import Input from "./Input";
 import { doctorFormData } from "../../constant/Fields";
 import Label from "./Label";
 import { useState } from "react";
-import { Insert } from "../../constant/Insert";
+import { Insert } from "../../utils/Insert";
+import { handleInput } from "../../utils/handleInput";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/insertdoctors`;
@@ -15,19 +16,10 @@ const Form = () => {
     e.preventDefault();
     try {
       await handleSubmit(INSERTAPI, formData);
+      console.log(formData.Profile_image);
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleInput = (e) => {
-    const { name, value, files } = e.target;
-    console.log(name, value, files);
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: files ? files[0] : value,
-    }));
   };
 
   return (
@@ -54,12 +46,8 @@ const Form = () => {
               <div className="flex items-center gap-5">
                 <img
                   className="inline-block size-16 rounded-full ring-2 ring-white dark:ring-neutral-900"
-                  // src={
-                  //   formData?.Profile_image ||
-                  //   "https://preline.co/assets/img/160x160/img1.jpg"
-                  // }
                   src={
-                    formData?.Profile_image ||
+                    formData?.Profile_image_preview ||
                     "https://preline.co/assets/img/160x160/img1.jpg"
                   }
                   alt="Avatar"
@@ -70,8 +58,8 @@ const Form = () => {
                       type="file"
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-transparent text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                       name="Profile_image"
-                      // accept="image/*"
-                      onChange={handleInput}
+                      accept="image/*"
+                      onChange={handleInput(setFormData)}
                     />
                   </div>
                 </div>
@@ -95,7 +83,7 @@ const Form = () => {
                 name="Doctor_name"
                 placeholder="Dr. John Doe"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -116,7 +104,7 @@ const Form = () => {
                 placeholder="john.doe@example.com"
                 className="bg-transparent"
                 value={formData?.Email_id || ""}
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -137,7 +125,7 @@ const Form = () => {
                 placeholder="Enter your password"
                 className="bg-transparent"
                 value={formData?.Password || ""}
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -158,7 +146,7 @@ const Form = () => {
                 value={formData?.Doctor_degree || ""}
                 placeholder="MD"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -179,7 +167,7 @@ const Form = () => {
                 value={formData?.Doctor_experience || ""}
                 placeholder="9.9"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -200,7 +188,7 @@ const Form = () => {
                 value={formData?.Doctor_speciality || ""}
                 placeholder='["Cardiology", "Internal Medicine"]'
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -221,7 +209,7 @@ const Form = () => {
                 name="Alternate_contact"
                 placeholder="0987654321"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -242,7 +230,7 @@ const Form = () => {
                 placeholder="1234567890"
                 value={formData?.Whatsapp_no || ""}
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -263,7 +251,7 @@ const Form = () => {
                 value={formData?.Address || ""}
                 placeholder="123 Main St"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -284,7 +272,7 @@ const Form = () => {
                 value={formData?.City || ""}
                 placeholder="New York"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -305,7 +293,7 @@ const Form = () => {
                 value={formData?.Country || ""}
                 placeholder="USA"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 
@@ -326,7 +314,7 @@ const Form = () => {
                 value={formData?.Region || ""}
                 placeholder="North-East"
                 className="bg-transparent"
-                onChange={handleInput}
+                onChange={handleInput(setFormData)}
               />
             </div>
 

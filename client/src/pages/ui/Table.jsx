@@ -45,7 +45,7 @@ const Table = ({ columns, data }) => {
                         return (
                           <td
                             key={column.accessor}
-                            className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
+                            className="p-1 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
                           >
                             {row[column.accessor]}
                           </td>

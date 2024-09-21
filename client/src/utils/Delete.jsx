@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Fetch } from "./Fetch";
+
 
 export const Delete = () => {
   const [data, setData] = useState(null);
@@ -17,11 +17,14 @@ export const Delete = () => {
       if (response.status === 200) {
         setData(response.data);
         toast.success("deleted Successfully");
+        setIsLoading(false);
       } else {
         setError(Error(`Received status ${response.status}`));
+        setIsLoading(false);
       }
     } catch (err) {
       toast.error(err.message);
+      setIsLoading(false);
       console.error(err);
       setError(err.message || "An error occurred");
     } finally {

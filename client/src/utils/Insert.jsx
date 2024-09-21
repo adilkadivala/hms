@@ -6,17 +6,21 @@ import { useNavigate } from "react-router-dom";
 export const Insert = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({});
 
   const handleSubmit = async (url, data) => {
     setError(null);
 
+    const formData = new FormData();
+
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+
     try {
-      const response = await axios.post(url, data, {
+      const response = await axios.post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status === 200) {
-        setFormData({});
         toast.success("Data inserted successfully!");
         navigate("/doctors");
       }

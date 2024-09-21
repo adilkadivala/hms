@@ -4,6 +4,7 @@ const Modal = ({
   onClose,
   title,
   children,
+  data,
   footer,
   width = "sm:max-w-lg",
   height = "sm:max-h-lg",
@@ -26,14 +27,14 @@ const Modal = ({
             {title}
           </h3>
           <Button
-            className="p-2 rounded-full bg-gray-100 text-gray-800"
+            className="py-2 px-3 rounded-full bg-gray-100 text-gray-800"
             aria-label="Close"
             onClick={onClose}
           >
             <i className="fa-solid fa-xmark"></i>
           </Button>
         </div>
-        <div className="p-4 overflow-y-auto">{children}</div>
+        <div className="p-4 overflow-y-auto text-secondry">{children}</div>
         <div className="flex justify-end items-center gap-x-2 py-3 px-2 border-t">
           {footer}
         </div>

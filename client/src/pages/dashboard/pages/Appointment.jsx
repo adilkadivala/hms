@@ -4,7 +4,7 @@ import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import { Fetch } from "../../../constant/Fetch";
+import { Fetch } from "../../../utils/Fetch";
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/getappointments`;
 

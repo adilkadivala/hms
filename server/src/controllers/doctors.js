@@ -1,5 +1,7 @@
 const { Doctor } = require("../database/models");
 const bcrypt = require("bcryptjs");
+const fs = require("fs");
+const path = require("path");
 
 // getting Doctors
 
@@ -50,8 +52,6 @@ const insertDoctor = async (req, res) => {
 
 // update Doctor
 const updateDoctorProfile = async (req, res) => {
-  const doctorId = req.params.id;
-
   const fields = {
     Doctor_name: req.body.Doctor_name,
     Contact_no: req.body.Contact_no,
@@ -70,8 +70,9 @@ const updateDoctorProfile = async (req, res) => {
     Updated_by: req.body.Updated_by || "Admin",
     updatedAt: new Date(),
   };
-
   try {
+    const doctorId = req.params.id;
+
     const doctor = await Doctor.findByPk(doctorId);
 
     if (!doctor) {
@@ -92,6 +93,22 @@ const updateDoctorProfile = async (req, res) => {
 const deleteDoctor = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const doctorProfile = await Doctor.findOne({ where: { id } });
+
+    if (doctorProfile?.Profile_image) {
+      const profilePath = path.join(
+        __dirname,
+        "../../../client/public/upload",
+        doctorProfile.Profile_image
+      );
+      if (fs.existsSync(profilePath)) {
+        fs.unlinkSync(profilePath);
+      }
+    } else {
+      return res.sendStatus(404).json({ message: "Doctor not found" });
+    }
+
     const data = await Doctor.destroy({
       where: {
         id: id,
