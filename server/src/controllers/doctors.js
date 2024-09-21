@@ -105,8 +105,6 @@ const deleteDoctor = async (req, res) => {
       if (fs.existsSync(profilePath)) {
         fs.unlinkSync(profilePath);
       }
-    } else {
-      return res.sendStatus(404).json({ message: "Doctor not found" });
     }
 
     const data = await Doctor.destroy({

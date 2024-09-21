@@ -16,7 +16,6 @@ const Form = () => {
     e.preventDefault();
     try {
       await handleSubmit(INSERTAPI, formData);
-      console.log(formData.Profile_image);
     } catch (error) {
       console.error(error);
     }
@@ -36,7 +35,6 @@ const Form = () => {
 
         <form onSubmit={handleInsert} method="post">
           <div className="grid sm:grid-cols-12 gap-2 sm:gap-6">
-            {/* Profile photo upload */}
             <div className="sm:col-span-3">
               <Label className="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
                 Profile photo

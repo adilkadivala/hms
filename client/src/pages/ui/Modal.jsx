@@ -4,20 +4,19 @@ const Modal = ({
   onClose,
   title,
   children,
-  data,
   footer,
   width = "sm:max-w-lg",
   height = "sm:max-h-lg",
 }) => {
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50 "
       role="dialog"
       aria-labelledby="modal-title"
       tabIndex="-1"
     >
       <div
-        className={`bg-white dark:bg-secondary border dark:bg-secondry text-white rounded-lg shadow-lg ${width} ${height}`}
+        className={`bg-white dark:bg-secondary border dark:bg-secondry text-white rounded-lg overflow-x-hidden  shadow-lg ${width} ${height}`}
       >
         <div className="flex justify-between items-center py-3 px-4 border-b">
           <h3

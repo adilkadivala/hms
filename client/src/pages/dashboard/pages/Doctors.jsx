@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import Table from "../../ui/Table";
-import Input from "../../ui/Input";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import { Fetch } from "../../../utils/Fetch";
 import { NavLink } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
-import Modal from "../../ui/Modal";
-import { handleModelInput } from "../../../utils/handleInput";
+import ViewModal from "../compoenets/ViewModal";
+import DeleteModal from "../compoenets/DeleteModal";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/getdoctors`;
@@ -16,15 +15,23 @@ const Doctor = () => {
   const { data, isLoading, error, getData } = Fetch();
   const { deleteData, setError, setIsLoading } = Delete();
 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [doctorToDelete, setDoctorToDelete] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [DoctorID, setDoctorID] = useState(null);
   const [doctorNameInput, setDoctorNameInput] = useState("");
   const [nameError, setNameError] = useState(null);
 
   const toggleModal = () => {
-    setModalOpen((prev) => !prev);
+    setIsDeleteModalOpen((prev) => !prev);
     setDoctorNameInput("");
     setNameError(null);
+  };
+
+  // view Modal
+  const toggleViewModal = (DoctorView) => {
+    setIsViewModalOpen((prev) => !prev);
+    setDoctorID(DoctorView);
+    console.log(DoctorView);
   };
 
   useEffect(() => {
@@ -32,16 +39,15 @@ const Doctor = () => {
   }, []);
 
   const confirmDelete = (doctor) => {
-    setDoctorToDelete(doctor);
+    setDoctorID(doctor);
     toggleModal();
   };
 
-  // Deleting doctor after name validation
   const handleDelete = async () => {
-    if (doctorToDelete.Doctor_name === doctorNameInput) {
+    if (DoctorID.Doctor_name === doctorNameInput) {
       setIsLoading(true);
       try {
-        const apiUrl = `${PORT}/deletedoctor/${doctorToDelete.id}`;
+        const apiUrl = `${PORT}/deletedoctor/${DoctorID.id}`;
         await deleteData(apiUrl);
         getData(API);
         toggleModal();
@@ -86,7 +92,7 @@ const Doctor = () => {
             </Button>
             <Button
               className="py-2 px-3 rounded-full bg-slate-400 text-white"
-              onClick={toggleModal}
+              onClick={() => toggleViewModal(doctor)}
             >
               <i className="fa-solid fa-eye"></i>
             </Button>
@@ -110,46 +116,19 @@ const Doctor = () => {
 
         {data && <Table columns={columns} data={tableData} />}
 
-        {isModalOpen && doctorToDelete && (
-          <Modal
-            onClose={toggleModal}
-            title="Delete Confirmation"
-            data={doctorToDelete}
-            footer={
-              <>
-                <Button
-                  className="bg-red-600 text-white py-2 px-4 rounded-full"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </Button>
-                <Button
-                  className="bg-gray-600 text-white py-2 px-4 rounded-full"
-                  onClick={toggleModal}
-                >
-                  Cancel
-                </Button>
-              </>
-            }
-          >
-            <div className="flex flex-col gap-3">
-              <p>
-                Are you sure you want to delete
-                <span className="text-primary">
-                  {doctorToDelete.Doctor_name}?
-                </span>
-              </p>
-              <p>Write Down Doctor's Name to Confirm:</p>
-              <Input
-                type="text"
-                name="doctorNameInput"
-                placeHolder="Dr. Name Here"
-                value={doctorNameInput}
-                onChange={handleModelInput(setDoctorNameInput)}
-              />
-              {nameError && <p className="text-red-600">{nameError}</p>}
-            </div>
-          </Modal>
+        {isDeleteModalOpen && DoctorID && (
+          <DeleteModal
+            toggleModal={toggleModal}
+            handleDelete={handleDelete}
+            DoctorIDForDelete={DoctorID}
+            setDoctorNameInput={setDoctorNameInput}
+            nameError={nameError}
+            doctorNameInput={doctorNameInput}
+          />
+        )}
+
+        {isViewModalOpen && (
+          <ViewModal toggleModal={toggleViewModal} doctorToView={DoctorID} />
         )}
       </div>
     </Layout>
