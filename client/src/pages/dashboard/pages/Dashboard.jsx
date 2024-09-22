@@ -1,10 +1,10 @@
-import Form from "../../ui/Form";
+import DrProfileForm from "./DrProfileForm";
 import Layout from "../layout/Main";
 
 function Dashboard() {
   return (
     <Layout>
-      <Form />
+      <DrProfileForm />
     </Layout>
   );
 }

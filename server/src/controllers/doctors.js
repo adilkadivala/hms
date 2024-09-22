@@ -51,7 +51,20 @@ const insertDoctor = async (req, res) => {
 };
 
 // update Doctor
+
 const updateDoctorProfile = async (req, res) => {
+  const { id } = req.params;
+  const hashedPassword = await bcrypt.hash(req.body.Password, 10);
+
+  console.log(req.file);
+
+  let newProfileImg;
+  if (req.file && req.file.filename) {
+    newProfileImg = req.file.filename;
+  } else {
+    newProfileImg = req.body.Profile_image || null;
+  }
+
   const fields = {
     Doctor_name: req.body.Doctor_name,
     Contact_no: req.body.Contact_no,
@@ -60,7 +73,7 @@ const updateDoctorProfile = async (req, res) => {
     Doctor_degree: req.body.Doctor_degree,
     Doctor_experience: req.body.Doctor_experience,
     Doctor_speciality: req.body.Doctor_speciality,
-    Profile_image: req.file ? req.file.path : null,
+    Profile_image: newProfileImg,
     Alternate_contact: req.body.Alternate_contact,
     Whatsapp_no: req.body.Whatsapp_no,
     Address: req.body.Address,
@@ -70,13 +83,28 @@ const updateDoctorProfile = async (req, res) => {
     Updated_by: req.body.Updated_by || "Admin",
     updatedAt: new Date(),
   };
-  try {
-    const doctorId = req.params.id;
 
-    const doctor = await Doctor.findByPk(doctorId);
+  console.log(req.body);
+
+  try {
+    const doctor = await Doctor.findOne({ where: { id } });
 
     if (!doctor) {
       return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    if (req.file) {
+      const oldProfileImg = doctor.Profile_image;
+      if (oldProfileImg) {
+        const oldProfileImgPath = path.join(
+          __dirname,
+          "../../../client/public/upload",
+          oldProfileImg
+        );
+        if (fs.existsSync(oldProfileImgPath)) {
+          fs.unlinkSync(oldProfileImgPath);
+        }
+      }
     }
 
     await doctor.update(fields);
@@ -91,9 +119,8 @@ const updateDoctorProfile = async (req, res) => {
 
 // delete Doctors
 const deleteDoctor = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     const doctorProfile = await Doctor.findOne({ where: { id } });
 
     if (doctorProfile?.Profile_image) {

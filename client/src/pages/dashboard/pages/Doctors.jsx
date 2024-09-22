@@ -3,7 +3,7 @@ import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import { Fetch } from "../../../utils/Fetch";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
 import ViewModal from "../compoenets/ViewModal";
 import DeleteModal from "../compoenets/DeleteModal";
@@ -12,15 +12,24 @@ const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/getdoctors`;
 
 const Doctor = () => {
+  // defined functions
   const { data, isLoading, error, getData } = Fetch();
   const { deleteData, setError, setIsLoading } = Delete();
+  const navigate = useNavigate();
 
+  // states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [DoctorID, setDoctorID] = useState(null);
   const [doctorNameInput, setDoctorNameInput] = useState("");
   const [nameError, setNameError] = useState(null);
 
+  // edit Doctor handler
+  const toggleUpdateDoctor = (doctor) => {
+    navigate("/dashboard", { state: { doctor } });
+  };
+
+  // delete modal
   const toggleModal = () => {
     setIsDeleteModalOpen((prev) => !prev);
     setDoctorNameInput("");
@@ -31,18 +40,20 @@ const Doctor = () => {
   const toggleViewModal = (DoctorView) => {
     setIsViewModalOpen((prev) => !prev);
     setDoctorID(DoctorView);
-    console.log(DoctorView);
   };
 
+  // getting data via network api on page rendering
   useEffect(() => {
     getData(API);
   }, []);
 
+  // delete conformation
   const confirmDelete = (doctor) => {
     setDoctorID(doctor);
     toggleModal();
   };
 
+  // deleting Data
   const handleDelete = async () => {
     if (DoctorID.Doctor_name === doctorNameInput) {
       setIsLoading(true);
@@ -61,6 +72,7 @@ const Doctor = () => {
     }
   };
 
+  // table
   const columns = [
     { Header: "image", accessor: "Profile_image" },
     { Header: "Doctor Name", accessor: "Doctor_name" },
@@ -81,7 +93,10 @@ const Doctor = () => {
         status: doctor.status,
         actions: (
           <div className="flex items-center gap-1">
-            <Button className="py-2 px-3 rounded-full bg-primary text-white">
+            <Button
+              className="py-2 px-3 rounded-full bg-primary text-white"
+              onClick={() => toggleUpdateDoctor(doctor)}
+            >
               <i className="fa-solid fa-pen"></i>
             </Button>
             <Button
@@ -116,6 +131,7 @@ const Doctor = () => {
 
         {data && <Table columns={columns} data={tableData} />}
 
+        {/* delete modal */}
         {isDeleteModalOpen && DoctorID && (
           <DeleteModal
             toggleModal={toggleModal}
@@ -126,10 +142,13 @@ const Doctor = () => {
             doctorNameInput={doctorNameInput}
           />
         )}
+        {/* delete modal */}
 
+        {/* view modal */}
         {isViewModalOpen && (
           <ViewModal toggleModal={toggleViewModal} doctorToView={DoctorID} />
         )}
+        {/* view modal */}
       </div>
     </Layout>
   );

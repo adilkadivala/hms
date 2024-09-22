@@ -24,14 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("today", "advance"),
         allowNull: false,
       },
-      doctor_by_hospital_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Doctor_by_Hospital",
-          key: "id",
-        },
-      },
+
       Appointment_req: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -79,10 +72,6 @@ module.exports = (sequelize, DataTypes) => {
     Appointment.belongsTo(models.Hospital, {
       foreignKey: "hospital_id",
       as: "hospital",
-    });
-    Appointment.belongsTo(models.Doctor_by_Hospital, {
-      foreignKey: "doctor_by_hospital_id",
-      as: "doctorByHospital",
     });
   };
 

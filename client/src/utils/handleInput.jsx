@@ -1,7 +1,6 @@
 export const handleInput = (setState) => (e) => {
   const { name, value, files } = e.target;
 
-  // If the input is a file, create a preview URL
   if (files && files.length > 0) {
     const file = files[0];
     const previewURL = URL.createObjectURL(file);
@@ -19,17 +18,7 @@ export const handleInput = (setState) => (e) => {
   }
 };
 
-// export const handleInput = (setState) => (e) => {
-//   const { name, value, files } = e.target;
-
-//   setState((prevState) => ({
-//     ...prevState,
-//     [name]: files ? files[0] : value,
-//   }));
-// };
-
 export const handleModelInput = (setState) => (e) => {
-  const { name, value } = e.target;
-
+  const { value } = e.target;
   setState(value);
 };

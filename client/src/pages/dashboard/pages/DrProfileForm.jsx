@@ -1,51 +1,95 @@
-import Input from "./Input";
-import { doctorFormData } from "../../constant/Fields";
-import Label from "./Label";
-import { useState } from "react";
-import { Insert } from "../../utils/Insert";
-import { handleInput } from "../../utils/handleInput";
+import Input from "../../ui/Input";
+import { doctorFormData } from "../../../constant/Fields";
+import Label from "../../ui/Label";
+import { useEffect, useState } from "react";
+import { Insert } from "../../../utils/Insert";
+import { handleInput } from "../../../utils/handleInput";
+import { NavLink, useLocation } from "react-router-dom";
+import Button from "../../ui/Button";
+import { useUpdate } from "../../../utils/Update";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/insertdoctors`;
 
-const Form = () => {
-  const [formData, setFormData] = useState(doctorFormData);
-  const { handleSubmit } = Insert();
+const DrProfileForm = () => {
+  const doctorDataForUpdate = useLocation();
+  const oldData = doctorDataForUpdate?.state?.doctor || null;
+  const [formData, setFormData] = useState({ ...doctorFormData });
+  const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
+  const { handleInsertSubmit } = Insert();
+  const { handleUpdateSubmit } = useUpdate();
 
-  const handleInsert = async (e) => {
+  // update data api
+  const UPDATEAPI = `${PORT}/updatedoctors/${formUpdateData.id}`;
+
+  //password visibility handler
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  // password visibility handler
+  const handlePasswordVisible = (e) => {
     e.preventDefault();
-    try {
-      await handleSubmit(INSERTAPI, formData);
-    } catch (error) {
-      console.error(error);
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  // data insertion handler...
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    if (oldData) {
+      try {
+        await handleUpdateSubmit(UPDATEAPI, formUpdateData);
+        console.log(formUpdateData);
+      } catch (error) {
+        console.error("Update error:", error);
+        setError(error.message || "An error occurred while updating");
+      }
+    } else {
+      try {
+        await handleInsertSubmit(INSERTAPI, formData);
+      } catch (error) {
+        console.error("Insert error:", error);
+        setError(error.message || "An error occurred while inserting");
+      }
     }
   };
+
+  // setting form for inserting data and updating it
+  useEffect(() => {
+    if (formUpdateData) {
+      setFormUpdateData(formUpdateData);
+    }
+  }, [formUpdateData]);
 
   return (
     <div className="border border-gray-300 rounded">
       <div className="bg-transparent rounded-xl shadow p-4 sm:p-7 dark:bg-neutral-800 ">
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-800 dark:text-neutral-200">
-            Profile
+            {formUpdateData ? "Update Profile" : " Create profile"}
           </h2>
           <p className="text-sm text-gray-600 dark:text-neutral-400">
             Manage your profile information, account settings, and more.
           </p>
         </div>
 
-        <form onSubmit={handleInsert} method="post">
+        <form onSubmit={handleFormSubmit} method="post">
           <div className="grid sm:grid-cols-12 gap-2 sm:gap-6">
             <div className="sm:col-span-3">
               <Label className="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
                 Profile photo
               </Label>
             </div>
+
             <div className="sm:col-span-9">
               <div className="flex items-center gap-5">
                 <img
                   className="inline-block size-16 rounded-full ring-2 ring-white dark:ring-neutral-900"
                   src={
+                    formUpdateData?.Profile_image_preview ||
                     formData?.Profile_image_preview ||
+                    (formUpdateData?.Profile_image
+                      ? `/upload/${formUpdateData?.Profile_image}`
+                      : null) ||
                     "https://preline.co/assets/img/160x160/img1.jpg"
                   }
                   alt="Avatar"
@@ -57,7 +101,9 @@ const Form = () => {
                       className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-transparent text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                       name="Profile_image"
                       accept="image/*"
-                      onChange={handleInput(setFormData)}
+                      onChange={handleInput(
+                        formUpdateData ? setFormUpdateData : setFormData
+                      )}
                     />
                   </div>
                 </div>
@@ -77,11 +123,15 @@ const Form = () => {
               <Input
                 id="Doctor_name"
                 type="text"
-                value={formData?.Doctor_name || ""}
+                value={
+                  formData?.Doctor_name || formUpdateData?.Doctor_name || ""
+                }
                 name="Doctor_name"
                 placeholder="Dr. John Doe"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -101,8 +151,10 @@ const Form = () => {
                 name="Email_id"
                 placeholder="john.doe@example.com"
                 className="bg-transparent"
-                value={formData?.Email_id || ""}
-                onChange={handleInput(setFormData)}
+                value={formData?.Email_id || formUpdateData?.Email_id || ""}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -115,16 +167,26 @@ const Form = () => {
                 Password
               </Label>
             </div>
-            <div className="sm:col-span-9">
+
+            <div className="sm:col-span-9 relative">
               <Input
                 id="Password"
-                type="password"
+                type={isPasswordVisible ? "text" : "password"}
                 name="Password"
                 placeholder="Enter your password"
                 className="bg-transparent"
-                value={formData?.Password || ""}
-                onChange={handleInput(setFormData)}
+                value={formData?.Password || formUpdateData?.Password || ""}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
+              <Button type="button" onClick={handlePasswordVisible}>
+                <i
+                  className={`fa-solid ${
+                    isPasswordVisible ? `fa-eye-slash` : `fa-eye`
+                  } absolute right-3 top-3`}
+                ></i>
+              </Button>
             </div>
 
             {/* Doctor Degree */}
@@ -141,10 +203,14 @@ const Form = () => {
                 id="Doctor_degree"
                 type="text"
                 name="Doctor_degree"
-                value={formData?.Doctor_degree || ""}
+                value={
+                  formData?.Doctor_degree || formUpdateData?.Doctor_degree || ""
+                }
                 placeholder="MD"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -160,12 +226,18 @@ const Form = () => {
             <div className="sm:col-span-9">
               <Input
                 id="Doctor_experience"
-                type="number"
+                type="text"
                 name="Doctor_experience"
-                value={formData?.Doctor_experience || ""}
+                value={
+                  formData?.Doctor_experience ||
+                  formUpdateData?.Doctor_experience ||
+                  ""
+                }
                 placeholder="9.9"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -183,10 +255,16 @@ const Form = () => {
                 id="Doctor_speciality"
                 type="text"
                 name="Doctor_speciality"
-                value={formData?.Doctor_speciality || ""}
+                value={
+                  formData?.Doctor_speciality ||
+                  formUpdateData?.Doctor_speciality ||
+                  ""
+                }
                 placeholder='["Cardiology", "Internal Medicine"]'
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -203,11 +281,17 @@ const Form = () => {
               <Input
                 id="Alternate_contact"
                 type="text"
-                value={formData?.Alternate_contact || ""}
+                value={
+                  formData?.Alternate_contact ||
+                  formUpdateData?.Alternate_contact ||
+                  ""
+                }
                 name="Alternate_contact"
                 placeholder="0987654321"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -226,9 +310,13 @@ const Form = () => {
                 type="text"
                 name="Whatsapp_no"
                 placeholder="1234567890"
-                value={formData?.Whatsapp_no || ""}
+                value={
+                  formData?.Whatsapp_no || formUpdateData?.Whatsapp_no || ""
+                }
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -246,10 +334,12 @@ const Form = () => {
                 id="Address"
                 type="text"
                 name="Address"
-                value={formData?.Address || ""}
+                value={formData?.Address || formUpdateData?.Address || ""}
                 placeholder="123 Main St"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -267,10 +357,12 @@ const Form = () => {
                 id="City"
                 type="text"
                 name="City"
-                value={formData?.City || ""}
+                value={formData?.City || formUpdateData?.City || ""}
                 placeholder="New York"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -288,10 +380,12 @@ const Form = () => {
                 id="Country"
                 type="text"
                 name="Country"
-                value={formData?.Country || ""}
+                value={formData?.Country || formUpdateData?.Country || ""}
                 placeholder="USA"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
@@ -309,26 +403,28 @@ const Form = () => {
                 id="Region"
                 type="text"
                 name="Region"
-                value={formData?.Region || ""}
+                value={formData?.Region || formUpdateData?.Region || ""}
                 placeholder="North-East"
                 className="bg-transparent"
-                onChange={handleInput(setFormData)}
+                onChange={handleInput(
+                  formUpdateData ? setFormUpdateData : setFormData
+                )}
               />
             </div>
 
             <div className="flex justify-end gap-2 sm:col-span-12">
-              <button
-                type="submit"
-                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-transparent text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+              <Button
+                type={formUpdateData ? "submit" : "button"}
+                className="p-3 bg-primary text-white rounded dark:text-primary border-none"
               >
-                Save changes
-              </button>
-              <button
-                type="button"
-                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 dark:focus:ring-offset-neutral-900"
+                {formUpdateData ? "Save changes" : "Insert"}
+              </Button>
+              <NavLink
+                to="/doctors"
+                className="p-3 text-red-700 rounded border-none border border-primary"
               >
                 Cancel
-              </button>
+              </NavLink>
             </div>
           </div>
         </form>
@@ -337,4 +433,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default DrProfileForm;

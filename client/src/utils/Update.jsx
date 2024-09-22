@@ -3,32 +3,31 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export const Insert = () => {
+export const useUpdate = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
-  const handleInsertSubmit = async (url, data) => {
+  const handleUpdateSubmit = async (url, data) => {
     setError(null);
-
     const formData = new FormData();
 
     for (const key in data) {
       formData.append(key, data[key]);
+      console.log(data);
     }
 
     try {
-      const response = await axios.post(url, formData, {
+      const response = await axios.put(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status === 200) {
-        toast.success("Data inserted successfully!");
+        toast.success("Data updated successfully!");
         navigate("/doctors");
       }
     } catch (error) {
-      console.error("Error inserting data:", error);
+      console.error("Error updating data:", error);
       setError(error.message || "An error occurred");
     }
   };
-
-  return { handleInsertSubmit, error };
+  return { handleUpdateSubmit, setError };
 };

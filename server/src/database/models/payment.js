@@ -8,10 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "Patient_id",
         as: "patient",
       });
-      Payment.belongsTo(models.Doctor_by_Hospital, {
-        foreignKey: "Doctor_by_hospital_id",
-        as: "doctor",
-      });
+
       Payment.belongsTo(models.Appointment, {
         foreignKey: "Appointment_id",
         as: "appointment",
@@ -30,10 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      Doctor_by_hospital_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+
       Appointment_id: {
         type: DataTypes.INTEGER,
         allowNull: false,

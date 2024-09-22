@@ -49,9 +49,9 @@ const ViewModal = ({ toggleModal = () => {}, doctorToView = {} }) => {
             </h3>
             <h4 className=" uppercase text-secondry dark:text-neutral-500">
               Degree :{" "}
-              <span className="text-xs text-primary ">{Doctor_degree}</span>
+              <span className="text-xs text-primary ">{Doctor_degree}</span>{" "}
               <span className=" text-secondry">
-                , Specialist In :
+                Specialist In :
                 <span className=" text-primary">{Doctor_speciality}</span>
               </span>
             </h4>
@@ -60,8 +60,8 @@ const ViewModal = ({ toggleModal = () => {}, doctorToView = {} }) => {
             </h4>
             <h4 className=" uppercase text-secondry dark:text-neutral-500">
               Contact No :{" "}
-              <span className="text-xs  text-primary">{Whatsapp_no}</span>
-              Alternate_contact :
+              <span className="text-xs  text-primary">{Whatsapp_no}</span>{" "}
+              Alternate_contact :{" "}
               <span className="text-xs  text-primary">{Alternate_contact}</span>
             </h4>
             <h4 className=" uppercase text-secondry dark:text-neutral-500">
