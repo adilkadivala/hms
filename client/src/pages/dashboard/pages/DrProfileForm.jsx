@@ -35,6 +35,8 @@ const DrProfileForm = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("Form data before submission:", formData);
+
     if (oldData) {
       try {
         await handleUpdateSubmit(UPDATEAPI, formUpdateData);
@@ -46,6 +48,7 @@ const DrProfileForm = () => {
     } else {
       try {
         await handleInsertSubmit(INSERTAPI, formData);
+        console.log(formData);
       } catch (error) {
         console.error("Insert error:", error);
         setError(error.message || "An error occurred while inserting");
@@ -65,7 +68,7 @@ const DrProfileForm = () => {
       <div className="bg-transparent rounded-xl shadow p-4 sm:p-7 dark:bg-neutral-800 ">
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-800 dark:text-neutral-200">
-            {formUpdateData ? "Update Profile" : " Create profile"}
+            {oldData ? "Update Profile" : " Create profile"}
           </h2>
           <p className="text-sm text-gray-600 dark:text-neutral-400">
             Manage your profile information, account settings, and more.
@@ -102,7 +105,7 @@ const DrProfileForm = () => {
                       name="Profile_image"
                       accept="image/*"
                       onChange={handleInput(
-                        formUpdateData ? setFormUpdateData : setFormData
+                        oldData ? setFormUpdateData : setFormData
                       )}
                     />
                   </div>
@@ -130,7 +133,7 @@ const DrProfileForm = () => {
                 placeholder="Dr. John Doe"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -153,7 +156,7 @@ const DrProfileForm = () => {
                 className="bg-transparent"
                 value={formData?.Email_id || formUpdateData?.Email_id || ""}
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -177,7 +180,7 @@ const DrProfileForm = () => {
                 className="bg-transparent"
                 value={formData?.Password || formUpdateData?.Password || ""}
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
               <Button type="button" onClick={handlePasswordVisible}>
@@ -209,7 +212,7 @@ const DrProfileForm = () => {
                 placeholder="MD"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -236,7 +239,7 @@ const DrProfileForm = () => {
                 placeholder="9.9"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -263,7 +266,7 @@ const DrProfileForm = () => {
                 placeholder='["Cardiology", "Internal Medicine"]'
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -290,7 +293,7 @@ const DrProfileForm = () => {
                 placeholder="0987654321"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -315,7 +318,7 @@ const DrProfileForm = () => {
                 }
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -338,7 +341,7 @@ const DrProfileForm = () => {
                 placeholder="123 Main St"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -361,7 +364,7 @@ const DrProfileForm = () => {
                 placeholder="New York"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -384,7 +387,7 @@ const DrProfileForm = () => {
                 placeholder="USA"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -407,7 +410,7 @@ const DrProfileForm = () => {
                 placeholder="North-East"
                 className="bg-transparent"
                 onChange={handleInput(
-                  formUpdateData ? setFormUpdateData : setFormData
+                  oldData ? setFormUpdateData : setFormData
                 )}
               />
             </div>
@@ -417,7 +420,7 @@ const DrProfileForm = () => {
                 type={formUpdateData ? "submit" : "button"}
                 className="p-3 bg-primary text-white rounded dark:text-primary border-none"
               >
-                {formUpdateData ? "Save changes" : "Insert"}
+                {oldData ? "Save changes" : "Submit"}
               </Button>
               <NavLink
                 to="/doctors"

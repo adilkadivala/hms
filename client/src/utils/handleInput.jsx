@@ -1,6 +1,8 @@
 export const handleInput = (setState) => (e) => {
   const { name, value, files } = e.target;
 
+  console.log(name, value);
+
   if (files && files.length > 0) {
     const file = files[0];
     const previewURL = URL.createObjectURL(file);
