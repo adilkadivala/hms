@@ -27,6 +27,15 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
+      doctor_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Doctor",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
       Appointment_type: {
         type: Sequelize.ENUM("today", "advance"),
         allowNull: false,

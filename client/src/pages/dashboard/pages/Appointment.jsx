@@ -19,7 +19,7 @@ const Appointment = () => {
     { Header: "patient Name", accessor: "patient_id" },
     { Header: "Hospital Name", accessor: "hospital_id" },
     { Header: "Appointment Type", accessor: "Appointment_type" },
-    { Header: "Doctor Name", accessor: "doctor_by_hospital_id" },
+    { Header: "Doctor Name", accessor: "doctor_id" },
     { Header: "Token Number", accessor: "token_number" },
     { Header: "Status", accessor: "Status" },
     { Header: "Actions", accessor: "actions" },
@@ -34,7 +34,7 @@ const Appointment = () => {
         patient_id: appointment.patient_id,
         hospital_id: appointment.hospital_id,
         Appointment_type: appointment.Appointment_type,
-        doctor_by_hospital_id: appointment.doctor_by_hospital_id,
+        doctor_id: appointment.doctor_id,
         token_number: appointment.token_number,
         Status: appointment.Status,
         actions: (

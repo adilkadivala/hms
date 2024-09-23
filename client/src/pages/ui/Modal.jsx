@@ -34,7 +34,7 @@ const Modal = ({
           </Button>
         </div>
         <div className="p-4 overflow-y-auto text-secondry">{children}</div>
-        <div className="flex justify-end items-center gap-x-2 py-3 px-2 border-t">
+        <div className="flex justify-end items-center gap-x-2 py-2 px-2 border-t">
           {footer}
         </div>
       </div>

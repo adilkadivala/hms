@@ -7,7 +7,6 @@ module.exports = {
       [
         {
           Patient_id: 1,
-          Doctor_by_hospital_id: 1,
           Appointment_id: 1,
           Payment_amount: 100.0,
           Payment_date: new Date(),

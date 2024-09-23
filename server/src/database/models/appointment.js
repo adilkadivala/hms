@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      doctor_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Doctor",
+          key: "id",
+        },
+      },
       Appointment_type: {
         type: DataTypes.ENUM("today", "advance"),
         allowNull: false,

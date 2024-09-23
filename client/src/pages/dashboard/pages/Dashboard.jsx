@@ -4,7 +4,7 @@ import Layout from "../layout/Main";
 function Dashboard() {
   return (
     <Layout>
-      <DrProfileForm />
+      <h1>Dahboard</h1>
     </Layout>
   );
 }

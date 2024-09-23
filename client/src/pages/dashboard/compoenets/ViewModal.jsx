@@ -23,7 +23,7 @@ const ViewModal = ({ toggleModal = () => {}, doctorToView = {} }) => {
       title={`About  ${Doctor_name}`}
       data={doctorToView}
       width="w-[50%]"
-      height="h-[60%]"
+      height="h-[55%]"
       footer={
         <>
           <Button

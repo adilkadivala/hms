@@ -13,7 +13,7 @@ const Sidebar = ({ isOpen }) => {
 
   const activeStyle = ({ isActive }) => {
     if (isActive) {
-      return { borderBottom: "1px solid #0086c4" };
+      return { borderBottom: "1px solid #0086c4", borderBottomWidth: "3px" };
     } else {
       return {};
     }
@@ -33,9 +33,9 @@ const Sidebar = ({ isOpen }) => {
     >
       <div className="pt-4 h-[60vh] space-y-4 overflow-y-auto hide-scrollbar">
         <ul className="flex flex-col gap-2">
-          <li className="mb-4">
+          <li>
             <NavLink
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-4 pb-3"
               style={activeStyle}
               to="/dashboard"
             >
@@ -45,20 +45,20 @@ const Sidebar = ({ isOpen }) => {
               )}
             </NavLink>
           </li>
-          <li className="mb-4">
+          <li>
             <NavLink
               to="/doctors"
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-4 pb-3"
               style={activeStyle}
             >
               <i className="fa-solid fa-user-doctor text-primary  dark:text-white"></i>
               {isOpen && <span className="text-normal">Doctors</span>}
             </NavLink>
           </li>
-          <li className="mb-4">
+          <li>
             <NavLink
               to="/hospitals"
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-4 pb-3"
               style={activeStyle}
             >
               <i className="fa-solid fa-notes-medical  text-primary  dark:text-white"></i>
@@ -68,10 +68,10 @@ const Sidebar = ({ isOpen }) => {
             </NavLink>
           </li>
 
-          <li className="mb-4">
+          <li>
             <NavLink
               to="/appointments"
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-4 pb-3"
               style={activeStyle}
             >
               <i className="fa-regular fa-calendar-check text-primary  dark:text-white"></i>
@@ -80,10 +80,10 @@ const Sidebar = ({ isOpen }) => {
               )}
             </NavLink>
           </li>
-          <li className="mb-4">
+          <li>
             <NavLink
               to="/patients"
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-4 pb-3"
               style={activeStyle}
             >
               <i className="fa-solid fa-user-injured text-primary  dark:text-white"></i>
@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen }) => {
             </NavLink>
           </li>
 
-          <li className="mb-4">
+          <li>
             <NavLink
               to="#"
               className={`${
@@ -127,7 +127,7 @@ const Sidebar = ({ isOpen }) => {
               <li>
                 <NavLink
                   to="/table"
-                  className="flex items-center space-x-4"
+                  className="flex items-center space-x-4 pb-3"
                   style={activeStyle}
                 >
                   <i className="fa-solid fa-table text-primary text-normal font-normal dark:text-white"></i>
@@ -141,15 +141,15 @@ const Sidebar = ({ isOpen }) => {
       <hr className="border border-slate-400" />
       <div className="h-[10vh] mt-4">
         <ul>
-          <li className="mb-4">
-            <NavLink to="/account" className="flex items-center space-x-4">
+          <li>
+            <NavLink to="/account" className="flex items-center space-x-4 pb-3">
               <i className="fa-regular fa-circle-user text-primary  dark:text-white"></i>
               {isOpen && (
                 <span className="text-normal font-normal">Account</span>
               )}
             </NavLink>
           </li>
-          <li className="mb-4">
+          <li>
             <NavLink to="/" className="flex items-center space-x-4">
               <i className="fa-solid fa-arrow-left text-red-700 "></i>
               {isOpen && (

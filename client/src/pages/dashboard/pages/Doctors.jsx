@@ -26,7 +26,7 @@ const Doctor = () => {
 
   // edit Doctor handler
   const toggleUpdateDoctor = (doctor) => {
-    navigate("/dashboard", { state: { doctor } });
+    navigate("/profile", { state: { doctor } });
   };
 
   // delete modal
@@ -92,24 +92,24 @@ const Doctor = () => {
         Whatsapp_no: doctor.Whatsapp_no,
         status: doctor.status,
         actions: (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center justify-center gap-3">
             <Button
-              className="py-2 px-3 rounded-full bg-primary text-white"
+              className="bg-none border-none"
               onClick={() => toggleUpdateDoctor(doctor)}
             >
-              <i className="fa-solid fa-pen"></i>
+              <i className="fa-solid fa-pen text-primary"></i>
             </Button>
             <Button
-              className="py-2 px-3 rounded-full bg-red-600 text-white"
+              className=" bg-none border-none"
               onClick={() => confirmDelete(doctor)}
             >
-              <i className="fa-solid fa-trash"></i>
+              <i className="fa-solid fa-trash text-red-600"></i>
             </Button>
             <Button
-              className="py-2 px-3 rounded-full bg-slate-400 text-white"
+              className="bg-none border-none"
               onClick={() => toggleViewModal(doctor)}
             >
-              <i className="fa-solid fa-eye"></i>
+              <i className="fa-solid fa-eye text-slate-400"></i>
             </Button>
           </div>
         ),
@@ -121,7 +121,7 @@ const Doctor = () => {
       <div className="container mx-auto p-4">
         <div className="flex justify-between align-middle text-center">
           <h1 className="text-2xl font-bold mb-4">Doctors</h1>
-          <NavLink to="/dashboard">
+          <NavLink to="/profile">
             <span className="border-b-2 border-b-primary">Add +</span>
           </NavLink>
         </div>

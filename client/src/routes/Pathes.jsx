@@ -8,6 +8,7 @@ import Hospitals from "../pages/dashboard/pages/Hospitals";
 import Doctors from "../pages/dashboard/pages/Doctors";
 import Appointment from "../pages/dashboard/pages/Appointment";
 import Patients from "../pages/dashboard/pages/Patients";
+import DrProfileForm from "../pages/dashboard/pages/DrProfileForm";
 
 const Pathes = () => {
   return (
@@ -18,6 +19,7 @@ const Pathes = () => {
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/appointments" element={<Appointment />} />
       <Route path="/patients" element={<Patients />} />
+      <Route path="/profile" element={<DrProfileForm />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -22,7 +22,7 @@ const Table = ({ columns, data }) => {
                 {data.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className="bg-white dark:bg-gray-900 transition-all duration-500 hover:bg-gray-50 dark:hover:bg-gray-800 "
+                    className="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 dark:text-gray-300"
                   >
                     {columns.map((column) => {
                       if (column.Header === "image") {

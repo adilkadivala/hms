@@ -7,7 +7,6 @@ module.exports = {
         patient_id: 1,
         hospital_id: 1,
         Appointment_type: "today",
-        doctor_by_hospital_id: 1,
         Appointment_req: new Date(),
         Status: "pending",
         appointment_scheduled_date: new Date(),
