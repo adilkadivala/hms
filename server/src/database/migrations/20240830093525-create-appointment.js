@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Appointments", {
+    await queryInterface.createTable("appointments", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Doctor",
+          model: "doctors",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -39,15 +39,6 @@ module.exports = {
       Appointment_type: {
         type: Sequelize.ENUM("today", "advance"),
         allowNull: false,
-      },
-      doctor_by_hospital_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "doctor_by_hospital",
-          key: "id",
-        },
-        onDelete: "CASCADE",
       },
       Appointment_req: {
         type: Sequelize.DATE,
@@ -95,6 +86,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Appointments");
+    await queryInterface.dropTable("appointments");
   },
 };

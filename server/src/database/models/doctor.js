@@ -7,6 +7,12 @@ module.exports = (sequelize) => {
   }
   Doctor.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
       Doctor_name: {
         type: DataTypes.STRING(255),
         allowNull: false,
@@ -20,7 +26,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       Doctor_speciality: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
       Profile_image: {
@@ -42,6 +48,10 @@ module.exports = (sequelize) => {
       Email_id: {
         type: DataTypes.STRING(255),
         allowNull: false,
+      },
+      Doctor_fees: {
+        type: DataTypes.INTEGER(255),
+        allowNull: true,
       },
       Address: {
         type: DataTypes.TEXT,
@@ -90,8 +100,8 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "Doctor",
-      tableName: "Doctors",
+      modelName: "doctors",
+      tableName: "doctors",
     }
   );
   return Doctor;

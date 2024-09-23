@@ -2,74 +2,80 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define(
-    "Patient",
+    "patients",
     {
-      User_email: {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
+      user_email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
       },
-      User_password: {
+      user_password: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      First_name: {
+      first_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Middle_name: {
+      middle_name: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Last_name: {
+      last_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Gender: {
+      gender: {
         type: DataTypes.ENUM("Male", "Female", "Other"),
         allowNull: false,
       },
-      DOB: {
+      dob: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
-      Contact: {
+      contact: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Alt_contact: {
+      alt_contact: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Recovery_email: {
+      recovery_email: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Address: {
+      address: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      Country: {
+      country: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      City: {
+      city: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Status: {
+      status: {
         type: DataTypes.ENUM("active", "inactive"),
         defaultValue: "active",
       },
-      Created_by: {
+      created_by: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Updated_by: {
+      updated_by: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      Approved_by: {
+      approved_by: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -80,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       timestamps: true,
-      tableName: "Patients",
+      tableName: "patients",
     }
   );
 

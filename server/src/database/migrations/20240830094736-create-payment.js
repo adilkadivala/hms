@@ -2,69 +2,60 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Payments", {
-      Id: {
+    await queryInterface.createTable("payments", {
+      id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      Patient_id: {
+      patient_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "patients",
+          model: "patients", // Ensure this matches the exact table name
           key: "id",
         },
         onDelete: "CASCADE",
       },
-      Doctor_by_hospital_id: {
+      appointment_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "doctor_by_hospital",
+          model: "appointments", // Ensure this matches the exact table name
           key: "id",
         },
         onDelete: "CASCADE",
       },
-      Appointment_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "appointments",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-      },
-      Payment_amount: {
+      payment_amount: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      Payment_date: {
+      payment_date: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      Transaction_id: {
+      transaction_id: {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
-      Payment_status: {
+      payment_status: {
         type: Sequelize.ENUM("successful", "declined"),
         allowNull: false,
       },
-      Created_by: {
+      created_by: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-      Updated_by: {
+      updated_by: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-      Approved_by: {
+      approved_by: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-      Approved_date: {
+      approved_date: {
         type: Sequelize.DATE,
         allowNull: true,
       },
@@ -82,6 +73,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Payments");
+    await queryInterface.dropTable("payments");
   },
 };

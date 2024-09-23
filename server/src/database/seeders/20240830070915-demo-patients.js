@@ -2,47 +2,25 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert("Patients", [
+    await queryInterface.bulkInsert("patients", [
       {
-        User_email: "john.doe@example.com",
-        User_password: "password123",
-        First_name: "John",
-        Middle_name: "A.",
-        Last_name: "Doe",
-        Gender: "Male",
-        DOB: "1980-01-01",
-        Contact: "1234567890",
-        Alt_contact: "0987654321",
-        Recovery_email: "john.recover@example.com",
-        Address: "123 Main St, Anytown, USA",
-        Country: "USA",
-        City: "Anytown",
-        Status: "active",
-        Created_by: "admin",
-        Updated_by: "admin",
-        Approved_by: "admin",
-        approved_date: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        User_email: "jane.doe@example.com",
-        User_password: "password123",
-        First_name: "Jane",
-        Middle_name: "B.",
-        Last_name: "Doe",
-        Gender: "Female",
-        DOB: "1990-02-02",
-        Contact: "2345678901",
-        Alt_contact: "1098765432",
-        Recovery_email: "jane.recover@example.com",
-        Address: "456 Elm St, Anytown, USA",
-        Country: "USA",
-        City: "Anytown",
-        Status: "inactive",
-        Created_by: "admin",
-        Updated_by: "admin",
-        Approved_by: "admin",
+        user_email: "john.doe@example.com",
+        user_password: "password123",
+        first_name: "John",
+        middle_name: "A.",
+        last_name: "Doe",
+        gender: "Male",
+        dob: "1980-01-01",
+        contact: "1234567890",
+        alt_contact: "0987654321",
+        recovery_email: "john.recover@example.com",
+        address: "123 Main St, Anytown, USA",
+        country: "USA",
+        city: "Anytown",
+        status: "active",
+        created_by: "admin",
+        updated_by: "admin",
+        approved_by: "admin",
         approved_date: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -51,6 +29,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("Patients", null, {});
+    await queryInterface.bulkDelete("patients", null, {});
   },
 };

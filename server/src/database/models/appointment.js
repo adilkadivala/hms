@@ -2,13 +2,19 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define(
-    "Appointment",
+    "appointments",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
       patient_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Patient",
+          model: "patients",
           key: "id",
         },
       },
@@ -16,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Hospital",
+          model: "hospitals",
           key: "id",
         },
       },
@@ -24,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Doctor",
+          model: "doctors",
           key: "id",
         },
       },
@@ -73,13 +79,17 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Appointment.associate = function (models) {
-    Appointment.belongsTo(models.Patient, {
+    Appointment.belongsTo(models.patients, {
       foreignKey: "patient_id",
       as: "patient",
     });
-    Appointment.belongsTo(models.Hospital, {
+    Appointment.belongsTo(models.hospitals, {
       foreignKey: "hospital_id",
       as: "hospital",
+    });
+    Appointment.belongsTo(models.doctors, {
+      foreignKey: "doctor_id",
+      as: "doctor",
     });
   };
 

@@ -1,10 +1,10 @@
-const { Appointment } = require("../database/models/index");
+const { appointments } = require("../database/models/index");
 
-// getting Appointment data
+// getting s data
 
 const getAppointment = async (req, res) => {
   try {
-    const data = await Appointment.findAll();
+    const data = await appointments.findAll();
     res.send(data);
     console.log(data);
   } catch (error) {

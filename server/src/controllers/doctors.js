@@ -1,4 +1,4 @@
-const { Doctor } = require("../database/models");
+const { doctors } = require("../database/models");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const path = require("path");
@@ -7,7 +7,7 @@ const path = require("path");
 
 const getDoctors = async (req, res) => {
   try {
-    const data = await Doctor.findAll();
+    const data = await doctors.findAll();
     res.send(data);
   } catch (error) {
     console.error(error);
@@ -42,7 +42,7 @@ const insertDoctor = async (req, res) => {
   };
 
   try {
-    const data = await Doctor.create(fields);
+    const data = await doctors.create(fields);
     res.status(200).json({ message: "Doctor created successfully", data });
   } catch (error) {
     console.error(error);
@@ -87,7 +87,7 @@ const updateDoctorProfile = async (req, res) => {
   console.log(req.body);
 
   try {
-    const doctor = await Doctor.findOne({ where: { id } });
+    const doctor = await doctors.findOne({ where: { id } });
 
     if (!doctor) {
       return res.status(404).json({ message: "Doctor not found" });
@@ -121,7 +121,7 @@ const updateDoctorProfile = async (req, res) => {
 const deleteDoctor = async (req, res) => {
   const { id } = req.params;
   try {
-    const doctorProfile = await Doctor.findOne({ where: { id } });
+    const doctorProfile = await doctors.findOne({ where: { id } });
 
     if (doctorProfile?.Profile_image) {
       const profilePath = path.join(
@@ -134,7 +134,7 @@ const deleteDoctor = async (req, res) => {
       }
     }
 
-    const data = await Doctor.destroy({
+    const data = await doctors.destroy({
       where: {
         id: id,
       },

@@ -4,74 +4,75 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Payment extends Model {
     static associate(models) {
-      Payment.belongsTo(models.Patient, {
-        foreignKey: "Patient_id",
+      Payment.belongsTo(models.patients, {
+        foreignKey: "patient_id",
         as: "patient",
       });
 
-      Payment.belongsTo(models.Appointment, {
-        foreignKey: "Appointment_id",
+      Payment.belongsTo(models.appointments, {
+        foreignKey: "appointment_id",
         as: "appointment",
       });
     }
   }
+
   Payment.init(
     {
-      Id: {
+      id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      Patient_id: {
+      patient_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-
-      Appointment_id: {
+      appointment_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      Payment_amount: {
+      payment_amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
-      Payment_date: {
+      payment_date: {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      Transaction_id: {
+      transaction_id: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      Payment_status: {
+      payment_status: {
         type: DataTypes.ENUM("successful", "declined"),
         defaultValue: "declined",
         allowNull: false,
       },
-      Created_by: {
+      created_by: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      Updated_by: {
+      updated_by: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      Approved_by: {
+      approved_by: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      Approved_date: {
+      approved_date: {
         type: DataTypes.DATE,
         allowNull: true,
       },
     },
     {
       sequelize,
-      modelName: "Payment",
-      tableName: "Payments",
+      modelName: "payments",
+      tableName: "payments",
       timestamps: true,
     }
   );
+
   return Payment;
 };

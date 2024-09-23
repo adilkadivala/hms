@@ -1,10 +1,10 @@
-const { Patient } = require("../database/models/index");
+const { patients } = require("../database/models/index");
 
 // getting patient data
 
 const getPatients = async (req, res) => {
   try {
-    const data = await Patient.findAll();
+    const data = await patients.findAll();
     res.send(data);
     console.log(data);
   } catch (error) {

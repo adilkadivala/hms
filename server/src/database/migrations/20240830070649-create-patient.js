@@ -2,80 +2,80 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Patients", {
-      Id: {
+    await queryInterface.createTable("patients", {
+      id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      User_email: {
+      user_email: {
         type: Sequelize.STRING(255),
         allowNull: false,
         unique: true,
       },
-      User_password: {
+      user_password: {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
-      First_name: {
+      first_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      Middle_name: {
+      middle_name: {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      Last_name: {
+      last_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      Gender: {
+      gender: {
         type: Sequelize.ENUM("Male", "Female", "Other"),
         defaultValue: "Other",
         allowNull: false,
       },
-      DOB: {
+      dob: {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      Contact: {
+      contact: {
         type: Sequelize.STRING(20),
         allowNull: true,
       },
-      Alt_contact: {
+      alt_contact: {
         type: Sequelize.STRING(20),
         allowNull: true,
       },
-      Recovery_email: {
+      recovery_email: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-      Address: {
+      address: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      Country: {
+      country: {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      City: {
+      city: {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      Status: {
+      status: {
         type: Sequelize.ENUM("active", "inactive"),
         defaultValue: "active",
       },
-      Created_by: {
+      created_by: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-      Updated_by: {
+      updated_by: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
-      Approved_by: {
+      approved_by: {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
@@ -97,6 +97,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Patients");
+    await queryInterface.dropTable("patients");
   },
 };
