@@ -18,7 +18,7 @@ const Navbar = ({ toggleSidebar, isOpen }) => {
           <img
             src={DashboardLogo}
             alt="icon"
-            className="mix-blend-darken w-36 h-fit"
+            className="mix-blend-darken w-24 h-fit"
           />
         </div>
 

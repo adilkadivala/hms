@@ -1,7 +1,13 @@
-import { Link } from "react-router-dom";
+import Navabr from "./component/Navabr";
+import Hero from "./Hero";
 
 const Home = () => {
-  return <Link to="/dashboard"> GO to Dashboard</Link>;
+  return (
+    <>
+      <Navabr />
+      <Hero />
+    </>
+  );
 };
 
 export default Home;
