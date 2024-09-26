@@ -30,12 +30,15 @@ const insertDoctor = async (req, res) => {
     Profile_image: req.file ? req.file.filename : null,
     Alternate_contact: req.body.Alternate_contact,
     Whatsapp_no: req.body.Whatsapp_no,
+    Doctor_fees: req.body.Doctor_fees,
     Address: req.body.Address,
     City: req.body.City,
     Country: req.body.Country,
     Region: req.body.Region,
+    Created_by: req.body.Created_by || "Admin",
     Updated_by: req.body.Updated_by || "Admin",
-    status: "active",
+    Approved_by: req.body.Approved_by || "Admin",
+    status: req.body.status || "Active",
     Approval_status: "Pending",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -55,8 +58,6 @@ const insertDoctor = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
   const { id } = req.params;
   const hashedPassword = await bcrypt.hash(req.body.Password, 10);
-
-  console.log(req.file);
 
   let newProfileImg;
   if (req.file && req.file.filename) {
@@ -83,8 +84,6 @@ const updateDoctorProfile = async (req, res) => {
     Updated_by: req.body.Updated_by || "Admin",
     updatedAt: new Date(),
   };
-
-  console.log(req.body);
 
   try {
     const doctor = await doctors.findOne({ where: { id } });

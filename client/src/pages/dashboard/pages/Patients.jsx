@@ -14,13 +14,13 @@ const Patient = () => {
   const toggleModal = () => setModalOpen((prev) => !prev);
 
   const columns = [
-    { Header: "First Name", accessor: "First_name" },
-    { Header: "Middle Name", accessor: "Middle_name" },
-    { Header: "Last Name", accessor: "Last_name" },
-    { Header: "Gender", accessor: "Gender" },
-    { Header: "DOB", accessor: "DOB" },
-    { Header: "Contact Number", accessor: "Contact" },
-    { Header: "Address", accessor: "Address" },
+    { Header: "First Name", accessor: "first_name" },
+    { Header: "Middle Name", accessor: "middle_name" },
+    { Header: "Last Name", accessor: "last_name" },
+    { Header: "Gender", accessor: "gender" },
+    { Header: "DOB", accessor: "dob" },
+    { Header: "Contact Number", accessor: "contact" },
+    { Header: "Address", accessor: "address" },
     { Header: "Status", accessor: "status" },
     { Header: "Actions", accessor: "actions" },
   ];
@@ -33,33 +33,24 @@ const Patient = () => {
 
   const tableData = data
     ? data.map((patient) => ({
-        First_name: patient.First_name,
-        Middle_name: patient.Middle_name,
-        Last_name: patient.Last_name,
-        Gender: patient.Gender,
-        DOB: patient.DOB,
-        Contact: patient.Contact,
-        Address: patient.Address,
+        first_name: patient.first_name,
+        middle_name: patient.middle_name,
+        last_name: patient.last_name,
+        gender: patient.gender,
+        dob: patient.dob,
+        contact: patient.contact,
+        address: patient.address,
         status: patient.status,
         actions: (
-          <div className="flex items-center gap-1">
-            <Button
-              className="py-2 px-3 rounded-full bg-primary text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-pen"></i>
+          <div className="flex items-center justify-center gap-3">
+            <Button className="bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-pen text-primary"></i>
             </Button>
-            <Button
-              className="py-2 px-3  rounded-full bg-red-600 text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-trash"></i>
+            <Button className=" bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-trash text-red-600"></i>
             </Button>
-            <Button
-              className="py-2 px-3  rounded-full bg-slate-400 text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-eye"></i>
+            <Button className="bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-eye text-slate-400"></i>
             </Button>
           </div>
         ),

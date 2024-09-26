@@ -38,24 +38,15 @@ const Hospital = () => {
         H_contact_no: hospital.H_contact_no,
         status: hospital.status,
         actions: (
-          <div className="flex items-center gap-1">
-            <Button
-              className="py-2 px-3 rounded-full bg-primary text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-pen"></i>
+          <div className="flex items-center justify-center gap-3">
+            <Button className="bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-pen text-primary"></i>
             </Button>
-            <Button
-              className="py-2 px-3  rounded-full bg-red-600 text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-trash"></i>
+            <Button className=" bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-trash text-red-600"></i>
             </Button>
-            <Button
-              className="py-2 px-3  rounded-full bg-slate-400 text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-eye"></i>
+            <Button className="bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-eye text-slate-400"></i>
             </Button>
           </div>
         ),
