@@ -20,8 +20,6 @@ const DrProfileForm = () => {
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
 
-  console.log(formData.status);
-
   // update data api
   const UPDATEAPI = `${PORT}/updatedoctors/${formUpdateData.id}`;
 

@@ -6,7 +6,6 @@ import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import { Fetch } from "../../../utils/Fetch";
 import { NavLink } from "react-router-dom";
-import { hospitalFields } from "../../../constant/Fields";
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/gethospitals`;
 
@@ -60,7 +59,7 @@ const Hospital = () => {
       <div className="container mx-auto p-4">
         <div className="flex justify-between align-middle text-center">
           <h1 className="text-2xl font-bold mb-4">Hospitals</h1>
-          <NavLink to="/profile">
+          <NavLink to="/hospital-profile">
             <span className="border-b-2 border-b-primary">Add +</span>
           </NavLink>
         </div>

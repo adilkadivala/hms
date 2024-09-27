@@ -2,8 +2,32 @@ import Layout from "../layout/Main";
 import Label from "../../ui/Label";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
+import { useState } from "react";
+import { hospitalFields } from "../../../constant/Fields";
+import { handleInput } from "../../../utils/handleInput";
+import { Insert } from "../../../utils/Insert";
+import { useUpdate } from "../../../utils/Update";
+import { NavLink } from "react-router-dom";
 
 const HospitalForm = () => {
+  const [formData, setFormData] = useState({ ...hospitalFields });
+  const [formUpdateData, setFormUpdateData] = useState({});
+  const oldData = {};
+  const handleFormSubmit = () => {
+    console.log("form handler");
+  };
+  const { handleInsertSubmit } = Insert();
+  const { handleUpdateSubmit } = useUpdate();
+
+  //password visibility handler
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  // password visibility handler
+  const handlePasswordVisible = (e) => {
+    e.preventDefault();
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <Layout>
       <div className="border border-gray-300 rounded">
@@ -33,7 +57,7 @@ const HospitalForm = () => {
                   alt="Avatar"
                 />
 
-                <Label htmlFor="H_image">Profile photo</Label>
+                <Label htmlFor="H_image">Hospital Profile</Label>
               </div>
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row items-start gap-5">
@@ -49,25 +73,23 @@ const HospitalForm = () => {
               </div>
             </div>
             {/* Full name */}
-            <div className="mt-2">
-              <Label htmlFor="H_name">Hospital name</Label>
-            </div>
-            <div>
-              <Input
-                id="H_name"
-                type="text"
-                value={formData?.H_name || formUpdateData?.H_name || ""}
-                name="H_name"
-                placeHolder="Dr. John Doe"
-                className="bg-transparent"
-                onChange={handleInput(
-                  oldData ? setFormUpdateData : setFormData
-                )}
-              />
-            </div>
-            {/* Email */} {/* H_password */}
-            <div className="flex w-full mt-3 justify-between">
-              <div className="flex items-center gap-5 w-[40%]">
+            <div className="flex w-full mt-3 justify-between ">
+              <div className="flex flex-col  gap-5 w-[40%]">
+                <Label htmlFor="H_name">Hospital name</Label>
+                <Input
+                  id="H_name"
+                  type="text"
+                  value={formData?.H_name || formUpdateData?.H_name || ""}
+                  name="H_name"
+                  placeHolder="Apollo multispecilist"
+                  className="bg-transparent"
+                  onChange={handleInput(
+                    oldData ? setFormUpdateData : setFormData
+                  )}
+                />
+              </div>
+              {/* Email */} {/* H_password */}
+              <div className="flex flex-col  gap-5 w-[40%]">
                 <Label htmlFor="H_email_id">Email</Label>
                 <Input
                   id="H_email_id"
@@ -83,14 +105,13 @@ const HospitalForm = () => {
                   )}
                 />
               </div>
-
-              <div className="flex items-center gap-5 relative w-[40%]">
+              <div className="flex flex-col  gap-5 relative w-[40%]">
                 <Label htmlFor="H_password">password</Label>
                 <Input
                   id="H_password"
-                  type={isH_passwordVisible ? "text" : "H_password"}
+                  type={isPasswordVisible ? "text" : "H_password"}
                   name="H_password"
-                  placeHolder="Enter your H_password"
+                  placeHolder="Enter hospital Password"
                   className="bg-transparent"
                   value={
                     formData?.H_password || formUpdateData?.H_password || ""
@@ -99,18 +120,22 @@ const HospitalForm = () => {
                     oldData ? setFormUpdateData : setFormData
                   )}
                 />
-                <Button type="button" onClick={handleH_passwordVisible}>
+                <Button
+                  type="button"
+                  className="border-none"
+                  onClick={handlePasswordVisible}
+                >
                   <i
                     className={`fa-solid ${
-                      isH_passwordVisible ? `fa-eye-slash` : `fa-eye`
-                    } absolute pointer z-10 right-5 top-3`}
+                      isPasswordVisible ? `fa-eye-slash` : `fa-eye`
+                    } absolute pointer z-10 right-5 top-[3.7rem]`}
                   ></i>
                 </Button>
               </div>
             </div>
             {/* Doctor Degree */}
             <div className="flex w-full mt-3 justify-between">
-              <div className="flex items-center gap-5 w-[40%]">
+              <div className="flex items-center gap-5 w-[45%]">
                 <Label htmlFor="H_category">Hospital category</Label>
                 <Input
                   id="H_category"
@@ -126,10 +151,10 @@ const HospitalForm = () => {
                   )}
                 />
               </div>
-            </div>
-            {/*  Contact */}
-            <div className="flex w-full mt-3 justify-between items-center">
-              <div className=" w-[30%]">
+
+              {/*  Contact */}
+
+              <div className="flex items-center gap-5 w-[45%]">
                 <Label htmlFor="H_contact_no">Contact No</Label>
                 <Input
                   id="H_contact_no"
@@ -184,51 +209,51 @@ const HospitalForm = () => {
                 />
               </div>
             </div>
-            {/* H_advance_Appointment */}
-            <div className="mt-2">
-              <Label htmlFor="H_advance_Appointment">
-                H_advance_Appointment
-              </Label>
-            </div>
-            <div>
-              <select
-                className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
-                id="H_advance_Appointment"
-                name="H_advance_Appointment"
-                value={
-                  formUpdateData?.H_advance_Appointment ||
-                  formData?.H_advance_Appointment ||
-                  "true"
-                }
-                onChange={handleInput(
-                  oldData ? setFormUpdateData : setFormData
-                )}
-              >
-                <option value="active">True</option>
-                <option value="inactive">False</option>
-              </select>
-            </div>
-            {/* H_advance_Appointment */}
-            <div className="mt-2">
-              <Label htmlFor="H_Todays_Appointment">H_Todays_Appointment</Label>
-            </div>
-            <div>
-              <select
-                className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
-                id="H_Todays_Appointment"
-                name="H_Todays_Appointment"
-                value={
-                  formUpdateData?.H_Todays_Appointment ||
-                  formData?.H_Todays_Appointment ||
-                  "true"
-                }
-                onChange={handleInput(
-                  oldData ? setFormUpdateData : setFormData
-                )}
-              >
-                <option value="active">True</option>
-                <option value="inactive">False</option>
-              </select>
+            {/* H_advance_Appointment */} {/* H_advance_Appointment */}
+            <div className="flex w-full mt-3 justify-between">
+              <div className="flex items-center gap-5 w-[45%]">
+                <Label htmlFor="H_advance_Appointment">
+                  H_advance_Appointment
+                </Label>
+                <select
+                  className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
+                  id="H_advance_Appointment"
+                  name="H_advance_Appointment"
+                  value={
+                    formUpdateData?.H_advance_Appointment ||
+                    formData?.H_advance_Appointment ||
+                    "true"
+                  }
+                  onChange={handleInput(
+                    oldData ? setFormUpdateData : setFormData
+                  )}
+                >
+                  <option value="active">True</option>
+                  <option value="inactive">False</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-5 w-[45%]">
+                <Label htmlFor="H_Todays_Appointment">
+                  H_Todays_Appointment
+                </Label>
+                <select
+                  className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
+                  id="H_Todays_Appointment"
+                  name="H_Todays_Appointment"
+                  value={
+                    formUpdateData?.H_Todays_Appointment ||
+                    formData?.H_Todays_Appointment ||
+                    "true"
+                  }
+                  onChange={handleInput(
+                    oldData ? setFormUpdateData : setFormData
+                  )}
+                >
+                  <option value="active">True</option>
+                  <option value="inactive">False</option>
+                </select>
+              </div>
             </div>
             <div className="flex justify-end gap-2 sm:col-span-12">
               <Button
@@ -238,7 +263,7 @@ const HospitalForm = () => {
                 {oldData ? "Save changes" : "Submit"}
               </Button>
               <NavLink
-                to="/doctors"
+                to="/hospitals"
                 className="p-3 text-red-700 rounded border-none border border-primary"
               >
                 Cancel
