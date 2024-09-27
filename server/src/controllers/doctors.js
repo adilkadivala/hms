@@ -58,6 +58,9 @@ const insertDoctor = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
   const { id } = req.params;
   const hashedPassword = await bcrypt.hash(req.body.Password, 10);
+  console.log(id);
+  console.log(req.body);
+  console.log(req.file);
 
   let newProfileImg;
   if (req.file && req.file.filename) {
@@ -76,11 +79,14 @@ const updateDoctorProfile = async (req, res) => {
     Doctor_speciality: req.body.Doctor_speciality,
     Profile_image: newProfileImg,
     Alternate_contact: req.body.Alternate_contact,
+    Doctor_fees: req.body.Doctor_fees,
     Whatsapp_no: req.body.Whatsapp_no,
     Address: req.body.Address,
     City: req.body.City,
     Country: req.body.Country,
     Region: req.body.Region,
+    status: req.body.status || "Active",
+    Approval_status: "Pending",
     Updated_by: req.body.Updated_by || "Admin",
     updatedAt: new Date(),
   };

@@ -21,3 +21,24 @@ export const doctorFormData = {
   Updated_by: "",
   Approved_by: "",
 };
+
+export const hospitalFields = {
+  id: "",
+  H_image: "",
+  H_name: "",
+  H_category: "",
+  H_short_add: "",
+  H_full_add: "",
+  H_contact_no: "",
+  H_advance_Appointment: true,
+  H_Todays_Appointment: false,
+  H_email_id: "",
+  H_password: "",
+  Amenities: "",
+  Description: "",
+  status: "",
+  Approval_status: "",
+  Created_by: "",
+  Updated_by: "",
+  Approved_by: "",
+};

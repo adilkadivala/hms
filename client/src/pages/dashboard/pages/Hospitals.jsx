@@ -5,6 +5,8 @@ import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import { Fetch } from "../../../utils/Fetch";
+import { NavLink } from "react-router-dom";
+import { hospitalFields } from "../../../constant/Fields";
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/gethospitals`;
 
@@ -56,7 +58,12 @@ const Hospital = () => {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Hospital Table</h1>
+        <div className="flex justify-between align-middle text-center">
+          <h1 className="text-2xl font-bold mb-4">Hospitals</h1>
+          <NavLink to="/profile">
+            <span className="border-b-2 border-b-primary">Add +</span>
+          </NavLink>
+        </div>
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
