@@ -7,10 +7,12 @@ import Input from "../../ui/Input";
 const DeleteModal = ({
   toggleModal = () => {},
   handleDelete = () => {},
-  DoctorIDForDelete = {},
-  setDoctorNameInput = () => {},
+  setInputName = () => {},
   nameError = {},
-  doctorNameInput = {},
+  inputName = {},
+  conformDataName = "",
+  placeHolder = "",
+  conformText = "",
 }) => {
   return (
     <Modal
@@ -35,16 +37,16 @@ const DeleteModal = ({
     >
       <div className="flex flex-col gap-3">
         <p>
-          Are you sure you want to delete
-          <span className="text-primary">{DoctorIDForDelete.Doctor_name}?</span>
+          Are you sure you want to delete {""}
+          <span className="text-primary">{conformDataName}?</span>
         </p>
-        <p>Write Down Doctor's Name to Confirm:</p>
+        <p>{conformText}</p>
         <Input
           type="text"
-          name="doctorNameInput"
-          placeHolder="Dr. Name Here"
-          value={doctorNameInput}
-          onChange={handleModelInput(setDoctorNameInput)}
+          name="inputName"
+          placeHolder={placeHolder}
+          value={inputName}
+          onChange={handleModelInput(setInputName)}
         />
         {nameError && <p className="text-red-600">{nameError}</p>}
       </div>

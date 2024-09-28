@@ -5,17 +5,68 @@ import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import { Fetch } from "../../../utils/Fetch";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Delete } from "../../../utils/Delete";
+import DeleteModal from "../compoenets/DeleteModal";
+import { HospitalViewModal } from "../compoenets/ViewModal";
 const PORT = import.meta.env.VITE_SERVER_API;
 const API = `${PORT}/gethospitals`;
 
 const Hospital = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
+  // functions
+  const { data, isLoading, error, getData } = Fetch();
+  const { deleteData, setError, setIsLoading } = Delete();
+  const navigate = useNavigate();
+  // states
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [inputName, setInputName] = useState("");
+  const [hospitalData, setHospitalData] = useState(null);
+  const [nameError, setNameError] = useState(null);
 
-  const toggleModal = () => setModalOpen((prev) => !prev);
+  // handler
+  const toggleModal = () => {
+    setIsDeleteModalOpen((prev) => !prev);
+    setInputName("");
+    setNameError(null);
+  };
+
+  const toggleUpdateHospital = (hospital) => {
+    navigate("/hospital-profile", { state: { hospital } });
+  };
+
+  // delete conformation
+  const confirmDelete = (hospital) => {
+    setHospitalData(hospital);
+    toggleModal();
+  };
+
+  const handleDelete = async () => {
+    if (hospitalData.H_name === inputName) {
+      setIsLoading(true);
+      try {
+        const apiURL = `${PORT}/deletehospital/${hospitalData.id}`;
+        await deleteData(apiURL);
+        getData(API);
+        toggleModal();
+      } catch (error) {
+        setError(error);
+      }
+    } else {
+      setNameError(
+        "Hospital's name doesn't match. Please enter the correct name."
+      );
+    }
+  };
+
+  // view Modal
+  const toggleViewModal = (hospitalView) => {
+    setIsViewModalOpen((prev) => !prev);
+    setHospitalData(hospitalView);
+  };
 
   const columns = [
-    { Header: "Hospital Image", accessor: "H_image" },
+    { Header: "image", accessor: "H_image" },
     { Header: "Hospital Name", accessor: "H_name" },
     { Header: "Hospital Category", accessor: "H_category" },
     { Header: "Email", accessor: "H_email_id" },
@@ -24,15 +75,13 @@ const Hospital = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const { data, isLoading, error, getData } = Fetch();
-
   useEffect(() => {
     getData(API);
   }, []);
 
   const tableData = data
     ? data.map((hospital) => ({
-        H_image: hospital.H_image,
+        H_image: `/upload/${hospital.H_image}`,
         H_name: hospital.H_name,
         H_category: hospital.H_category,
         H_email_id: hospital.H_email_id,
@@ -40,13 +89,22 @@ const Hospital = () => {
         status: hospital.status,
         actions: (
           <div className="flex items-center justify-center gap-3">
-            <Button className="bg-none border-none" onClick={toggleModal}>
+            <Button
+              className="bg-none border-none"
+              onClick={() => toggleUpdateHospital(hospital)}
+            >
               <i className="fa-solid fa-pen text-primary"></i>
             </Button>
-            <Button className=" bg-none border-none" onClick={toggleModal}>
+            <Button
+              className=" bg-none border-none"
+              onClick={() => confirmDelete(hospital)}
+            >
               <i className="fa-solid fa-trash text-red-600"></i>
             </Button>
-            <Button className="bg-none border-none" onClick={toggleModal}>
+            <Button
+              className="bg-none border-none"
+              onClick={() => toggleViewModal(hospital)}
+            >
               <i className="fa-solid fa-eye text-slate-400"></i>
             </Button>
           </div>
@@ -68,27 +126,24 @@ const Hospital = () => {
         {error && <p>Error: {error}</p>}
         {data && <Table columns={columns} data={tableData} />}
 
-        {isModalOpen && (
-          <Modal
-            isOpen={isModalOpen}
-            onClose={toggleModal}
-            title="Vertically Centered Modal"
-            footer={
-              <>
-                <Button
-                  className="py-2 px-3 bg-gray-50 text-primary"
-                  onClick={toggleModal}
-                >
-                  Close
-                </Button>
-                <Button className="py-2 px-3 bg-blue-600 text-white">
-                  Save changes
-                </Button>
-              </>
-            }
-          >
-            <p>This is a reusable modal component!</p>
-          </Modal>
+        {isViewModalOpen && (
+          <HospitalViewModal
+            toggleModal={toggleViewModal}
+            hospitalToView={hospitalData}
+          />
+        )}
+
+        {isDeleteModalOpen && hospitalData && (
+          <DeleteModal
+            toggleModal={toggleModal}
+            handleDelete={handleDelete}
+            conformDataName={hospitalData.H_name}
+            setInputName={setInputName}
+            nameError={nameError}
+            inputName={inputName}
+            placeHolder="hospital Name here"
+            conformText="Write down hospital name below"
+          />
         )}
       </div>
     </Layout>

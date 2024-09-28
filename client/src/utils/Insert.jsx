@@ -14,7 +14,6 @@ export const Insert = () => {
 
     for (const key in data) {
       formData.append(key, data[key]);
-      console.log(data);
     }
 
     try {

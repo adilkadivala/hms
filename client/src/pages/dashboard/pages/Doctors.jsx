@@ -5,7 +5,7 @@ import Button from "../../ui/Button";
 import { Fetch } from "../../../utils/Fetch";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
-import ViewModal from "../compoenets/ViewModal";
+import { DoctorViewModal } from "../compoenets/ViewModal";
 import DeleteModal from "../compoenets/DeleteModal";
 
 const PORT = import.meta.env.VITE_SERVER_API;
@@ -20,8 +20,8 @@ const Doctor = () => {
   // states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [DoctorID, setDoctorID] = useState(null);
-  const [doctorNameInput, setDoctorNameInput] = useState("");
+  const [DoctorData, setDoctorData] = useState(null);
+  const [inputName, setInputName] = useState("");
   const [nameError, setNameError] = useState(null);
 
   // edit Doctor handler
@@ -32,14 +32,14 @@ const Doctor = () => {
   // delete modal
   const toggleModal = () => {
     setIsDeleteModalOpen((prev) => !prev);
-    setDoctorNameInput("");
+    setInputName("");
     setNameError(null);
   };
 
   // view Modal
   const toggleViewModal = (DoctorView) => {
     setIsViewModalOpen((prev) => !prev);
-    setDoctorID(DoctorView);
+    setDoctorData(DoctorView);
   };
 
   // getting data via network api on page rendering
@@ -49,16 +49,16 @@ const Doctor = () => {
 
   // delete conformation
   const confirmDelete = (doctor) => {
-    setDoctorID(doctor);
+    setDoctorData(doctor);
     toggleModal();
   };
 
   // deleting Data
   const handleDelete = async () => {
-    if (DoctorID.Doctor_name === doctorNameInput) {
+    if (DoctorData.Doctor_name === inputName) {
       setIsLoading(true);
       try {
-        const apiUrl = `${PORT}/deletedoctor/${DoctorID.id}`;
+        const apiUrl = `${PORT}/deletedoctor/${DoctorData.id}`;
         await deleteData(apiUrl);
         getData(API);
         toggleModal();
@@ -132,21 +132,23 @@ const Doctor = () => {
         {data && <Table columns={columns} data={tableData} />}
 
         {/* delete modal */}
-        {isDeleteModalOpen && DoctorID && (
+        {isDeleteModalOpen && DoctorData && (
           <DeleteModal
             toggleModal={toggleModal}
             handleDelete={handleDelete}
-            DoctorIDForDelete={DoctorID}
-            setDoctorNameInput={setDoctorNameInput}
+            setInputName={setInputName}
             nameError={nameError}
-            doctorNameInput={doctorNameInput}
+            conformDataName={DoctorData.Doctor_name}
+            placeHolder="Dr. name"
+            conformText="Write down Dr. name below"
+            inputName={inputName}
           />
         )}
         {/* delete modal */}
 
         {/* view modal */}
         {isViewModalOpen && (
-          <ViewModal toggleModal={toggleViewModal} doctorToView={DoctorID} />
+          <DoctorViewModal toggleModal={toggleViewModal} doctorToView={DoctorData} />
         )}
         {/* view modal */}
       </div>

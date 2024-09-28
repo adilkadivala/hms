@@ -58,9 +58,6 @@ const insertDoctor = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
   const { id } = req.params;
   const hashedPassword = await bcrypt.hash(req.body.Password, 10);
-  console.log(id);
-  console.log(req.body);
-  console.log(req.file);
 
   let newProfileImg;
   if (req.file && req.file.filename) {

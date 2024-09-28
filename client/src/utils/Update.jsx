@@ -1,10 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 export const useUpdate = () => {
-  const navigate = useNavigate();
   const [error, setError] = useState(null);
 
   const handleUpdateSubmit = async (url, data) => {
@@ -13,7 +11,6 @@ export const useUpdate = () => {
 
     for (const key in data) {
       formData.append(key, data[key]);
-      console.log(data);
     }
 
     try {
@@ -22,7 +19,6 @@ export const useUpdate = () => {
       });
       if (response.status === 200) {
         toast.success("Data updated successfully!");
-        navigate("/doctors");
       }
     } catch (error) {
       console.error("Error updating data:", error);

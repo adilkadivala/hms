@@ -1,7 +1,11 @@
 import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
 
-const ViewModal = ({ toggleModal = () => {}, doctorToView = {} }) => {
+// doctor view modal
+export const DoctorViewModal = ({
+  toggleModal = () => {},
+  doctorToView = {},
+}) => {
   const {
     Doctor_name,
     Profile_image,
@@ -86,4 +90,85 @@ const ViewModal = ({ toggleModal = () => {}, doctorToView = {} }) => {
   );
 };
 
-export default ViewModal;
+// hospital view modal
+
+export const HospitalViewModal = ({
+  toggleModal = () => {},
+  hospitalToView = {},
+}) => {
+  const {
+    H_image,
+    H_name,
+    H_category,
+    H_contact_no,
+    H_email_id,
+    H_Todays_Appointment,
+    H_advance_Appointment,
+    Amenities,
+    status,
+  } = hospitalToView;
+  return (
+    <Modal
+      onClose={toggleModal}
+      title={`About  ${H_name}`}
+      data={hospitalToView}
+      width="w-[50%]"
+      height="h-[55%]"
+      footer={
+        <>
+          <Button
+            className="bg-gray-600 text-white py-2 px-4 rounded-full"
+            onClick={toggleModal}
+          >
+            Close
+          </Button>
+        </>
+      }
+    >
+      <div className="flex flex-col rounded p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
+        <div className="flex items-center gap-x-4">
+          <img
+            className="rounded size-40"
+            src={`/upload/${H_image}`}
+            alt="Avatar"
+          />
+          <div className="grow">
+            <h3 className="font-medium text-secondry dark:text-neutral-200">
+              Name : <span className="text-xs text-primary ">{H_name}</span>
+            </h3>
+            <h4 className=" uppercase text-secondry dark:text-neutral-500">
+              Degree :{" "}
+              <span className="text-xs text-primary ">{H_category}</span>{" "}
+            </h4>
+            <h4 className=" uppercase text-secondry dark:text-neutral-500">
+              Email :{" "}
+              <span className="text-xs  text-primary">{H_email_id}</span>
+            </h4>
+            <h4 className=" uppercase text-secondry dark:text-neutral-500">
+              Contact No :{" "}
+              <span className="text-xs  text-primary">{H_contact_no}</span>{" "}
+            </h4>
+            <h4 className=" uppercase text-secondry dark:text-neutral-500">
+              Amenities :{" "}
+              <span className="text-xs  text-primary">{Amenities}</span>
+            </h4>
+            <h4 className=" uppercase text-secondry dark:text-neutral-500 ">
+              Country :{" "}
+              <span className="text-xs  text-primary">
+                {H_Todays_Appointment}
+              </span>{" "}
+              H_advance_Appointment :{" "}
+              <span className="text-xs  text-primary">
+                {H_advance_Appointment}
+              </span>{" "}
+            </h4>
+
+            <h4 className=" uppercase text-secondry dark:text-neutral-500">
+              status : <span className="text-xs  text-primary">{status}</span>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+};

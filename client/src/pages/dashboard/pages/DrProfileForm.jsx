@@ -1,47 +1,40 @@
 import Input from "../../ui/Input";
-import { doctorFormData } from "../../../constant/Fields";
+import Layout from "../layout/Main";
 import Label from "../../ui/Label";
+import Button from "../../ui/Button";
 import { useEffect, useState } from "react";
+import { doctorFormData } from "../../../constant/Fields";
 import { Insert } from "../../../utils/Insert";
 import { handleInput } from "../../../utils/handleInput";
-import { NavLink, useLocation } from "react-router-dom";
-import Button from "../../ui/Button";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUpdate } from "../../../utils/Update";
-import Layout from "../layout/Main";
+import { togglePassword } from "../../../lib";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/insertdoctors`;
 
 const DrProfileForm = () => {
   const doctorDataForUpdate = useLocation();
+  const navigate = useNavigate();
   const oldData = doctorDataForUpdate?.state?.doctor || null;
   const [formData, setFormData] = useState({ ...doctorFormData });
   const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
+  const { isPasswordVisible, handlePasswordVisible } = togglePassword();
 
   // update data api
   const UPDATEAPI = `${PORT}/updatedoctors/${formUpdateData.id}`;
-
-  //password visibility handler
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  // password visibility handler
-  const handlePasswordVisible = (e) => {
-    e.preventDefault();
-    setIsPasswordVisible(!isPasswordVisible);
-  };
 
   // data insertion handler...
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Form data before submission:", formData);
-
     if (oldData) {
       try {
         await handleUpdateSubmit(UPDATEAPI, formUpdateData);
         console.log(formUpdateData);
+        navigate("/doctors");
       } catch (error) {
         console.error("Update error:", error);
         setError(error.message || "An error occurred while updating");
@@ -49,10 +42,10 @@ const DrProfileForm = () => {
     } else {
       try {
         await handleInsertSubmit(INSERTAPI, formData);
-        console.log(formData);
+        navigate("/doctors");
       } catch (error) {
         console.error("Insert error:", error);
-        setError(error.message || "An error occurred while inserting");
+        setError(error.message || "An error occurred while creating doctor");
       }
     }
   };
