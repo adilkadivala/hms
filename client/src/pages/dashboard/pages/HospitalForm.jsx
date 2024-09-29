@@ -9,6 +9,7 @@ import { Insert } from "../../../utils/Insert";
 import { useUpdate } from "../../../utils/Update";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { togglePassword } from "../../../lib";
+import { useFetchApi } from "../../../storage/Fetch";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/createhospital`;
@@ -17,6 +18,7 @@ const HospitalForm = () => {
   // functions
   const hospitalDataforUpdate = useLocation();
   const navigate = useNavigate();
+  const { getHospitals } = useFetchApi();
   const oldData = hospitalDataforUpdate?.state?.hospital || null;
   const { isPasswordVisible, handlePasswordVisible } = togglePassword();
   const { handleInsertSubmit } = Insert();
@@ -37,6 +39,7 @@ const HospitalForm = () => {
         await handleUpdateSubmit(UPDATEAPI, formUpdateData);
         console.log(formUpdateData);
         navigate("/hospitals");
+        getHospitals();
       } catch (error) {
         console.error("Update error:", error);
         setError(error.message || "An error occurred while updating");
@@ -45,6 +48,7 @@ const HospitalForm = () => {
       try {
         await handleInsertSubmit(INSERTAPI, formData);
         navigate("/hospitals");
+        getHospitals();
       } catch (error) {
         console.error(error);
         setError(error.message || "An error occurred while creating hospital");

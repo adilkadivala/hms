@@ -1,41 +1,37 @@
 import Layout from "../layout/Main";
 import Label from "../../ui/Label";
 import Button from "../../ui/Button";
-import Input from "../../ui/Input";
+
 import { useEffect, useState } from "react";
 import { appointmentfields } from "../../../constant/Fields";
 import { handleInput } from "../../../utils/handleInput";
 import { Insert } from "../../../utils/Insert";
 import { useUpdate } from "../../../utils/Update";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Fetch } from "../../../utils/Fetch";
+import { useFetchApi } from "../../../storage/Fetch";
 
 // apies
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/createappointments`;
-const DOCTORAPI = `${PORT}/getdoctors`;
-const HOSPITALAPI = `${PORT}/gethospitals`;
-const PATIENTSRAPI = `${PORT}/getpatients`;
 
 const AppointmentForm = () => {
   // functions
-  const hospitalDataforUpdate = useLocation();
+  const appointmentDataforUpdate = useLocation();
   const navigate = useNavigate();
-  const oldData = hospitalDataforUpdate?.state?.hospital || null;
+  const { hospitals, doctors, patients, getAppointments } = useFetchApi();
+  const oldData = appointmentDataforUpdate?.state?.appointment || null;
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
-  const { data, isLoading, error, getData } = Fetch();
-  console.log(data);
-  console.log(data);
-  console.log(data);
+  console.log(oldData);
 
   // states
   const [formData, setFormData] = useState({ ...appointmentfields });
   console.log(formData);
   const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
+  console.log(formUpdateData);
 
   // api
-  const UPDATEAPI = `${PORT}/updatehospital/${formUpdateData.id}`;
+  const UPDATEAPI = `${PORT}/updateappointments/${formUpdateData.id}`;
 
   // formhandler
   const handleFormSubmit = async (e) => {
@@ -44,7 +40,8 @@ const AppointmentForm = () => {
       try {
         await handleUpdateSubmit(UPDATEAPI, formUpdateData);
         console.log(formUpdateData);
-        navigate("/hospitals");
+        navigate("/appointments");
+        getAppointments();
       } catch (error) {
         console.error("Update error:", error);
         setError(error.message || "An error occurred while updating");
@@ -52,7 +49,8 @@ const AppointmentForm = () => {
     } else {
       try {
         await handleInsertSubmit(INSERTAPI, formData);
-        navigate("/hospitals");
+        navigate("/appointments");
+        getAppointments();
       } catch (error) {
         console.error(error);
         setError(error.message || "An error occurred while creating hospital");
@@ -66,12 +64,6 @@ const AppointmentForm = () => {
       setFormUpdateData(formUpdateData);
     }
   }, [formUpdateData]);
-
-  useEffect(() => {
-    getData(DOCTORAPI);
-    getData(HOSPITALAPI);
-    getData(PATIENTSRAPI);
-  }, []);
 
   return (
     <Layout>
@@ -94,19 +86,21 @@ const AppointmentForm = () => {
                 <Label htmlFor="hospital_id"> select Hospital </Label>
                 <select
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
-                  id="Approved_by"
-                  name="Approved_by"
-                  value={
-                    formUpdateData?.Approved_by ||
-                    formData?.Approved_by ||
-                    "admin"
-                  }
+                  id="hospital_id"
+                  name="hospital_id"
+                  value={formUpdateData?.hospital_id || formData?.hospital_id}
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
-                  <option value="admin">Admin</option>
-                  <option value="hospital">Hospital</option>
+                  <option value="" disabled>
+                    select hospiotal name
+                  </option>
+                  {hospitals?.map((h) => (
+                    <option key={h.id} value={h.id}>
+                      {h.H_name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -114,38 +108,42 @@ const AppointmentForm = () => {
                 <Label htmlFor="doctor_id">select doctor</Label>
                 <select
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
-                  id="Approved_by"
-                  name="Approved_by"
-                  value={
-                    formUpdateData?.Approved_by ||
-                    formData?.Approved_by ||
-                    "admin"
-                  }
+                  id="doctor_id"
+                  name="doctor_id"
+                  value={formUpdateData?.doctor_id || formData?.doctor_id}
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
-                  <option value="admin">Admin</option>
-                  <option value="hospital">Hospital</option>
+                  <option value="" disabled>
+                    select Doctor name
+                  </option>
+                  {doctors?.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.Doctor_name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="flex flex-col  gap-5 relative w-[40%]">
                 <Label htmlFor="patient_id">select patient</Label>
                 <select
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
-                  id="Approved_by"
-                  name="Approved_by"
-                  value={
-                    formUpdateData?.Approved_by ||
-                    formData?.Approved_by ||
-                    "admin"
-                  }
+                  id="patient_id"
+                  name="patient_id"
+                  value={formUpdateData?.patient_id || formData?.patient_id}
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
-                  <option value="admin">Admin</option>
-                  <option value="hospital">Hospital</option>
+                  <option value="" disabled>
+                    select patients
+                  </option>
+                  {patients?.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.first_name} {p.last_name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -160,13 +158,15 @@ const AppointmentForm = () => {
                   name="Appointment_type"
                   value={
                     formUpdateData?.Appointment_type ||
-                    formData?.Appointment_type ||
-                    "today"
+                    formData?.Appointment_type
                   }
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
+                  <option value="" disabled>
+                    select Appointment type
+                  </option>
                   <option value="today">Today</option>
                   <option value="advance">advance</option>
                 </select>
@@ -179,20 +179,21 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Status"
                   name="Status"
-                  value={
-                    formUpdateData?.Status || formData?.Status || "pending"
-                  }
+                  value={formUpdateData?.Status || formData?.Status}
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
+                  <option value="" disabled>
+                    select Appointment Status
+                  </option>
                   <option value="pending">Pending</option>
-                  <option value="Approved">Approved</option>
-                  <option value="declined">Declined</option>
+                  <option value="accept">Accept</option>
+                  <option value="reject">Reject</option>
                 </select>
               </div>
             </div>
-            {/* created_by */} {/* Approved_by */}
+            {/* created_by */}
             <div className="flex w-full mt-3 justify-between">
               <div className="flex flex-col gap-5 w-[45%]">
                 <Label htmlFor="Created_by">Created By</Label>
@@ -200,15 +201,14 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Created_by"
                   name="Created_by"
-                  value={
-                    formUpdateData?.Created_by ||
-                    formData?.Created_by ||
-                    "admin"
-                  }
+                  value={formUpdateData?.Created_by || formData?.Created_by}
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
+                  <option value="" disabled>
+                    Appointment Created By
+                  </option>
                   <option value="admin">Admin</option>
                   <option value="hospital">Hospital</option>
                 </select>
@@ -220,15 +220,14 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Approved_by"
                   name="Approved_by"
-                  value={
-                    formUpdateData?.Approved_by ||
-                    formData?.Approved_by ||
-                    "admin"
-                  }
+                  value={formUpdateData?.Approved_by || formData?.Approved_by}
                   onChange={handleInput(
                     oldData ? setFormUpdateData : setFormData
                   )}
                 >
+                  <option value="" disabled>
+                    Appointment Approved By
+                  </option>
                   <option value="admin">Admin</option>
                   <option value="hospital">Hospital</option>
                 </select>

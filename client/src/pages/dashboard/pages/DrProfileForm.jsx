@@ -9,6 +9,7 @@ import { handleInput } from "../../../utils/handleInput";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUpdate } from "../../../utils/Update";
 import { togglePassword } from "../../../lib";
+import { useFetchApi } from "../../../storage/Fetch";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/insertdoctors`;
@@ -16,6 +17,7 @@ const INSERTAPI = `${PORT}/insertdoctors`;
 const DrProfileForm = () => {
   const doctorDataForUpdate = useLocation();
   const navigate = useNavigate();
+  const { getDoctors } = useFetchApi();
   const oldData = doctorDataForUpdate?.state?.doctor || null;
   const [formData, setFormData] = useState({ ...doctorFormData });
   const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
@@ -35,6 +37,7 @@ const DrProfileForm = () => {
         await handleUpdateSubmit(UPDATEAPI, formUpdateData);
         console.log(formUpdateData);
         navigate("/doctors");
+        getDoctors();
       } catch (error) {
         console.error("Update error:", error);
         setError(error.message || "An error occurred while updating");
@@ -43,6 +46,7 @@ const DrProfileForm = () => {
       try {
         await handleInsertSubmit(INSERTAPI, formData);
         navigate("/doctors");
+        getDoctors();
       } catch (error) {
         console.error("Insert error:", error);
         setError(error.message || "An error occurred while creating doctor");

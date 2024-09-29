@@ -1,18 +1,23 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
+const PORT = import.meta.env.VITE_SERVER_API;
 
 const Appointment = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const { appointments, isLoading, error } = useFetchApi();
-
-
+  const { appointments, isLoading, error, hospitals, doctors, patients } =
+    useFetchApi();
   const toggleModal = () => setModalOpen((prev) => !prev);
+  const navigate = useNavigate();
+
+  // edit Appointment handler
+  const toggleUpdateDoctor = (appointment) => {
+    navigate("/appointment-form", { state: { appointment } });
+  };
 
   const columns = [
     { Header: "patient Name", accessor: "patient_id" },
@@ -25,30 +30,42 @@ const Appointment = () => {
   ];
 
   const tableData = appointments
-    ? appointments.map((appointment) => ({
-        patient_id: appointment.patient_id,
-        hospital_id: appointment.hospital_id,
-        Appointment_type: appointment.Appointment_type,
-        doctor_id: appointment.doctor_id,
-        token_number: appointment.token_number,
-        Status: appointment.Status,
-        actions: (
-          <div className="flex items-center justify-center gap-3">
-            <Button className="bg-none border-none" onClick={toggleModal}>
-              <i className="fa-solid fa-pen text-primary"></i>
-            </Button>
-            <Button
-              className="bg-none border-none  text-red-600"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-trash"></i>
-            </Button>
-            <Button className="bg-none border-none" onClick={toggleModal}>
-              <i className="fa-solid fa-eye text-slate-400"></i>
-            </Button>
-          </div>
-        ),
-      }))
+    ? appointments.map((appointment) => {
+        const patient = patients.find((p) => p.id === appointment.patient_id);
+
+        const hospital = hospitals.find(
+          (h) => h.id === appointment.hospital_id
+        );
+        const doctor = doctors.find((d) => d.id === appointment.doctor_id);
+
+        return {
+          patient_id: patient ? patient.first_name : "Unknown",
+          hospital_id: hospital ? hospital.H_name : "Unknown",
+          Appointment_type: appointment.Appointment_type,
+          doctor_id: doctor ? doctor.Doctor_name : "Unknown",
+          token_number: appointment.token_number,
+          Status: appointment.Status,
+          actions: (
+            <div className="flex items-center justify-center gap-3">
+              <Button
+                className="bg-none border-none"
+                onClick={() => toggleUpdateDoctor(appointments.id)}
+              >
+                <i className="fa-solid fa-pen text-primary"></i>
+              </Button>
+              <Button
+                className="bg-none border-none text-red-600"
+                onClick={toggleModal}
+              >
+                <i className="fa-solid fa-trash"></i>
+              </Button>
+              <Button className="bg-none border-none" onClick={toggleModal}>
+                <i className="fa-solid fa-eye text-slate-400"></i>
+              </Button>
+            </div>
+          ),
+        };
+      })
     : [];
 
   return (

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
+
+const PORT = import.meta.env.VITE_SERVER_API;
 
 import { NavLink, useNavigate } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
@@ -12,7 +13,7 @@ import { useFetchApi } from "../../../storage/Fetch";
 
 const Hospital = () => {
   // functions
-  const { hospitals, isLoading, error } = useFetchApi();
+  const { hospitals, isLoading, error, getHospitals } = useFetchApi();
   const { deleteData, setError, setIsLoading } = Delete();
   const navigate = useNavigate();
   // states
@@ -45,7 +46,7 @@ const Hospital = () => {
       try {
         const apiURL = `${PORT}/deletehospital/${hospitalData.id}`;
         await deleteData(apiURL);
-        getData(API);
+        getHospitals();
         toggleModal();
       } catch (error) {
         setError(error);
