@@ -54,7 +54,6 @@ const insertDoctor = async (req, res) => {
 };
 
 // update Doctor
-
 const updateDoctorProfile = async (req, res) => {
   const { id } = req.params;
   const hashedPassword = await bcrypt.hash(req.body.Password, 10);

@@ -4,14 +4,13 @@ import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import { Fetch } from "../../../utils/Fetch";
-const PORT = import.meta.env.VITE_SERVER_API;
-const API = `${PORT}/getappointments`;
+import { NavLink } from "react-router-dom";
+import { useFetchApi } from "../../../storage/Fetch";
 
 const Appointment = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { appointments, isLoading, error } = useFetchApi();
 
-  const { data, isLoading, error, getData } = Fetch();
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
@@ -25,12 +24,8 @@ const Appointment = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  useEffect(() => {
-    getData(API);
-  }, []);
-
-  const tableData = data
-    ? data.map((appointment) => ({
+  const tableData = appointments
+    ? appointments.map((appointment) => ({
         patient_id: appointment.patient_id,
         hospital_id: appointment.hospital_id,
         Appointment_type: appointment.Appointment_type,
@@ -38,24 +33,18 @@ const Appointment = () => {
         token_number: appointment.token_number,
         Status: appointment.Status,
         actions: (
-          <div className="flex items-center gap-1">
-            <Button
-              className="py-2 px-3 rounded-full bg-primary text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-pen"></i>
+          <div className="flex items-center justify-center gap-3">
+            <Button className="bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-pen text-primary"></i>
             </Button>
             <Button
-              className="py-2 px-3  rounded-full bg-red-600 text-white"
+              className="bg-none border-none  text-red-600"
               onClick={toggleModal}
             >
               <i className="fa-solid fa-trash"></i>
             </Button>
-            <Button
-              className="py-2 px-3  rounded-full bg-slate-400 text-white"
-              onClick={toggleModal}
-            >
-              <i className="fa-solid fa-eye"></i>
+            <Button className="bg-none border-none" onClick={toggleModal}>
+              <i className="fa-solid fa-eye text-slate-400"></i>
             </Button>
           </div>
         ),
@@ -65,11 +54,15 @@ const Appointment = () => {
   return (
     <Layout>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Appointment Table</h1>
-
+        <div className="flex justify-between align-middle text-center">
+          <h1 className="text-2xl font-bold mb-4">Appintments</h1>
+          <NavLink to="/appointment-form">
+            <span className="border-b-2 border-b-primary">Add +</span>
+          </NavLink>
+        </div>
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {appointments && <Table columns={columns} data={tableData} />}
 
         {isModalOpen && (
           <Modal

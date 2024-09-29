@@ -1,29 +1,45 @@
-// AllRoutes.js
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
+
+// web
+
+const Home = lazy(() => import("../pages/Home"));
 
 // Admin panel pages
-import Dashboard from "../pages/dashboard/pages/Dashboard";
-import Hospitals from "../pages/dashboard/pages/Hospitals";
-import Doctors from "../pages/dashboard/pages/Doctors";
-import Appointment from "../pages/dashboard/pages/Appointment";
-import Patients from "../pages/dashboard/pages/Patients";
-import DrProfileForm from "../pages/dashboard/pages/DrProfileForm";
-import HospitalForm from "../pages/dashboard/pages/HospitalForm";
+
+const Dashboard = lazy(() => import("../pages/dashboard/pages/Dashboard"));
+const Hospitals = lazy(() => import("../pages/dashboard/pages/Hospitals"));
+const Doctors = lazy(() => import("../pages/dashboard/pages/Doctors"));
+const Appointment = lazy(() => import("../pages/dashboard/pages/Appointment"));
+const Patients = lazy(() => import("../pages/dashboard/pages/Patients"));
+
+// forms
+const DrProfileForm = lazy(() =>
+  import("../pages/dashboard/pages/DrProfileForm")
+);
+const HospitalForm = lazy(() =>
+  import("../pages/dashboard/pages/HospitalForm")
+);
+const AppointmentForm = lazy(() =>
+  import("../pages/dashboard/pages/AppointmentForm")
+);
 
 const Pathes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/hospitals" element={<Hospitals />} />
-      <Route path="/doctors" element={<Doctors />} />
-      <Route path="/appointments" element={<Appointment />} />
-      <Route path="/patients" element={<Patients />} />
-      <Route path="/profile" element={<DrProfileForm />} />
-      <Route path="/hospital-profile" element={<HospitalForm />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <Suspense fallback="Loading ...">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/hospitals" element={<Hospitals />} />
+        <Route path="/doctors" element={<Doctors />} />
+        <Route path="/appointments" element={<Appointment />} />
+        <Route path="/patients" element={<Patients />} />
+        <Route path="/profile" element={<DrProfileForm />} />
+        <Route path="/hospital-profile" element={<HospitalForm />} />
+        <Route path="/appointment-form" element={<AppointmentForm />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 

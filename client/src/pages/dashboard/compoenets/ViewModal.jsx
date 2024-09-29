@@ -107,6 +107,7 @@ export const HospitalViewModal = ({
     Amenities,
     status,
   } = hospitalToView;
+  console.log(hospitalToView);
   return (
     <Modal
       onClose={toggleModal}
@@ -153,13 +154,13 @@ export const HospitalViewModal = ({
               <span className="text-xs  text-primary">{Amenities}</span>
             </h4>
             <h4 className=" uppercase text-secondry dark:text-neutral-500 ">
-              Country :{" "}
+              Todays Appointment :{" "}
               <span className="text-xs  text-primary">
-                {H_Todays_Appointment}
+                {H_Todays_Appointment ? "Available" : "not available"}
               </span>{" "}
-              H_advance_Appointment :{" "}
+              Advance Appointment :{" "}
               <span className="text-xs  text-primary">
-                {H_advance_Appointment}
+                {H_advance_Appointment ? "Available" : "not available"}
               </span>{" "}
             </h4>
 
@@ -172,3 +173,5 @@ export const HospitalViewModal = ({
     </Modal>
   );
 };
+
+

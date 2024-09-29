@@ -3,18 +3,16 @@ import { useState } from "react";
 import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import { Fetch } from "../../../utils/Fetch";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
 import DeleteModal from "../compoenets/DeleteModal";
 import { HospitalViewModal } from "../compoenets/ViewModal";
-const PORT = import.meta.env.VITE_SERVER_API;
-const API = `${PORT}/gethospitals`;
+import { useFetchApi } from "../../../storage/Fetch";
 
 const Hospital = () => {
   // functions
-  const { data, isLoading, error, getData } = Fetch();
+  const { hospitals, isLoading, error } = useFetchApi();
   const { deleteData, setError, setIsLoading } = Delete();
   const navigate = useNavigate();
   // states
@@ -75,12 +73,8 @@ const Hospital = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  useEffect(() => {
-    getData(API);
-  }, []);
-
-  const tableData = data
-    ? data.map((hospital) => ({
+  const tableData = hospitals
+    ? hospitals.map((hospital) => ({
         H_image: `/upload/${hospital.H_image}`,
         H_name: hospital.H_name,
         H_category: hospital.H_category,
@@ -124,7 +118,7 @@ const Hospital = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {data && <Table columns={columns} data={tableData} />}
+        {hospitals && <Table columns={columns} data={tableData} />}
 
         {isViewModalOpen && (
           <HospitalViewModal

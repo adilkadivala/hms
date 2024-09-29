@@ -7,7 +7,7 @@ import { hospitalFields } from "../../../constant/Fields";
 import { handleInput } from "../../../utils/handleInput";
 import { Insert } from "../../../utils/Insert";
 import { useUpdate } from "../../../utils/Update";
-import { Navigate, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { togglePassword } from "../../../lib";
 
 const PORT = import.meta.env.VITE_SERVER_API;

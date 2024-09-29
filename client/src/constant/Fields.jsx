@@ -42,3 +42,43 @@ export const hospitalFields = {
   Updated_by: "",
   Approved_by: "",
 };
+
+export const appointmentfields = {
+  id: "",
+  patient_id: "",
+  hospital_id: "",
+  doctor_id: "",
+  Appointment_type: "",
+  Appointment_req: "",
+  Status: "",
+  appointment_scheduled_date: "",
+  token_number: "",
+  Created_by: "",
+  Updated_by: "",
+  Approved_by: "",
+  Approved_date: "",
+  createdAt: "",
+  updatedAt: "",
+};
+
+export const patients = {
+  id: "",
+  user_email: "",
+  user_password: "",
+  first_name: "",
+  middle_name: "",
+  last_name: "",
+  gender: "",
+  dob: "",
+  contact: "",
+  alt_contact: "",
+  recovery_email: "",
+  address: "",
+  country: "",
+  city: "",
+  status: "",
+  created_by: "",
+  updated_by: "",
+  approved_by: "",
+  approved_date: "",
+};

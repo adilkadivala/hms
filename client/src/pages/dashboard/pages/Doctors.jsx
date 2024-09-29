@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
-import Table from "../../ui/Table";
-import Layout from "../layout/Main";
-import Button from "../../ui/Button";
-import { Fetch } from "../../../utils/Fetch";
+import { lazy, useEffect, useState, Suspense } from "react";
+
+const Table = lazy(() => import("../../ui/Table"));
+const Layout = lazy(() => import("../layout/Main"));
+const Button = lazy(() => import("../../ui/Button"));
+const DeleteModal = lazy(() => import("../compoenets/DeleteModal"));
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
 import { DoctorViewModal } from "../compoenets/ViewModal";
-import DeleteModal from "../compoenets/DeleteModal";
-
-const PORT = import.meta.env.VITE_SERVER_API;
-const API = `${PORT}/getdoctors`;
+import { useFetchApi } from "../../../storage/Fetch";
 
 const Doctor = () => {
   // defined functions
-  const { data, isLoading, error, getData } = Fetch();
+  const { doctors, isLoading, error } = useFetchApi();
   const { deleteData, setError, setIsLoading } = Delete();
   const navigate = useNavigate();
 
@@ -41,11 +40,6 @@ const Doctor = () => {
     setIsViewModalOpen((prev) => !prev);
     setDoctorData(DoctorView);
   };
-
-  // getting data via network api on page rendering
-  useEffect(() => {
-    getData(API);
-  }, []);
 
   // delete conformation
   const confirmDelete = (doctor) => {
@@ -83,8 +77,8 @@ const Doctor = () => {
     { Header: "Actions", accessor: "actions" },
   ];
 
-  const tableData = data
-    ? data.map((doctor) => ({
+  const tableData = doctors
+    ? doctors.map((doctor) => ({
         Profile_image: `/upload/${doctor.Profile_image}`,
         Doctor_name: doctor.Doctor_name,
         Doctor_degree: doctor.Doctor_degree,
@@ -129,26 +123,37 @@ const Doctor = () => {
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
 
-        {data && <Table columns={columns} data={tableData} />}
+        {doctors && (
+          <Suspense fallback="Data is loading...">
+            <Table columns={columns} data={tableData} />
+          </Suspense>
+        )}
 
         {/* delete modal */}
         {isDeleteModalOpen && DoctorData && (
-          <DeleteModal
-            toggleModal={toggleModal}
-            handleDelete={handleDelete}
-            setInputName={setInputName}
-            nameError={nameError}
-            conformDataName={DoctorData.Doctor_name}
-            placeHolder="Dr. name"
-            conformText="Write down Dr. name below"
-            inputName={inputName}
-          />
+          <Suspense fallback="Delete modal is loading...">
+            <DeleteModal
+              toggleModal={toggleModal}
+              handleDelete={handleDelete}
+              setInputName={setInputName}
+              nameError={nameError}
+              conformDataName={DoctorData.Doctor_name}
+              placeHolder="Dr. name"
+              conformText="Write down Dr. name below"
+              inputName={inputName}
+            />
+          </Suspense>
         )}
         {/* delete modal */}
 
         {/* view modal */}
         {isViewModalOpen && (
-          <DoctorViewModal toggleModal={toggleViewModal} doctorToView={DoctorData} />
+          <Suspense fallback="view modal is loading">
+            <DoctorViewModal
+              toggleModal={toggleViewModal}
+              doctorToView={DoctorData}
+            />
+          </Suspense>
         )}
         {/* view modal */}
       </div>
