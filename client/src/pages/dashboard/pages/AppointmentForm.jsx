@@ -22,7 +22,7 @@ const AppointmentForm = () => {
   const oldData = appointmentDataforUpdate?.state?.appointment || null;
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
-  console.log({ ...oldData });
+
 
   // states
   const [formData, setFormData] = useState({ ...appointmentfields });
@@ -185,8 +185,8 @@ const AppointmentForm = () => {
                     select Appointment Status
                   </option>
                   <option value="pending">Pending</option>
-                  <option value="accept">Accept</option>
-                  <option value="reject">Reject</option>
+                  <option value="in-opd">In- Opd</option>
+                  <option value="visited">Visited</option>
                 </select>
               </div>
             </div>

@@ -82,3 +82,9 @@ export const patients = {
   approved_by: "",
   approved_date: "",
 };
+
+export const filterFields = {
+  tokenNo: "",
+  doctorName: "",
+  mobileNo: "",
+};
