@@ -1,5 +1,6 @@
 import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
+import { useFetchApi } from "../../../storage/Fetch";
 
 // doctor view modal
 export const DoctorViewModal = ({
@@ -91,7 +92,6 @@ export const DoctorViewModal = ({
 };
 
 // hospital view modal
-
 export const HospitalViewModal = ({
   toggleModal = () => {},
   hospitalToView = {},
@@ -107,7 +107,7 @@ export const HospitalViewModal = ({
     Amenities,
     status,
   } = hospitalToView;
-  console.log(hospitalToView);
+
   return (
     <Modal
       onClose={toggleModal}
@@ -174,4 +174,112 @@ export const HospitalViewModal = ({
   );
 };
 
+// appointment view modal
 
+export const AppointmentViewmodal = ({
+  toggleModal = () => {},
+  appointmentToView = {},
+}) => {
+  const { hospitals, doctors, patients } = useFetchApi();
+
+  // Extracting values from appointmentToView
+  const {
+    patient_id,
+    hospital_id,
+    doctor_id,
+    Appointment_type,
+    Appointment_req,
+    Status,
+    appointment_scheduled_date,
+    token_number,
+    Approved_by,
+  } = appointmentToView;
+
+  // Finding the corresponding patient, hospital, and doctor based on the IDs
+  const patient = patients.find((p) => p.id === patient_id);
+  const hospital = hospitals.find((h) => h.id === hospital_id);
+  const doctor = doctors.find((d) => d.id === doctor_id);
+
+  return (
+    <Modal
+      onClose={toggleModal}
+      title={`About  ${patient ? patient.first_name : "Patient"}`}
+      data={appointmentToView}
+      width="w-[50%]"
+      height="h-[55%]"
+      footer={
+        <>
+          <Button
+            className="bg-gray-600 text-white py-2 px-4 rounded-full"
+            onClick={toggleModal}
+          >
+            Close
+          </Button>
+        </>
+      }
+    >
+      <div className="flex flex-col rounded p-4 md:p-6 bg-white border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
+        <div className="flex items-center gap-x-4">
+          <div className="grow">
+            <h3 className="font-medium text-secondary dark:text-neutral-200">
+              Patient Name:{" "}
+              <span className="text-xs text-primary ">
+                {patient ? patient.first_name : "N/A"}
+              </span>
+            </h3>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Hospital Name:{" "}
+              <span className="text-xs text-primary ">
+                {hospital ? hospital.H_name : "N/A"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Doctor Name:{" "}
+              <span className="text-xs text-primary">
+                {doctor ? doctor.Doctor_name : "N/A"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Appointment Type:{" "}
+              <span className="text-xs text-primary">
+                {Appointment_type || "N/A"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Appointment Scheduled Date:{" "}
+              <span className="text-xs text-primary">
+                {appointment_scheduled_date
+                  ? new Date(appointment_scheduled_date).toLocaleString()
+                  : "N/A"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Appointment Request Date:{" "}
+              <span className="text-xs text-primary">
+                {Appointment_req
+                  ? new Date(Appointment_req).toLocaleString()
+                  : "N/A"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Token Number:{" "}
+              <span className="text-xs text-primary">
+                {token_number ? token_number : "Not available"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Approved By:{" "}
+              <span className="text-xs text-primary">
+                {Approved_by ? Approved_by : "Not available"}
+              </span>
+            </h4>
+            <h4 className="uppercase text-secondary dark:text-neutral-500">
+              Status:{" "}
+              <span className="text-xs text-primary">{Status || "N/A"}</span>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+};

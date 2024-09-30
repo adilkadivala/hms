@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState, Suspense } from "react";
+import { lazy, useState, Suspense } from "react";
 
 const Table = lazy(() => import("../../ui/Table"));
 const Layout = lazy(() => import("../layout/Main"));
@@ -6,13 +6,10 @@ const Button = lazy(() => import("../../ui/Button"));
 const DeleteModal = lazy(() => import("../compoenets/DeleteModal"));
 const PORT = import.meta.env.VITE_SERVER_API;
 
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { Delete } from "../../../utils/Delete";
 import { DoctorViewModal } from "../compoenets/ViewModal";
 import { useFetchApi } from "../../../storage/Fetch";
-
-
 
 const Doctor = () => {
   // defined functions

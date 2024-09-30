@@ -1,22 +1,76 @@
-import { useState } from "react";
 import Table from "../../ui/Table";
 import Layout from "../layout/Main";
 import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
+import DeleteModal from "../compoenets/DeleteModal";
+import { Delete } from "../../../utils/Delete";
+import { AppointmentViewmodal } from "../compoenets/ViewModal";
 const PORT = import.meta.env.VITE_SERVER_API;
 
 const Appointment = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const { appointments, isLoading, error, hospitals, doctors, patients } =
-    useFetchApi();
-  const toggleModal = () => setModalOpen((prev) => !prev);
+  const {
+    appointments,
+    isLoading,
+    error,
+    hospitals,
+    doctors,
+    patients,
+    getAppointments,
+  } = useFetchApi();
   const navigate = useNavigate();
+  const { deleteData, setError, setIsLoading } = Delete();
+
+  // states
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [appointmentData, setAppointmentData] = useState(null);
+  const [inputName, setInputName] = useState("");
+  const [nameError, setNameError] = useState(null);
+
+  // moddal handler
+  const toggleModal = () => {
+    setIsDeleteModalOpen((prev) => !prev);
+    setInputName("");
+    setNameError(null);
+  };
 
   // edit Appointment handler
   const toggleUpdateDoctor = (appointment) => {
+    console.log(appointment);
     navigate("/appointment-form", { state: { appointment } });
+  };
+
+  // delete process
+  const conformDelete = (appointment) => {
+    setAppointmentData(appointment);
+    console.log(appointment);
+    toggleModal();
+  };
+
+  // deleting Data
+  const handleDelete = async () => {
+    if (appointmentData.token_number === inputName) {
+      setIsLoading(true);
+      try {
+        const apiUrl = `${PORT}/deleteappointments/${appointmentData.id}`;
+        await deleteData(apiUrl);
+        getAppointments();
+        toggleModal();
+      } catch (error) {
+        setError(error);
+      }
+    } else {
+      setNameError("Token doesn't match. Please enter the correct Token.");
+    }
+  };
+
+  // view modal
+  // view Modal
+  const toggleViewModal = (appointmentView) => {
+    setIsViewModalOpen((prev) => !prev);
+    setAppointmentData(appointmentView);
   };
 
   const columns = [
@@ -49,17 +103,20 @@ const Appointment = () => {
             <div className="flex items-center justify-center gap-3">
               <Button
                 className="bg-none border-none"
-                onClick={() => toggleUpdateDoctor(appointments.id)}
+                onClick={() => toggleUpdateDoctor(appointment)}
               >
                 <i className="fa-solid fa-pen text-primary"></i>
               </Button>
               <Button
                 className="bg-none border-none text-red-600"
-                onClick={toggleModal}
+                onClick={() => conformDelete(appointment)}
               >
                 <i className="fa-solid fa-trash"></i>
               </Button>
-              <Button className="bg-none border-none" onClick={toggleModal}>
+              <Button
+                className="bg-none border-none"
+                onClick={() => toggleViewModal(appointment)}
+              >
                 <i className="fa-solid fa-eye text-slate-400"></i>
               </Button>
             </div>
@@ -81,27 +138,24 @@ const Appointment = () => {
         {error && <p>Error: {error}</p>}
         {appointments && <Table columns={columns} data={tableData} />}
 
-        {isModalOpen && (
-          <Modal
-            isOpen={isModalOpen}
-            onClose={toggleModal}
-            title="Vertically Centered Modal"
-            footer={
-              <>
-                <Button
-                  className="py-2 px-3 bg-gray-50 text-primary"
-                  onClick={toggleModal}
-                >
-                  Close
-                </Button>
-                <Button className="py-2 px-3 bg-blue-600 text-white">
-                  Save changes
-                </Button>
-              </>
-            }
-          >
-            <p>This is a reusable modal component!</p>
-          </Modal>
+        {isDeleteModalOpen && appointmentData && (
+          <DeleteModal
+            toggleModal={toggleModal}
+            handleDelete={handleDelete}
+            setInputName={setInputName}
+            nameError={nameError}
+            conformDataName={appointmentData.token_number}
+            placeHolder="Token Number"
+            conformText="Write down token number below"
+            inputName={inputName}
+          />
+        )}
+
+        {isViewModalOpen && (
+          <AppointmentViewmodal
+            toggleModal={toggleViewModal}
+            appointmentToView={appointmentData}
+          />
         )}
       </div>
     </Layout>

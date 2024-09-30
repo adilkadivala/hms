@@ -22,13 +22,11 @@ const AppointmentForm = () => {
   const oldData = appointmentDataforUpdate?.state?.appointment || null;
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
-  console.log(oldData);
+  console.log({ ...oldData });
 
   // states
   const [formData, setFormData] = useState({ ...appointmentfields });
-  console.log(formData);
   const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
-  console.log(formUpdateData);
 
   // api
   const UPDATEAPI = `${PORT}/updateappointments/${formUpdateData.id}`;
@@ -39,7 +37,6 @@ const AppointmentForm = () => {
     if (oldData) {
       try {
         await handleUpdateSubmit(UPDATEAPI, formUpdateData);
-        console.log(formUpdateData);
         navigate("/appointments");
         getAppointments();
       } catch (error) {
