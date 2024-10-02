@@ -108,7 +108,7 @@ const deleteappointment = async (req, res) => {
   }
 };
 
-// getting data with all table detail
+
 
 module.exports = {
   getAppointment,

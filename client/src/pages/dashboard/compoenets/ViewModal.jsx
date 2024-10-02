@@ -47,7 +47,7 @@ export const DoctorViewModal = ({
             src={`/upload/${Profile_image}`}
             alt="Avatar"
           />
-          <div className="grow">
+          <div>
             <h3 className="font-medium text-secondry dark:text-neutral-200">
               Name :{" "}
               <span className="text-xs text-primary ">{Doctor_name}</span>

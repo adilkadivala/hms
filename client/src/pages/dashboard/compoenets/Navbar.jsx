@@ -31,7 +31,7 @@ const Navbar = ({ toggleSidebar, isOpen }) => {
       <button
         onClick={toggleTheme}
         className={`${
-          darkMode ? "text-white" : "text-indigo-400"
+          darkMode ? "text-white" : "text-primary"
         }  p-2 rounded border-none`}
       >
         <i className={`fa-solid ${darkMode ? "fa-sun" : "fa-moon"}`} />

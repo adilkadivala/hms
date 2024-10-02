@@ -1,4 +1,4 @@
-import { lazy, useState, Suspense } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
 import { Delete } from "../../../utils/Delete";
@@ -6,22 +6,21 @@ import { AppointmentViewmodal } from "../compoenets/ViewModal";
 import { filterFields } from "../../../constant/Fields";
 import Input from "../../ui/Input";
 
-const Table = lazy(() => import("../../ui/Table"));
-const Layout = lazy(() => import("../layout/Main"));
-const Button = lazy(() => import("../../ui/Button"));
-const DeleteModal = lazy(() => import("../compoenets/DeleteModal"));
+import Table from "../../ui/Table";
+import Layout from "../layout/Main";
+import Button from "../../ui/Button";
+import DeleteModal from "../compoenets/DeleteModal";
 
 const PORT = import.meta.env.VITE_SERVER_API;
 
 const Appointment = () => {
   const {
-    appointments,
+    appointments = {},
     isLoading,
     error,
-    hospitals,
-    doctors,
-    patients,
-    getAppointments,
+    doctors = {},
+    patients = {},
+    getAppointments = {},
   } = useFetchApi();
   const navigate = useNavigate();
   const { deleteData, setError, setIsLoading } = Delete();
@@ -42,14 +41,13 @@ const Appointment = () => {
   };
 
   // edit Appointment handler
-  const toggleUpdateDoctor = (appointment) => {
+  const toggleUpdateAppointment = (appointment) => {
     navigate("/appointment-form", { state: { appointment } });
   };
 
   // delete process
   const conformDelete = (appointment) => {
     setAppointmentData(appointment);
-    console.log(appointment);
     toggleModal();
   };
 
@@ -107,10 +105,10 @@ const Appointment = () => {
       : true;
 
     const matchesPhone = filterData.mobileNo
-      ? patient && patient.phone
-        ? patient.phone
-            .toLowerCase()
-            .includes(filterData.mobileNo.toLowerCase())
+      ? patient && patient.contact
+        ? patient.contact
+            .replace(/\D/g, "")
+            .includes(filterData.mobileNo.replace(/\D/g, ""))
         : false
       : true;
 
@@ -127,7 +125,6 @@ const Appointment = () => {
 
   const tableData = filteredAppointments.map((appointment) => {
     const patient = patients.find((p) => p.id === appointment.patient_id);
-    const hospital = hospitals.find((h) => h.id === appointment.hospital_id);
     const doctor = doctors.find((d) => d.id === appointment.doctor_id);
 
     return {
@@ -135,7 +132,6 @@ const Appointment = () => {
       patient_id: patient
         ? patient.first_name + " " + patient.last_name
         : "Unknown",
-      // hospital_id: hospital ? hospital.H_name : "Unknown",
       contact_no: patient ? patient.contact : "Unknown",
       patient_address: patient ? patient.city : "Unknown",
       doctor_id: doctor ? doctor.Doctor_name : "Unknown",
@@ -145,7 +141,7 @@ const Appointment = () => {
         <div className="flex items-center justify-center gap-3">
           <Button
             className="bg-none border-none"
-            onClick={() => toggleUpdateDoctor(appointment)}
+            onClick={() => toggleUpdateAppointment(appointment)}
           >
             <i className="fa-solid fa-pen text-primary"></i>
           </Button>
@@ -170,7 +166,7 @@ const Appointment = () => {
     <Layout>
       <div className="container mx-auto p-4">
         <div className="flex justify-between align-middle text-center">
-          <h1 className="text-2xl font-bold mb-4">Appintments</h1>
+          <h1 className="text-2xl font-bold mb-4">Appointments</h1>
           <NavLink to="/appointment-form">
             <span className="border-b-2 border-b-primary">Add +</span>
           </NavLink>
@@ -200,8 +196,8 @@ const Appointment = () => {
             value={filterData.doctorName}
             onChange={inputFilterHandler}
           >
-            <option value="" disabled>
-              filter by doctor
+            <option selected defaultValue={doctors}>
+              Filter by Doctor
             </option>
             {doctors?.map((doctor) => (
               <option value={doctor.Doctor_name} key={doctor.id}>
@@ -213,34 +209,26 @@ const Appointment = () => {
 
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {appointments && (
-          <Suspense fallback="data is loading...">
-            <Table columns={columns} data={tableData} />
-          </Suspense>
-        )}
+        {appointments && <Table columns={columns} data={tableData} />}
 
         {isDeleteModalOpen && appointmentData && (
-          <Suspense fallback="delete modal is loading...">
-            <DeleteModal
-              toggleModal={toggleModal}
-              handleDelete={handleDelete}
-              setInputName={setInputName}
-              nameError={nameError}
-              conformDataName={appointmentData.token_number}
-              placeHolder="Token Number"
-              conformText="Write down token number below"
-              inputName={inputName}
-            />
-          </Suspense>
+          <DeleteModal
+            toggleModal={toggleModal}
+            handleDelete={handleDelete}
+            setInputName={setInputName}
+            nameError={nameError}
+            conformDataName={appointmentData.token_number}
+            placeHolder="Token Number"
+            conformText="Write down token number below"
+            inputName={inputName}
+          />
         )}
 
         {isViewModalOpen && (
-          <Suspense fallback="view modal is loading...">
-            <AppointmentViewmodal
-              toggleModal={toggleViewModal}
-              appointmentToView={appointmentData}
-            />
-          </Suspense>
+          <AppointmentViewmodal
+            toggleModal={toggleViewModal}
+            appointmentToView={appointmentData}
+          />
         )}
       </div>
     </Layout>

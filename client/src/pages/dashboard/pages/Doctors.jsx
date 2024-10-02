@@ -1,9 +1,10 @@
-import { lazy, useState, Suspense } from "react";
+import { useState } from "react";
 
-const Table = lazy(() => import("../../ui/Table"));
-const Layout = lazy(() => import("../layout/Main"));
-const Button = lazy(() => import("../../ui/Button"));
-const DeleteModal = lazy(() => import("../compoenets/DeleteModal"));
+import Table from "../../ui/Table";
+import Layout from "../layout/Main";
+import Button from "../../ui/Button";
+import DeleteModal from "../compoenets/DeleteModal";
+
 const PORT = import.meta.env.VITE_SERVER_API;
 
 import { NavLink, useNavigate } from "react-router-dom";
@@ -13,7 +14,8 @@ import { useFetchApi } from "../../../storage/Fetch";
 
 const Doctor = () => {
   // defined functions
-  const { doctors, isLoading, error, getDoctors } = useFetchApi();
+  const { doctors, isLoading, error, getDoctors, appointments } = useFetchApi();
+
   const { deleteData, setError, setIsLoading } = Delete();
   const navigate = useNavigate();
 
@@ -27,6 +29,16 @@ const Doctor = () => {
   // edit Doctor handler
   const toggleUpdateDoctor = (doctor) => {
     navigate("/profile", { state: { doctor } });
+  };
+
+  // profile Doctor handler
+  const toggleProfilehandler = (doctor) => {
+    const filteredAppointments = appointments.filter(
+      (appointment) => appointment.doctor_id === doctor.id
+    );
+    navigate("/dr-profile", {
+      state: { doctor, appointments: filteredAppointments },
+    });
   };
 
   // delete modal
@@ -106,6 +118,12 @@ const Doctor = () => {
             >
               <i className="fa-solid fa-eye text-slate-400"></i>
             </Button>
+            <Button
+              className="bg-none border-none"
+              onClick={() => toggleProfilehandler(doctor)}
+            >
+              <i className="fa-solid fa-location-arrow"></i>
+            </Button>
           </div>
         ),
       }))
@@ -124,37 +142,29 @@ const Doctor = () => {
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
 
-        {doctors && (
-          <Suspense fallback="Data is loading...">
-            <Table columns={columns} data={tableData} />
-          </Suspense>
-        )}
+        {doctors && <Table columns={columns} data={tableData} />}
 
         {/* delete modal */}
         {isDeleteModalOpen && DoctorData && (
-          <Suspense fallback="Delete modal is loading...">
-            <DeleteModal
-              toggleModal={toggleModal}
-              handleDelete={handleDelete}
-              setInputName={setInputName}
-              nameError={nameError}
-              conformDataName={DoctorData.Doctor_name}
-              placeHolder="Dr. name"
-              conformText="Write down Dr. name below"
-              inputName={inputName}
-            />
-          </Suspense>
+          <DeleteModal
+            toggleModal={toggleModal}
+            handleDelete={handleDelete}
+            setInputName={setInputName}
+            nameError={nameError}
+            conformDataName={DoctorData.Doctor_name}
+            placeHolder="Dr. name"
+            conformText="Write down Dr. name below"
+            inputName={inputName}
+          />
         )}
         {/* delete modal */}
 
         {/* view modal */}
         {isViewModalOpen && (
-          <Suspense fallback="view modal is loading">
-            <DoctorViewModal
-              toggleModal={toggleViewModal}
-              doctorToView={DoctorData}
-            />
-          </Suspense>
+          <DoctorViewModal
+            toggleModal={toggleViewModal}
+            doctorToView={DoctorData}
+          />
         )}
         {/* view modal */}
       </div>
