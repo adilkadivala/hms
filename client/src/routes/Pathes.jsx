@@ -25,7 +25,7 @@ const Pathes = () => {
       <Route path="/appointments" element={<Appointment />} />
       <Route path="/patients" element={<Patients />} />
       <Route path="/profile" element={<DrProfileForm />} />
-      <Route path="/dr-profile" element={<Drprofile />} />
+      <Route path="/dr-profile/:id" element={<Drprofile />} />
       <Route path="/hospital-profile" element={<HospitalForm />} />
       <Route path="/appointment-form" element={<AppointmentForm />} />
       <Route path="*" element={<NotFound />} />

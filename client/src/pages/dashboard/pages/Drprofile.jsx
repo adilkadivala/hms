@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../layout/Main";
 import Table from "../../ui/Table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
 
 const Drprofile = () => {
@@ -9,6 +9,9 @@ const Drprofile = () => {
   const DrData = location.state.doctor;
   const appointment = location.state.appointments;
   const { patients } = useFetchApi();
+  const { id } = useParams();
+
+  console.log(id);
 
   const columns = [
     { Header: "Token Number", accessor: "token_number" },

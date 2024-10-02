@@ -2,13 +2,15 @@ const express = require("express");
 const router = express.Router();
 
 const appointmentRouter = require("./appointments");
-const hospitalRoute = require("./hospitals");
+const hospitalRouter = require("./hospitals");
 const doctorRouter = require("./doctors");
-const patientRoute = require("./patients");
+const patientRouter = require("./patients");
+const authRoute = require("./authentication");
 
 router.use("/", appointmentRouter);
-router.use("/", hospitalRoute);
+router.use("/", hospitalRouter);
 router.use("/", doctorRouter);
-router.use("/", patientRoute);
+router.use("/", patientRouter);
+router.use("/", authRoute);
 
 module.exports = router;

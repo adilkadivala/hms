@@ -18,14 +18,14 @@ const createAppointment = async (req, res) => {
   const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const currentDate = new Date();
   const dayOfWeek = days[currentDate.getDay()];
-  const todayDate = currentDate.toISOString().split("T")[0]; // YYYY-MM-DD format
+  const todayDate = currentDate.toISOString().split("T")[0];
 
   try {
     // Get today's appointment count by ignoring the time part
     const countTodayAppointments = await appointments.count({
       where: {
         appointment_scheduled_date: {
-          [Op.between]: [`${todayDate} 00:00:00`, `${todayDate} 23:59:59`], // Between start and end of the day
+          [Op.between]: [`${todayDate} 00:00:00`, `${todayDate} 23:59:59`],
         },
       },
     });
@@ -71,7 +71,6 @@ const updateApointment = async (req, res) => {
     Status: req.body.Status || "pending",
     appointment_scheduled_date:
       req.body.appointment_scheduled_date || Date.now(),
-    // token_number: req.body.token_number || "TN123456",
     Created_by: req.body.Created_by || "admin",
     Updated_by: req.body.Updated_by || "admin",
     Approved_by: req.body.Approved_by || "admin",
@@ -107,8 +106,6 @@ const deleteappointment = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-
 
 module.exports = {
   getAppointment,

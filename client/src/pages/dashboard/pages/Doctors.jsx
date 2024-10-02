@@ -36,7 +36,7 @@ const Doctor = () => {
     const filteredAppointments = appointments.filter(
       (appointment) => appointment.doctor_id === doctor.id
     );
-    navigate("/dr-profile", {
+    navigate(`/dr-profile/${doctor.id}`, {
       state: { doctor, appointments: filteredAppointments },
     });
   };

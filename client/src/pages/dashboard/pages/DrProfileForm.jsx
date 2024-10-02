@@ -89,8 +89,6 @@ const DrProfileForm = () => {
                   }
                   alt="Avatar"
                 />
-
-                <Label>Profile photo</Label>
               </div>
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row items-start gap-5">
