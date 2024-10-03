@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { doctorFormData } from "../../../constant/Fields";
 import { Insert } from "../../../utils/Insert";
 import { handleInput } from "../../../utils/handleInput";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useUpdate } from "../../../utils/Update";
 import { togglePassword } from "../../../lib";
 import { useFetchApi } from "../../../storage/Fetch";
@@ -15,27 +15,36 @@ const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/insertdoctors`;
 
 const DrProfileForm = () => {
-  const doctorDataForUpdate = useLocation();
   const navigate = useNavigate();
-  const { getDoctors } = useFetchApi();
-  const oldData = doctorDataForUpdate?.state?.doctor || null;
-  const [formData, setFormData] = useState({ ...doctorFormData });
-  const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
+  const { id } = useParams();
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
   const { isPasswordVisible, handlePasswordVisible } = togglePassword();
+  const { doctors, getDoctors } = useFetchApi();
+  const [formData, setFormData] = useState({ ...doctorFormData });
 
-  // update data api
-  const UPDATEAPI = `${PORT}/updatedoctors/${formUpdateData.id}`;
+  const doctorDataForUpdate = doctors.find(
+    (doctor) => doctor.id === parseInt(id)
+  );
 
-  // data insertion handler...
+  useEffect(() => {
+    if (doctorDataForUpdate) {
+      setFormData(doctorDataForUpdate);
+    }
+  }, [doctorDataForUpdate]);
+
+  const setState = setFormData;
+
+  // Update and Insert handlers
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (oldData) {
+    if (doctorDataForUpdate) {
       try {
-        await handleUpdateSubmit(UPDATEAPI, formUpdateData);
-        console.log(formUpdateData);
+        await handleUpdateSubmit(
+          `${PORT}/updatedoctors/${doctorDataForUpdate.id}`,
+          formData
+        );
         navigate("/doctors");
         getDoctors();
       } catch (error) {
@@ -54,20 +63,13 @@ const DrProfileForm = () => {
     }
   };
 
-  // setting form for inserting data and updating it
-  useEffect(() => {
-    if (formUpdateData) {
-      setFormUpdateData(formUpdateData);
-    }
-  }, [formUpdateData]);
-
   return (
     <Layout>
       <div className="border border-gray-300 rounded">
         <div className="bg-transparent rounded-xl shadow p-4 sm:p-7 dark:bg-neutral-800 ">
           <div className="mb-8">
             <h2 className="text-xl font-bold text-gray-800 dark:text-neutral-200">
-              {oldData ? "Update Profile" : " Create profile"}
+              {doctorDataForUpdate ? "Update Profile" : " Create profile"}
             </h2>
             <p className="text-sm text-gray-600 dark:text-neutral-400">
               Manage your profile information, account settings, and more.
@@ -80,10 +82,9 @@ const DrProfileForm = () => {
                 <img
                   className="inline-block size-16 rounded-full ring-2 ring-white dark:ring-neutral-900"
                   src={
-                    formUpdateData?.Profile_image_preview ||
                     formData?.Profile_image_preview ||
-                    (formUpdateData?.Profile_image
-                      ? `/upload/${formUpdateData?.Profile_image}`
+                    (formData?.Profile_image
+                      ? `/upload/${formData?.Profile_image}`
                       : null) ||
                     "https://preline.co/assets/img/160x160/img1.jpg"
                   }
@@ -91,16 +92,12 @@ const DrProfileForm = () => {
                 />
               </div>
               <div className="flex-1">
-                <div className="flex flex-col sm:flex-row items-start gap-5">
-                  <Input
-                    type="file"
-                    className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-transparent text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-                    name="Profile_image"
-                    onChange={handleInput(
-                      oldData ? setFormUpdateData : setFormData
-                    )}
-                  />
-                </div>
+                <Input
+                  type="file"
+                  name="Profile_image"
+                  className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg"
+                  onChange={handleInput(setState)}
+                />
               </div>
             </div>
             {/* Full name */}
@@ -111,15 +108,11 @@ const DrProfileForm = () => {
               <Input
                 id="Doctor_name"
                 type="text"
-                value={
-                  formData?.Doctor_name || formUpdateData?.Doctor_name || ""
-                }
+                value={formData?.Doctor_name || ""}
                 name="Doctor_name"
                 placeHolder="Dr. John Doe"
                 className="bg-transparent"
-                onChange={handleInput(
-                  oldData ? setFormUpdateData : setFormData
-                )}
+                onChange={handleInput(setState)}
               />
             </div>
             {/* Email */} {/* Password */}
@@ -132,10 +125,8 @@ const DrProfileForm = () => {
                   name="Email_id"
                   placeHolder="john.doe@example.com"
                   className="bg-transparent"
-                  value={formData?.Email_id || formUpdateData?.Email_id || ""}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.Email_id || ""}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -147,10 +138,8 @@ const DrProfileForm = () => {
                   name="Password"
                   placeHolder="Enter your password"
                   className="bg-transparent"
-                  value={formData?.Password || formUpdateData?.Password || ""}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.Password || ""}
+                  onChange={handleInput(setState)}
                 />
                 <Button type="button" onClick={handlePasswordVisible}>
                   <i
@@ -169,16 +158,10 @@ const DrProfileForm = () => {
                   id="Doctor_degree"
                   type="text"
                   name="Doctor_degree"
-                  value={
-                    formData?.Doctor_degree ||
-                    formUpdateData?.Doctor_degree ||
-                    ""
-                  }
+                  value={formData?.Doctor_degree || ""}
                   placeHolder="MD"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -189,16 +172,10 @@ const DrProfileForm = () => {
                   id="Doctor_experience"
                   type="text"
                   name="Doctor_experience"
-                  value={
-                    formData?.Doctor_experience ||
-                    formUpdateData?.Doctor_experience ||
-                    ""
-                  }
+                  value={formData?.Doctor_experience || ""}
                   placeHolder="9.9"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
             </div>
@@ -211,16 +188,10 @@ const DrProfileForm = () => {
                   id="Doctor_speciality"
                   type="text"
                   name="Doctor_speciality"
-                  value={
-                    formData?.Doctor_speciality ||
-                    formUpdateData?.Doctor_speciality ||
-                    ""
-                  }
+                  value={formData?.Doctor_speciality || ""}
                   placeHolder="Cardiology, Internal Medicine"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -231,14 +202,10 @@ const DrProfileForm = () => {
                   id="Doctor_fees"
                   type="text"
                   name="Doctor_fees"
-                  value={
-                    formData?.Doctor_fees || formUpdateData?.Doctor_fees || ""
-                  }
+                  value={formData?.Doctor_fees || ""}
                   placeHolder="70$"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
             </div>
@@ -251,15 +218,11 @@ const DrProfileForm = () => {
                 <Input
                   id="Contact_no"
                   type="text"
-                  value={
-                    formData?.Contact_no || formUpdateData?.Contact_no || ""
-                  }
+                  value={formData?.Contact_no || ""}
                   name="Contact_no"
                   placeHolder="0987654321"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -269,17 +232,11 @@ const DrProfileForm = () => {
                 <Input
                   id="Alternate_contact"
                   type="text"
-                  value={
-                    formData?.Alternate_contact ||
-                    formUpdateData?.Alternate_contact ||
-                    ""
-                  }
+                  value={formData?.Alternate_contact || ""}
                   name="Alternate_contact"
                   placeHolder="0987654321"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -291,13 +248,9 @@ const DrProfileForm = () => {
                   type="text"
                   name="Whatsapp_no"
                   placeHolder="1234567890"
-                  value={
-                    formData?.Whatsapp_no || formUpdateData?.Whatsapp_no || ""
-                  }
+                  value={formData?.Whatsapp_no || ""}
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
             </div>
@@ -310,12 +263,10 @@ const DrProfileForm = () => {
                 id="Address"
                 type="text"
                 name="Address"
-                value={formData?.Address || formUpdateData?.Address || ""}
+                value={formData?.Address || ""}
                 placeHolder="123 Main St"
                 className="bg-transparent"
-                onChange={handleInput(
-                  oldData ? setFormUpdateData : setFormData
-                )}
+                onChange={handleInput(setState)}
               />
             </div>
             {/* City */} {/* Region */}
@@ -327,12 +278,10 @@ const DrProfileForm = () => {
                   id="City"
                   type="text"
                   name="City"
-                  value={formData?.City || formUpdateData?.City || ""}
+                  value={formData?.City || ""}
                   placeHolder="New York"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -342,12 +291,10 @@ const DrProfileForm = () => {
                   id="Country"
                   type="text"
                   name="Country"
-                  value={formData?.Country || formUpdateData?.Country || ""}
+                  value={formData?.Country || ""}
                   placeHolder="USA"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
 
@@ -357,12 +304,10 @@ const DrProfileForm = () => {
                   id="Region"
                   type="text"
                   name="Region"
-                  value={formData?.Region || formUpdateData?.Region || ""}
+                  value={formData?.Region || ""}
                   placeHolder="North-East"
                   className="bg-transparent"
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  onChange={handleInput(setState)}
                 />
               </div>
             </div>
@@ -375,10 +320,8 @@ const DrProfileForm = () => {
                 className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                 id="status"
                 name="status"
-                value={formUpdateData?.status || formData?.status || "active"}
-                onChange={handleInput(
-                  oldData ? setFormUpdateData : setFormData
-                )}
+                value={formData?.status || "active"}
+                onChange={handleInput(setState)}
               >
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
@@ -386,10 +329,10 @@ const DrProfileForm = () => {
             </div>
             <div className="flex justify-end gap-2 sm:col-span-12">
               <Button
-                type={formUpdateData ? "submit" : "button"}
+                type={formData ? "submit" : "button"}
                 className="p-3 bg-primary text-white rounded dark:text-primary border-none"
               >
-                {oldData ? "Save changes" : "Submit"}
+                {doctorDataForUpdate ? "Save changes" : "Submit"}
               </Button>
               <NavLink
                 to="/doctors"

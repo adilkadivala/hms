@@ -11,7 +11,7 @@ const APPOINTMENTSAPI = `${PORT}/getappointments`;
 const fetchApi = createContext();
 
 export const FetchApiProvider = ({ children }) => {
-  const { getData, isLoading, error } = Fetch(); // Using destructured Fetch
+  const { getData, isLoading, error } = Fetch();
   const [doctors, setDoctors] = useState([]);
   const [hospitals, setHospitals] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -39,10 +39,18 @@ export const FetchApiProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getDoctors();
-    getHospitals();
-    getPatients();
-    getAppointments();
+    if (!doctors.length) {
+      getDoctors();
+    }
+    if (!hospitals.length) {
+      getHospitals();
+    }
+    if (!patients.length) {
+      getPatients();
+    }
+    if (!appointments.length) {
+      getAppointments();
+    }
   }, []);
 
   return (

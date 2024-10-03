@@ -28,17 +28,12 @@ const Doctor = () => {
 
   // edit Doctor handler
   const toggleUpdateDoctor = (doctor) => {
-    navigate("/profile", { state: { doctor } });
+    navigate(`/profile/${doctor.id}`);
   };
 
   // profile Doctor handler
   const toggleProfilehandler = (doctor) => {
-    const filteredAppointments = appointments.filter(
-      (appointment) => appointment.doctor_id === doctor.id
-    );
-    navigate(`/dr-profile/${doctor.id}`, {
-      state: { doctor, appointments: filteredAppointments },
-    });
+    navigate(`/dr-profile/${doctor.id}`);
   };
 
   // delete modal

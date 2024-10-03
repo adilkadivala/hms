@@ -7,7 +7,7 @@ import { appointmentfields } from "../../../constant/Fields";
 import { handleInput } from "../../../utils/handleInput";
 import { Insert } from "../../../utils/Insert";
 import { useUpdate } from "../../../utils/Update";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
 
 // apies
@@ -15,28 +15,38 @@ const PORT = import.meta.env.VITE_SERVER_API;
 const INSERTAPI = `${PORT}/createappointments`;
 
 const AppointmentForm = () => {
-  // functions
-  const appointmentDataforUpdate = useLocation();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { hospitals, doctors, patients, getAppointments } = useFetchApi();
-  const oldData = appointmentDataforUpdate?.state?.appointment || null;
   const { handleInsertSubmit } = Insert();
   const { handleUpdateSubmit } = useUpdate();
-
+  const { hospitals, doctors, patients, getAppointments, appointments } =
+    useFetchApi();
 
   // states
   const [formData, setFormData] = useState({ ...appointmentfields });
-  const [formUpdateData, setFormUpdateData] = useState({ ...oldData });
 
-  // api
-  const UPDATEAPI = `${PORT}/updateappointments/${formUpdateData.id}`;
+  const appointmentDataForUpdate = appointments.find(
+    (appointment) => appointment.id === parseInt(id)
+  );
 
-  // formhandler
+  useEffect(() => {
+    if (appointmentDataForUpdate) {
+      setFormData(appointmentDataForUpdate);
+    }
+  }, [appointmentDataForUpdate]);
+
+  const setState = setFormData;
+
+  // Update and Insert handlers
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (oldData) {
+
+    if (appointmentDataForUpdate) {
       try {
-        await handleUpdateSubmit(UPDATEAPI, formUpdateData);
+        await handleUpdateSubmit(
+          `${PORT}/updateappointments/${appointmentDataForUpdate.id}`,
+          formData
+        );
         navigate("/appointments");
         getAppointments();
       } catch (error) {
@@ -49,18 +59,11 @@ const AppointmentForm = () => {
         navigate("/appointments");
         getAppointments();
       } catch (error) {
-        console.error(error);
-        setError(error.message || "An error occurred while creating hospital");
+        console.error("Insert error:", error);
+        setError(error.message || "An error occurred while creating doctor");
       }
     }
   };
-
-  // setting form for inserting data and updating it
-  useEffect(() => {
-    if (formUpdateData) {
-      setFormUpdateData(formUpdateData);
-    }
-  }, [formUpdateData]);
 
   return (
     <Layout>
@@ -68,7 +71,7 @@ const AppointmentForm = () => {
         <div className="bg-transparent rounded-xl shadow p-4 sm:p-7 dark:bg-neutral-800 ">
           <div className="mb-8">
             <h2 className="text-xl font-bold text-gray-800 dark:text-neutral-200">
-              {oldData ? "Update Appointment" : " New appointment"}
+              {formData ? "Update Appointment" : " New appointment"}
             </h2>
             <p className="text-sm text-gray-600 dark:text-neutral-400">
               Manage hospital profile information, account settings, and more.
@@ -85,10 +88,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="hospital_id"
                   name="hospital_id"
-                  value={formUpdateData?.hospital_id || formData?.hospital_id}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.hospital_id}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     select hospiotal name
@@ -107,10 +108,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="doctor_id"
                   name="doctor_id"
-                  value={formUpdateData?.doctor_id || formData?.doctor_id}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.doctor_id}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     select Doctor name
@@ -128,10 +127,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="patient_id"
                   name="patient_id"
-                  value={formUpdateData?.patient_id || formData?.patient_id}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.patient_id}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     select patients
@@ -153,13 +150,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Appointment_type"
                   name="Appointment_type"
-                  value={
-                    formUpdateData?.Appointment_type ||
-                    formData?.Appointment_type
-                  }
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.Appointment_type}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     select Appointment type
@@ -176,10 +168,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Status"
                   name="Status"
-                  value={formUpdateData?.Status || formData?.Status}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.Status}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     select Appointment Status
@@ -198,10 +188,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Created_by"
                   name="Created_by"
-                  value={formUpdateData?.Created_by || formData?.Created_by}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.Created_by}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     Appointment Created By
@@ -217,10 +205,8 @@ const AppointmentForm = () => {
                   className="py-3 px-4 pe-9 block bg-gray-100 border-transparent rounded-lg text-sm "
                   id="Approved_by"
                   name="Approved_by"
-                  value={formUpdateData?.Approved_by || formData?.Approved_by}
-                  onChange={handleInput(
-                    oldData ? setFormUpdateData : setFormData
-                  )}
+                  value={formData?.Approved_by}
+                  onChange={handleInput(setState)}
                 >
                   <option value="" disabled>
                     Appointment Approved By
@@ -232,10 +218,10 @@ const AppointmentForm = () => {
             </div>
             <div className="flex justify-end mt-5 gap-2 sm:col-span-12">
               <Button
-                type={formUpdateData ? "submit" : "button"}
+                type={formData ? "submit" : "button"}
                 className="p-3 bg-primary text-white rounded dark:text-primary border-none"
               >
-                {oldData ? "Save changes" : "Submit"}
+                {formData ? "Save changes" : "Submit"}
               </Button>
               <NavLink
                 to="/hospitals"

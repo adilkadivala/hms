@@ -31,7 +31,7 @@ const Hospital = () => {
   };
 
   const toggleUpdateHospital = (hospital) => {
-    navigate("/hospital-profile", { state: { hospital } });
+    navigate(`/hospital-profile/${hospital.id}`);
   };
 
   // delete conformation

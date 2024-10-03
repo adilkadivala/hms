@@ -42,7 +42,7 @@ const Appointment = () => {
 
   // edit Appointment handler
   const toggleUpdateAppointment = (appointment) => {
-    navigate("/appointment-form", { state: { appointment } });
+    navigate(`/appointment-form/${appointment.id}`);
   };
 
   // delete process
@@ -196,9 +196,7 @@ const Appointment = () => {
             value={filterData.doctorName}
             onChange={inputFilterHandler}
           >
-            <option selected defaultValue={doctors}>
-              Filter by Doctor
-            </option>
+            <option defaultValue={doctors}>Filter by Doctor</option>
             {doctors?.map((doctor) => (
               <option value={doctor.Doctor_name} key={doctor.id}>
                 {doctor.Doctor_name}

@@ -1,27 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../layout/Main";
 import Table from "../../ui/Table";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
 
 const Drprofile = () => {
-  const location = useLocation();
-  const DrData = location.state.doctor;
-  const appointment = location.state.appointments;
-  const { patients } = useFetchApi();
   const { id } = useParams();
+  const [activeTab, setActiveTab] = useState("visited");
+  const { doctors, appointments, patients } = useFetchApi();
 
-  console.log(id);
+  const DrData = doctors.find((doctor) => doctor.id === parseInt(id));
 
-  const columns = [
-    { Header: "Token Number", accessor: "token_number" },
-    { Header: "Patient Name", accessor: "patient_id" },
-    { Header: "Contact No", accessor: "contact_no" },
-    { Header: "Address", accessor: "patient_address" },
-  ];
+  const doctorAppointments = appointments.filter(
+    (appointment) => appointment.doctor_id === parseInt(id)
+  );
 
-  // Prepare table data based on appointments and patients
-  const tableData = appointment.map((appointment) => {
+  const tableData = doctorAppointments.map((appointment) => {
     const patient = patients.find((p) => p.id === appointment.patient_id);
 
     return {
@@ -31,18 +25,20 @@ const Drprofile = () => {
         : "Unknown",
       contact_no: patient ? patient.contact : "Unknown",
       patient_address: patient ? patient.city : "Unknown",
-      status: appointment.Status, // Add status to the data
+      status: appointment.Status,
     };
   });
 
-  // State to handle active tab
-  const [activeTab, setActiveTab] = useState("visited");
+  const columns = [
+    { Header: "Token Number", accessor: "token_number" },
+    { Header: "Patient Name", accessor: "patient_id" },
+    { Header: "Contact No", accessor: "contact_no" },
+    { Header: "Address", accessor: "patient_address" },
+  ];
 
-  // Function to render content based on active tab
   const renderTabContent = () => {
     let filteredData;
 
-    // Filter the data based on the active tab
     switch (activeTab) {
       case "visited":
         filteredData = tableData.filter((data) => data.status === "visited");
@@ -69,6 +65,10 @@ const Drprofile = () => {
       </div>
     );
   };
+
+  if (!DrData) {
+    return <p>Loading doctor information...</p>;
+  }
 
   const {
     Profile_image,
