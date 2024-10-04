@@ -107,9 +107,30 @@ const deleteappointment = async (req, res) => {
   }
 };
 
+// appointment status
+const appointmentStatus = async (req, res) => {
+  const { id } = req.params;
+  const { Status } = req.body;
+
+  try {
+    const appointment = await appointments.findOne({ where: { id } });
+    if (!appointment) {
+      return res.status(404).send("Appointment not found");
+    }
+
+    await appointment.update(Status);
+    res
+      .status(200)
+      .json({ message: "Appointment status updated successfully" });
+  } catch (error) {
+    res.status(500).send("Error updating appointment status");
+  }
+};
+
 module.exports = {
   getAppointment,
   createAppointment,
   updateApointment,
   deleteappointment,
+  appointmentStatus,
 };

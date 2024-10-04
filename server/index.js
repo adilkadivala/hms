@@ -7,6 +7,7 @@ const Connection = require("./src/database/connection");
 const router = require("./src/routes/index");
 
 // middlewares
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());

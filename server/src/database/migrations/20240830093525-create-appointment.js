@@ -45,7 +45,7 @@ module.exports = {
         allowNull: false,
       },
       Status: {
-        type: Sequelize.ENUM("in-opd", "visited", "pending"),
+        type: Sequelize.ENUM("in-opd", "absent", "pending"),
         defaultValue: "pending",
       },
       appointment_scheduled_date: {

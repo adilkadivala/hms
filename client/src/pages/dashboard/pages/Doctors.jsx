@@ -137,7 +137,9 @@ const Doctor = () => {
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
 
-        {doctors && <Table columns={columns} data={tableData} />}
+        {!isLoading && !error && doctors && (
+          <Table columns={columns} data={tableData} />
+        )}
 
         {/* delete modal */}
         {isDeleteModalOpen && DoctorData && (

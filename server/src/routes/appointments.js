@@ -14,6 +14,11 @@ appointmentRouter.put(
   uploads.none(),
   appointmentController.updateApointment
 );
+appointmentRouter.patch(
+  "/updateappointmentstatus/:id",
+  uploads.none(),
+  appointmentController.appointmentStatus
+);
 appointmentRouter.delete(
   "/deleteappointments/:id",
   appointmentController.deleteappointment

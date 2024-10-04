@@ -91,7 +91,6 @@ const HospitalForm = () => {
                   alt="Avatar"
                 />
 
-                <Label htmlFor="H_image">Hospital Profile</Label>
               </div>
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row items-start gap-5">

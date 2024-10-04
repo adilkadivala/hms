@@ -176,7 +176,7 @@ const AppointmentForm = () => {
                   </option>
                   <option value="pending">Pending</option>
                   <option value="in-opd">In- Opd</option>
-                  <option value="visited">Visited</option>
+                  <option value="absent">Absent</option>
                 </select>
               </div>
             </div>

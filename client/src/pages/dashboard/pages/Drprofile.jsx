@@ -1,13 +1,26 @@
-import React, { useState, useEffect } from "react";
-import Layout from "../layout/Main";
-import Table from "../../ui/Table";
+import React, { useState } from "react";
+import { Delete } from "../../../utils/Delete";
 import { useParams } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
 
+import Layout from "../layout/Main";
+import DeleteModal from "../compoenets/DeleteModal";
+import Table from "../../ui/Table";
+import Button from "../../ui/Button";
+import axios from "axios";
+
+const PORT = import.meta.env.VITE_SERVER_API;
+
 const Drprofile = () => {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState("visited");
-  const { doctors, appointments, patients } = useFetchApi();
+  const [activeTab, setActiveTab] = useState("in-opd");
+  const { doctors, appointments, patients, getAppointments } = useFetchApi();
+  const { deleteData, setError, setIsLoading } = Delete();
+
+  const [inputName, setInputName] = useState("");
+  const [appointmentData, setAppointmentData] = useState(null);
+  const [nameError, setNameError] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const DrData = doctors.find((doctor) => doctor.id === parseInt(id));
 
@@ -15,8 +28,54 @@ const Drprofile = () => {
     (appointment) => appointment.doctor_id === parseInt(id)
   );
 
+  const toggleStatus = async (appointment, newStatus) => {
+    try {
+      const response = await axios.patch(
+        `${PORT}/updateappointmentstatus/${appointment.id}`,
+        { Status: newStatus }
+      );
+
+      getAppointments();
+
+      console.log("Status updated successfully:", response.data.message);
+    } catch (error) {
+      console.error("Error updating appointment status:", error);
+    }
+  };
+
   const tableData = doctorAppointments.map((appointment) => {
     const patient = patients.find((p) => p.id === appointment.patient_id);
+
+    const actions = (
+      <div className="flex gap-3">
+        <Button
+          className="bg-none border-none"
+          onClick={() => conformDelete(appointment)}
+        >
+          <i className="fa-solid fa-trash text-red-600"></i>
+        </Button>
+
+        {/* All status buttons visible */}
+        <Button
+          className="bg-none border-none"
+          onClick={() => toggleStatus(appointment, "in-opd")}
+        >
+          <i className="fa-regular fa-handshake text-primary"></i>
+        </Button>
+        <Button
+          className="bg-none border-none"
+          onClick={() => toggleStatus(appointment, "pending")}
+        >
+          <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+        </Button>
+        <Button
+          className="bg-none border-none"
+          onClick={() => toggleStatus(appointment, "absent")}
+        >
+          <i className="fa-solid fa-times text-red-500"></i>
+        </Button>
+      </div>
+    );
 
     return {
       token_number: appointment.token_number,
@@ -26,6 +85,7 @@ const Drprofile = () => {
       contact_no: patient ? patient.contact : "Unknown",
       patient_address: patient ? patient.city : "Unknown",
       status: appointment.Status,
+      actions: actions,
     };
   });
 
@@ -34,19 +94,20 @@ const Drprofile = () => {
     { Header: "Patient Name", accessor: "patient_id" },
     { Header: "Contact No", accessor: "contact_no" },
     { Header: "Address", accessor: "patient_address" },
+    { Header: "Actions", accessor: "actions" },
   ];
 
   const renderTabContent = () => {
     let filteredData;
 
     switch (activeTab) {
-      case "visited":
-        filteredData = tableData.filter((data) => data.status === "visited");
+      case "absent":
+        filteredData = tableData.filter((data) => data.status === "absent");
         break;
-      case "scheduled":
+      case "in-opd":
         filteredData = tableData.filter((data) => data.status === "in-opd");
         break;
-      case "type":
+      case "pending":
         filteredData = tableData.filter((data) => data.status === "pending");
         break;
       default:
@@ -85,6 +146,39 @@ const Drprofile = () => {
     City,
     status,
   } = DrData;
+
+  // action operations
+
+  // model status
+  // modal handler
+  const toggleModal = () => {
+    setIsDeleteModalOpen((prev) => !prev);
+    setInputName("");
+    setNameError(null);
+  };
+
+  // delete process
+  const conformDelete = (appointment) => {
+    setAppointmentData(appointment);
+    toggleModal();
+  };
+
+  // deleting Data
+  const handleDelete = async () => {
+    if (appointmentData.token_number === inputName) {
+      setIsLoading(true);
+      try {
+        const apiUrl = `${PORT}/deleteappointments/${appointmentData.id}`;
+        await deleteData(apiUrl);
+        getAppointments();
+        toggleModal();
+      } catch (error) {
+        setError(error);
+      }
+    } else {
+      setNameError("Token doesn't match. Please enter the correct Token.");
+    }
+  };
 
   return (
     <Layout>
@@ -145,40 +239,59 @@ const Drprofile = () => {
 
       <div className="text-sm font-medium  text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
         <div
-          onClick={() => setActiveTab("visited")}
+          onClick={() => setActiveTab("in-opd")}
           className={`inline-block p-4 border-b-2 rounded-t-lg ${
-            activeTab === "visited"
+            activeTab === "in-opd"
               ? "border-blue-600 text-blue-600"
               : "border-transparent hover:text-gray-600 hover:border-gray-300"
           } dark:hover:text-gray-300`}
         >
-          <p>Patients Visited</p>
+          <p>
+            Patients In OPD <i className="fa-regular fa-handshake"></i>
+          </p>
         </div>
 
         <div
-          onClick={() => setActiveTab("scheduled")}
+          onClick={() => setActiveTab("pending")}
           className={`inline-block p-4 border-b-2 rounded-t-lg ${
-            activeTab === "scheduled"
+            activeTab === "pending"
               ? "border-blue-600 text-blue-600"
               : "border-transparent hover:text-gray-600 hover:border-gray-300"
           } dark:hover:text-gray-300`}
         >
-          <p>Patients In OPD</p>
+          <p>
+            Patients in Waiting <i className="fa-solid fa-hourglass-start "></i>
+          </p>
         </div>
 
         <div
-          onClick={() => setActiveTab("type")}
+          onClick={() => setActiveTab("absent")}
           className={`inline-block p-4 border-b-2 rounded-t-lg ${
-            activeTab === "type"
+            activeTab === "absent"
               ? "border-blue-600 text-blue-600"
               : "border-transparent hover:text-gray-600 hover:border-gray-300"
           } dark:hover:text-gray-300`}
         >
-          <p>Pending Patients</p>
+          <p>
+            Absents <i className="fa-solid fa-times"></i>
+          </p>
         </div>
       </div>
 
       <div className="mt-4">{renderTabContent()}</div>
+
+      {isDeleteModalOpen && appointmentData && (
+        <DeleteModal
+          toggleModal={toggleModal}
+          handleDelete={handleDelete}
+          setInputName={setInputName}
+          nameError={nameError}
+          conformDataName={appointmentData.token_number}
+          placeHolder="Token Number"
+          conformText="Write down token number below"
+          inputName={inputName}
+        />
+      )}
     </Layout>
   );
 };

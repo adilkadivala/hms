@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       Status: {
-        type: DataTypes.ENUM("in-opd", "visited", "pending"),
+        type: DataTypes.ENUM("in-opd", "absent", "pending"),
         defaultValue: "pending",
       },
       appointment_scheduled_date: {

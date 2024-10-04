@@ -11,7 +11,7 @@ const Table = ({ columns, data }) => {
                     <th
                       key={column.accessor}
                       scope="col"
-                      className="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 dark:text-gray-300 capitalize"
+                      className="p-2 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 dark:text-gray-300 capitalize"
                     >
                       {column.Header}
                     </th>
@@ -29,7 +29,7 @@ const Table = ({ columns, data }) => {
                         return (
                           <td
                             key={column.accessor}
-                            className="p-1 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
+                            className="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
                           >
                             <img
                               src={
@@ -45,7 +45,7 @@ const Table = ({ columns, data }) => {
                         return (
                           <td
                             key={column.accessor}
-                            className="p-1 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
+                            className="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 dark:text-gray-300"
                           >
                             {row[column.accessor]}
                           </td>
