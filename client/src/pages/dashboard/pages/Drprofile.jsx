@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Delete } from "../../../utils/Delete";
 import { useParams } from "react-router-dom";
 import { useFetchApi } from "../../../storage/Fetch";
+import { useUpdate } from "../../../utils/Update";
 
 import Layout from "../layout/Main";
 import DeleteModal from "../compoenets/DeleteModal";
@@ -16,6 +17,7 @@ const Drprofile = () => {
   const [activeTab, setActiveTab] = useState("in-opd");
   const { doctors, appointments, patients, getAppointments } = useFetchApi();
   const { deleteData, setError, setIsLoading } = Delete();
+  const { handleUpdateSubmit } = useUpdate();
 
   const [inputName, setInputName] = useState("");
   const [appointmentData, setAppointmentData] = useState(null);
@@ -30,19 +32,22 @@ const Drprofile = () => {
 
   const toggleStatus = async (appointment, newStatus) => {
     try {
-      const response = await axios.patch(
-        `${PORT}/updateappointmentstatus/${appointment.id}`,
-        { Status: newStatus }
+      // Update the appointment with the new status
+      await handleUpdateSubmit(
+        `${PORT}/updateappointments/${appointment.id}`, // Update the specific appointment
+        {
+          ...appointment,
+          Status: newStatus, // Only change the status field
+        }
       );
-
-      getAppointments();
-
-      console.log("Status updated successfully:", response.data.message);
+      getAppointments(); // Refresh appointments after updating
     } catch (error) {
-      console.error("Error updating appointment status:", error);
+      console.error("Update error:", error);
+      setError(error.message || "An error occurred while updating");
     }
   };
 
+  // Update the tableData to include the toggleStatus function
   const tableData = doctorAppointments.map((appointment) => {
     const patient = patients.find((p) => p.id === appointment.patient_id);
 
@@ -55,25 +60,58 @@ const Drprofile = () => {
           <i className="fa-solid fa-trash text-red-600"></i>
         </Button>
 
-        {/* All status buttons visible */}
-        <Button
-          className="bg-none border-none"
-          onClick={() => toggleStatus(appointment, "in-opd")}
-        >
-          <i className="fa-regular fa-handshake text-primary"></i>
-        </Button>
-        <Button
-          className="bg-none border-none"
-          onClick={() => toggleStatus(appointment, "pending")}
-        >
-          <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
-        </Button>
-        <Button
-          className="bg-none border-none"
-          onClick={() => toggleStatus(appointment, "absent")}
-        >
-          <i className="fa-solid fa-times text-red-500"></i>
-        </Button>
+        {/* Only show the buttons that are relevant to the current status */}
+        {appointment.Status === "in-opd" && (
+          <Button
+            className="bg-none border-none"
+            onClick={() => toggleStatus(appointment, "pending")}
+          >
+            <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+          </Button>
+        )}
+
+        {appointment.Status === "in-opd" && (
+          <Button
+            className="bg-none border-none"
+            onClick={() => toggleStatus(appointment, "absent")}
+          >
+            <i className="fa-solid fa-times text-red-500"></i>
+          </Button>
+        )}
+
+        {appointment.Status === "pending" && (
+          <Button
+            className="bg-none border-none"
+            onClick={() => toggleStatus(appointment, "in-opd")}
+          >
+            <i className="fa-regular fa-handshake text-primary"></i>
+          </Button>
+        )}
+        {appointment.Status === "pending" && (
+          <Button
+            className="bg-none border-none"
+            onClick={() => toggleStatus(appointment, "absent")}
+          >
+            <i className="fa-solid fa-times text-red-500"></i>
+          </Button>
+        )}
+
+        {appointment.Status === "absent" && (
+          <Button
+            className="bg-none border-none"
+            onClick={() => toggleStatus(appointment, "in-opd")}
+          >
+            <i className="fa-regular fa-handshake text-primary"></i>
+          </Button>
+        )}
+        {appointment.Status === "absent" && (
+          <Button
+            className="bg-none border-none"
+            onClick={() => toggleStatus(appointment, "pending")}
+          >
+            <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+          </Button>
+        )}
       </div>
     );
 
